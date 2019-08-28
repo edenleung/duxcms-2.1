@@ -5,6 +5,8 @@
 [最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)  
 没安装Composer？ 请在最新版本链接下找`DuxCMS2.1_Full.zip`下载
 
+***不会一直维护下去的，毕竟这是好几年前的项目。只是为了方便自己平时做私章项目而已***
+
 ## 特征
 * 支持php 5.6+
 * [支持多语言](#多语言)
