@@ -25,6 +25,8 @@ $config = array(
             'HASH_DEEP' => 0,
         ),
     ),
+    // 登录页面 每日一图 背景图
+    'loginBackgroudImage' => true
 );
 foreach ($files as $value) {
     $array = include $dir.'/'.$value;

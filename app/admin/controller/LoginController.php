@@ -15,6 +15,15 @@ class LoginController extends AdminController
     public function index()
     {
         if (!IS_POST) {
+            if (config('loginBackgroudImage')) {
+                echo '
+                    <style>
+                        body {
+                        background-image: url(https://open.saintic.com/api/bingPic) !important;
+                        }
+                    </style>
+                ';
+            }
             $this->display();
         } else {
             $userName = request('post.username');
