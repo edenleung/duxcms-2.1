@@ -19,9 +19,20 @@ class LoginController extends AdminController
                 echo '
                     <style>
                         body {
-                        background-image: url(https://open.saintic.com/api/bingPic) !important;
+                            background-image: url(https://open.saintic.com/api/bingPic) !important;
+                        }
+                        #loginBg {
+                            position: fixed;
+                            width: 100%;
+                            height: 100%;
+                            transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1) 0s;
                         }
                     </style>
+                    <script>
+                        window.onload = function(){
+                            document.getElementById("loginBg").style.background = "rgb(0,0,0, 0.5)"
+                        }
+                    </script>
                 ';
             }
             $this->display();
