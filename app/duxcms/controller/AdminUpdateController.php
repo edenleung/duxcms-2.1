@@ -11,6 +11,11 @@ require BASE_PATH . '/vendor/autoload.php';
 
 class AdminUpdateController extends AdminController
 {
+    /**
+     * 最新版本发布地址
+     *
+     * @var string
+     */
     public $domain = 'https://raw.githubusercontent.com/xiaodit/duxcms-update/master';
 
     /**
@@ -129,7 +134,7 @@ class AdminUpdateController extends AdminController
     {
         $version = request('post.version');
         $updateDir = DATA_PATH.'update/';
-        $dir = $updateDir.'tmp_'.$version. '/duxcms-2.1-'. $version;
+        $dir = $updateDir.'tmp_'.$version. '/DuxCMS-update';
 
         // 不用覆盖文件与文件夹
         $diss = [
