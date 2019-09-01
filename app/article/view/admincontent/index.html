@@ -130,9 +130,7 @@
                             <option value="2">草稿</option>
                             <option value="3">移动</option>
                             <option value="4">删除</option>
-                            <!--if{defined('LANG_OPEN')}-->
-                                <option value="6">复制</option>
-                            <!--{/if}-->
+                            <option value="6">复制</option>
                         </select>
                     </div>
                 </div>
@@ -148,6 +146,8 @@
             {$page}
         </div>
     </div>
+
+    <input type="hidden" id="lang" value="{$langStatus}">
 </div>
 <script type="text/javascript" charset="utf-8">
 	Do.ready('base',function() {
@@ -157,32 +157,29 @@
 			if(type == 3){
 				$(this).after($('#class_id').clone());
 			} else if (type == 6) {
-                parentHtml = "<select class='input' id='lang_id'> \
-                <option value='0'>选择语言</option>\
-                <!--loop{$lang_list as $key=>$vo}-->\
-                    <!--if{$key !== APP_LANG}-->\
-                    <option value='{$key}'>{$vo.label}</option>\
-                    <!--{/if}-->\
-                <!--{/loop}-->\
-                </select><select class='input' id='lang_class'></select>";
-                
-				$(this).after(parentHtml);
-
-                jsonData = {$category_json};
-                $("#lang_id").change(function(){
-                    lang = $(this).val()
-                    if (lang != 0) {
-                        html = "<option value='0'>选择栏目</option>"
-                        for (var key in jsonData[lang]) {
-                            disabled = ''
-                            if (jsonData[lang][key].type == 0) {
-                                disabled = 'disabled'
+                lang_status = {$langStatus};
+                if (lang_status) {
+                    parentHtml = "{$parentHtml}";
+                    $(this).after(parentHtml);
+                    jsonData = {$category_json};
+                    $("#lang_id").change(function(){
+                        lang = $(this).val()
+                        if (lang != 0) {
+                            html = "<option value='0'>选择栏目</option>"
+                            for (var key in jsonData[lang]) {
+                                disabled = ''
+                                if (jsonData[lang][key].type == 0) {
+                                    disabled = 'disabled'
+                                }
+                                html += "<option value="+ jsonData[lang][key].class_id +" "+ disabled +">"+ jsonData[lang][key].cname +"</option>"
                             }
-                            html += "<option value="+ jsonData[lang][key].class_id +" "+ disabled +">"+ jsonData[lang][key].cname +"</option>"
+                            $("#lang_class").html(html)
                         }
-                        $("#lang_class").html(html)
-                    }
-                })
+                    })
+                } else {
+                    $(this).after($('#class_id').clone());
+                }
+                
             } else {
 				$(this).nextAll('select').remove();
 			}

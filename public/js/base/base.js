@@ -54,14 +54,17 @@ $.ajaxSetup({
                         );
 
                         if (parameter.type == 6) {
-                            lang = $("#lang_id").val()
-                            class_id = $("#lang_class").val()
-                            if (!lang || !class_id) {
-                                toastr.warning('请先选择语言跟栏目');
-                                return false;
+                            lang = $("#lang").val()
+                            if (1 == lang) {
+                                lang = $("#lang_id").val()
+                                class_id = $("#lang_class").val()
+                                if (!lang || !class_id) {
+                                    toastr.warning('请先选择语言跟栏目');
+                                    return false;
+                                }
+                                parameter.lang = lang
+                                parameter.class_id = class_id
                             }
-                            parameter.lang = lang
-                            parameter.class_id = class_id
                         } 
                         $.post(options.actionUrl, parameter, function (json) {
                             if (json.status) {

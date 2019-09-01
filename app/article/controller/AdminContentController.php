@@ -95,8 +95,19 @@ class AdminContentController extends AdminController
         $category_json = [];
         if (defined('LANG_OPEN')) {
             $category_json = json_encode(target('CategoryArticle')->loadAllCategory());
-        }
 
+            $parentHtml = "<select class='input' id='lang_id'><option value='0'>选择语言</option>";
+
+            foreach($this->lang_list as $key=>$vo) {
+                if ($key !== APP_LANG) {
+                    $parentHtml .= "<option value='{$key}'>{$vo['label']}</option>";
+                }
+            }
+
+            $parentHtml .= "</select><select class='input' id='lang_class'></select>";
+            $this->assign('parentHtml', $parentHtml);
+        }
+        $this->assign('langStatus', defined('LANG_OPEN') ? 1 : 0);
         $this->assign('category_json', $category_json);
         $this->adminDisplay();
     }

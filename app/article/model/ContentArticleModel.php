@@ -197,6 +197,13 @@ class ContentArticleModel extends BaseModel
         return $status;
     }
 
+    /**
+     * 复制文章
+     *
+     * @param [type] $contentId
+     * @param [type] $classId
+     * @return void
+     */
     public function copyData($contentId, $classId)
     {
         $contentInfo=$this->getInfo($contentId);
@@ -208,7 +215,7 @@ class ContentArticleModel extends BaseModel
 
         $data = [
             'class_id'=> $classId,
-            'title'=> $contentInfo['title'],
+            'title'=> $contentInfo['title'] . '-未命名（复制）',
             'font_color' => $contentInfo['font_color'],
             'font_bold' => $contentInfo['font_bold'],
             'font_em' => $contentInfo['font_em'],
@@ -246,6 +253,12 @@ class ContentArticleModel extends BaseModel
 
             $extInfo = target('duxcms/FieldsetExpand')->getDataInfo($oldFieldsetInfo['fieldset_id'], $contentId);
             $extInfo = (array)$extInfo;
+
+            foreach($extInfo as $key=>$ext) {
+                if (is_array($ext)) {
+                    $extInfo[$key] = $ext['value'];
+                }
+            }
             $extInfo['data_id'] = $id;
 
             $expandModel = target('duxcms/FieldData');

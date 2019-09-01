@@ -61,6 +61,7 @@ class BaseController extends \framework\base\Controller
             // 赋值到模板
             
             $this->assign('lang_list', unserialize(LANG_CONFIG)['LANG_LIST']);
+            $this->lang_list = unserialize(LANG_CONFIG)['LANG_LIST'];
             $site_lang_file = CONFIG_PATH . 'lang/' . APP_LANG . '.php';
             $lang_config = load_config($site_lang_file);
             $siteConfig = array_merge($siteConfig, $lang_config);
