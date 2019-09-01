@@ -26,12 +26,13 @@ class LoginController extends AdminController
                             position: fixed;
                             width: 100%;
                             height: 100%;
-                            transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 1) 0s;
+                            transition: all 3s cubic-bezier(0.175, 0.885, 0.32, 0.9) 0s;
+                            background: rgb(0,153,204)
                         }
                     </style>
                     <script>
                         window.onload = function(){
-                            document.getElementById("loginBg").style.background = "rgb(0,0,0, 0.5)"
+                            document.getElementById("loginBg").style.background = "rgba(0,0,0, 0.5)"
                         }
                     </script>
                 ';
