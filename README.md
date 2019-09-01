@@ -147,6 +147,6 @@ http://www.domain.com?l=zh-cn
   <!--{/foreach}--> 
 ```
 
-## 在线更新服务
+## 在线更新
 为了不影响已有的文件，作了增量更新包。
 更新服务默认下载releases的Duxcms-update.zip压缩包，进行程序升级
