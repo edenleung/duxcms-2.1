@@ -20,6 +20,7 @@ class LoginController extends AdminController
                     <style>
                         body {
                             background-image: url(https://open.saintic.com/api/bingPic) !important;
+                            background-size: cover!important;
                         }
                         #loginBg {
                             position: fixed;
