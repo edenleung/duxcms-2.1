@@ -3,7 +3,10 @@
 [![Build Status](https://travis-ci.org/xiaodit/duxcms-2.1.svg?branch=master)](https://travis-ci.org/xiaodit/duxcms-2.1)
 
 [最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)  
-没安装Composer？ 请在最新版本链接下找`DuxCMS2.1_Full.zip`下载
+没安装Composer？ 请在最新版本链接下找`DuxCMS_Full.zip`下载
+
+* `DuxCMS_Full.zip` 含composer包的完整程序 建议首页下载
+* `DuxCMS-update.zip` 提供给在线更新的增量更新包
 
 **此项目只是方便自己平时做私单项目顺便共享给其它人用， 不会频繁地添加新功能**
 
