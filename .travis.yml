@@ -25,6 +25,7 @@ deploy:
   file: 
     - /home/travis/build/xiaodit/duxcms-2.1/DuxCMS2.1_Full.zip
     - /home/travis/build/xiaodit/duxcms-2.1/DuxCMS2.1_Full-not_install.zip
+    - /home/travis/build/xiaodit/duxcms-2.1/DuxCMS2.1_Full-update.zip
   skip_cleanup: true
   overwrite: true
   on:
