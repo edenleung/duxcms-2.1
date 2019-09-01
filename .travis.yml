@@ -16,6 +16,7 @@ before_deploy:
   - composer install --no-dev --no-interaction --ignore-platform-reqs
   - zip -r --exclude='*.git*' --exclude='*.zip' --exclude='*.travis.yml' DuxCMS2.1_Full.zip .
   - zip -r --exclude='*.git*' --exclude='*.zip' --exclude='*.travis.yml' -rx=app/install/* DuxCMS2.1_Full-not_install.zip .
+  - zip -r --exclude='*.git*' --exclude='*.zip' --exclude='*.travis.yml' -rx=app/install/* -rx=public/common/* -rx=public/watermark/* -rx=public/lib/* DuxCMS2.1_Full-update.zip .
 
 deploy:
   provider: releases
