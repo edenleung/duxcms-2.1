@@ -1,9 +1,14 @@
 # DUXCMS 2.1
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/xiaodit/duxcms-2.1.svg?branch=master)](https://travis-ci.org/xiaodit/duxcms-2.1)
+[![HitCount](http://hits.dwyl.io/{username}/xiaodit/duxcms-21.svg)](http://hits.dwyl.io/{username}/xiaodit/duxcms-21)
 
-[最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)  
-没安装Composer？ 请在最新版本链接下找`DuxCMS2.1_Full.zip`下载
+[最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)
+
+没安装Composer？ 请在最新版本链接下找`DuxCMS_Full.zip`下载
+
+* `DuxCMS_Full.zip` 含composer包的完整程序 建议首页下载
+* `DuxCMS-update.zip` 提供给在线更新的增量更新包
 
 **此项目只是方便自己平时做私单项目顺便共享给其它人用， 不会频繁地添加新功能**
 
@@ -13,9 +18,9 @@
 * [添加常用判断标签](#标签)
 * [提供更稳定的分词服务](#分词功能)
 * [提供文章推送百度收录](#百度推送)
-* 提供更好的异常接管
+* [提供更好的异常接管（Whoops）](https://packagist.org/packages/filp/whoops)
 * [提供多条件筛选](#多条件筛选)
-* 提供在线更新服务(增量更新) 测试
+* [提供在线更新服务(增量更新)](#在线更新) 🚀
 
 ## 安装
 ```sh
@@ -146,3 +151,7 @@ http://www.domain.com?l=zh-cn
   </ul>
   <!--{/foreach}--> 
 ```
+
+## 在线更新
+为了不影响已有的文件，作了增量更新包。
+更新服务默认下载releases的Duxcms-update.zip压缩包，进行程序升级
