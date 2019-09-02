@@ -234,7 +234,7 @@ class ContentArticleModel extends BaseModel
 
         $status = $this->add([
             'content_id' => $id,
-            'content' => $contentInfo['content'] 
+            'content' => $contentInfo['content']
         ]);
 
         if (!$status) {
@@ -254,7 +254,7 @@ class ContentArticleModel extends BaseModel
             $extInfo = target('duxcms/FieldsetExpand')->getDataInfo($oldFieldsetInfo['fieldset_id'], $contentId);
             $extInfo = (array)$extInfo;
 
-            foreach($extInfo as $key=>$ext) {
+            foreach ($extInfo as $key=>$ext) {
                 if (is_array($ext)) {
                     $extInfo[$key] = $ext['value'];
                 }

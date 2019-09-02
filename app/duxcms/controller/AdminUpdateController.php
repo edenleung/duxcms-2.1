@@ -3,6 +3,7 @@ namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
 use GuzzleHttp\Client;
+
 require BASE_PATH . '/vendor/autoload.php';
 
 /**
@@ -116,15 +117,15 @@ class AdminUpdateController extends AdminController
         }
 
         $dir = $updateDir.'tmp_' . $version;
-        $zip = new \ZipArchive; 
-        $res = $zip->open($file); 
-        if ($res === TRUE) { 
-            $zip->extractTo($dir); 
-            $zip->close(); 
+        $zip = new \ZipArchive;
+        $res = $zip->open($file);
+        if ($res === true) {
+            $zip->extractTo($dir);
+            $zip->close();
             $this->success('文件解压成功，等待更新操作！');
-        } else { 
+        } else {
             $this->error('解压文件失败请检查目录【'.$dir.'】是否有写入权限！');
-        } 
+        }
     }
 
     /**

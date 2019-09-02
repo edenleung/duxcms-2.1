@@ -262,7 +262,7 @@ function tongji()
 function buildScreenUri($flag, $fields, $field, $classId, $id = '')
 {
     $params = [];
-    foreach($fields as $item){
+    foreach ($fields as $item) {
         if ($field != $item) {
             $value = request('get.' . $item, 0, 'intval');
             if ($value) {
@@ -280,7 +280,7 @@ function buildScreenUri($flag, $fields, $field, $classId, $id = '')
         $params[$field] = $id;
     }
 
-    $paramer['class_id'] = $classId; 
+    $paramer['class_id'] = $classId;
     $dir = APP_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME;
     return match_url($dir, $paramer, $params);
 }

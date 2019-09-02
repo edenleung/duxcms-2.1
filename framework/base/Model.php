@@ -83,7 +83,7 @@ class Model
             $this->_pager(
                 $this->options['pager']['page'],
                 $this->options['pager']['pageSize'],
-                        $this->options['pager']['scope'] = 10,
+                $this->options['pager']['scope'] = 10,
                 $count
             );
             $this->options['pager'] = array();

@@ -162,7 +162,7 @@ class CategoryArticleModel extends BaseModel
         $tree = $cat->getTree($data);
         
         $temp = [];
-        foreach($tree as $page) {
+        foreach ($tree as $page) {
             $temp[$page['lang']][] = $page;
         }
         return $temp;

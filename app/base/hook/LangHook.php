@@ -53,9 +53,9 @@ class LangHook
                     $this->setCookie($lang);
                     header('location:' .$url, true, $code);
                     exit();
-                } 
+                }
 
-                if (in_array($defaultLang, $langs)){
+                if (in_array($defaultLang, $langs)) {
                     return $defaultLang;
                 } else {
                     return $this->config['LANG_DEFAULT'];

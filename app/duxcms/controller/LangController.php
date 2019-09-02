@@ -5,13 +5,12 @@ use app\home\controller\SiteController;
 
 /**
  * 语言切换
- * 
+ *
  */
 class LangController extends SiteController
 {
     public function index()
     {
-        
         if (defined('LANG_OPEN')) {
             $this->redirect('/');
             exit;
@@ -19,7 +18,7 @@ class LangController extends SiteController
 
         $lang_config = unserialize(LANG_CONFIG);
         $langs = $lang_config['LANG_LIST'];
-        $lang = request('get.s', null, function($request) use ($langs) {
+        $lang = request('get.s', null, function ($request) use ($langs) {
             $lang = end(explode('/', $request));
             $langs = array_keys($langs);
             if (in_array($lang, $langs)) {

@@ -367,14 +367,14 @@ class Zip
                     return(-1);
                 }
                 $binary_data = pack(
-                'va1a1Va1a1',
-                0x8b1f,
-                Chr($header['compression']),
-            Chr(0x00),
-                time(),
-                Chr(0x00),
-                Chr(3)
-            );
+                    'va1a1Va1a1',
+                    0x8b1f,
+                    Chr($header['compression']),
+                    Chr(0x00),
+                    time(),
+                    Chr(0x00),
+                    Chr(3)
+                );
             
                 fwrite($fp, $binary_data, 10);
                 $size = $header['compressed_size'];

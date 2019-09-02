@@ -182,7 +182,7 @@ class Page
     $perpage，每页显示行数
     $pagebarnum，分页栏每页显示的页数
     $mode，显示风格，参数可为整数1，2，3，4任意一个
-    
+
      */
     public function show($url="", $total=0, $perPage=10, $pageBarNum=10, $mode=1)
     {

@@ -73,8 +73,7 @@ class CategoryController extends SiteController
             $duowei = [];
             $fields = array_column($fieldList, 'field');
 
-            foreach($fields as $field)
-            {
+            foreach ($fields as $field) {
                 $param = request('get.' . $field, 0, 'intval');
                 if ($param) {
                     $where['D.' . $field] = $param;
@@ -82,12 +81,12 @@ class CategoryController extends SiteController
                 }
             }
 
-            foreach($fieldList as $key=>$item) {
+            foreach ($fieldList as $key=>$item) {
                 $params = request('get.' . $item['field'], 0, 'intval');
                 $field = $item['field'];
                 $data = ['name' => $item['name'], 'field' => $field];
                 $child = explode(',', $item['config']);
-                foreach($child as $k=>$name) {
+                foreach ($child as $k=>$name) {
                     $id = $k + 1;
                     $data['child'][] = [
                         'name' => $name,

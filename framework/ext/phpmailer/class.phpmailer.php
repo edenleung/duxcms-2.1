@@ -1760,7 +1760,7 @@ class PHPMailer
         //TODO using /e (equivalent to eval()) is probably not a good idea
         $encoded = preg_replace(
             '/([\000-\011\013\014\016-\037\075\077\137\177-\377])/e',
-              "'='.sprintf('%02X', ord('\\1'))",
+            "'='.sprintf('%02X', ord('\\1'))",
             $encoded
         );
         break;
