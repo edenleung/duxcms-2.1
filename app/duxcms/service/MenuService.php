@@ -64,6 +64,12 @@ class MenuService
                         'url' => url('duxcms/AdminUpdate/index'),
                         'order' => 3
                     ),
+                    array(
+                        'name' => 'sitemap生成',
+                        'icon' => 'file-code-o',
+                        'url' => url('duxcms/Sitemap/sitemap'),
+                        'order' => 4
+                    ),
                 )
             ),
             'Function' => array(
