@@ -134,7 +134,7 @@ class AdminUpdateController extends AdminController
     {
         $version = request('post.version');
         $updateDir = DATA_PATH.'update/';
-        $dir = $updateDir.'tmp_'.$version. '/DuxCMS-update';
+        $dir = $updateDir.'tmp_'.$version;
 
         // 不用覆盖文件与文件夹
         $diss = [
