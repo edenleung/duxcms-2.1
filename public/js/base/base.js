@@ -227,6 +227,10 @@ $.ajaxSetup({
                                 if (data.url == null || data.url == '') {
                                     //不带连接
                                     layer.alert(data.info, 1, function () {
+                                        if ($(form).hasClass('lang')) {
+                                            parent.location.reload();
+                                            return;
+                                        }
                                         window.location.reload();
                                     });
                                 } else {
