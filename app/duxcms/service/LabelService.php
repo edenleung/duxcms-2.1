@@ -79,6 +79,16 @@ class LabelService
         if (!empty($data['pos_id'])) {
             $where[] = 'find_in_set('.$data['pos_id'].',A.position) ';
         }
+
+        // 是否获取所有有推荐位的文章
+        if (isset($data['position'])) {
+            if ($data['position'] == true) {
+                $where[] = 'A.position <> ""';
+            } else {
+                $where[] = 'A.position = ""';
+            }
+        }
+
         //其他条件
         if (!empty($data['where'])) {
             $where[] = $data['where'];
