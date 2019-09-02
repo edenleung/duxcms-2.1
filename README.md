@@ -31,6 +31,9 @@ $ composer install
 * mysqli
 * pdo
 
+## 参考模板
+[GITEE](https://gitee.com/duxcms/DuxCms-2.0/tree/master/themes/default)
+
 ## 多语言
 
 ### 添加语种
