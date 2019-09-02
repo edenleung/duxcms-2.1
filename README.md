@@ -1,8 +1,10 @@
 # DUXCMS 2.1
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/xiaodit/duxcms-2.1.svg?branch=master)](https://travis-ci.org/xiaodit/duxcms-2.1)
+[![HitCount](http://hits.dwyl.io/{username}/xiaodit/duxcms-21.svg)](http://hits.dwyl.io/{username}/xiaodit/duxcms-21)
 
-[最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)  
+[最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)
+
 没安装Composer？ 请在最新版本链接下找`DuxCMS_Full.zip`下载
 
 * `DuxCMS_Full.zip` 含composer包的完整程序 建议首页下载
