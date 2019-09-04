@@ -24,6 +24,8 @@
 * 提供网站地图生成
 
 ## 安装
+* mysqli扩展必须安装
+* pdo扩展可选安装
 ```sh
 $ composer install
 ```
