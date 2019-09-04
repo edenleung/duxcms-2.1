@@ -52,7 +52,7 @@ class App
             }
 
             Hook::listen('actionBefore', array($obj, $action));
-            $obj ->$action();
+            $obj->$action();
             Hook::listen('actionAfter', array($obj, $action));
         } catch (\Exception $e) {
             Hook::listen('appError', array($e));
