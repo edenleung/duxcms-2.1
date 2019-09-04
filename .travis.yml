@@ -15,7 +15,7 @@ before_deploy:
   - composer self-update
   - composer install --no-dev --no-interaction --ignore-platform-reqs
   - zip -r --exclude='*.git*' --exclude='*.zip' --exclude='*.travis.yml' DuxCMS_Full.zip .
-  - git diff $(git tag | awk '{a[NR]=$0} END{print a[NR-1]}') $(git tag | awk "END{print}") --name-only | xargs zip DuxCMS-update.zip
+  - git diff $(git tag | awk 'NR==1{print}') $(git tag | awk "END{print}") --name-only | xargs zip DuxCMS-update.zip
 
 deploy:
   provider: releases
