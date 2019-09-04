@@ -147,12 +147,29 @@ body {
     overflow: auto;
 }
 @media (max-width: 759px) {
+    html,body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+    .dux-admin {
+        flex: 1;
+    }
     .dux-admin,
     .dux-tools,
     .dux-bread,
     .dux-sidebar {
-        position: static !important;
         width: 100%;
+    }
+    .dux-sidebar,.dux-admin{
+        position: relative;
+        left: 0;
+        top: 0;
     }
     .dux-head {
         height: auto;
