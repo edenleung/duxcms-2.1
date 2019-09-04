@@ -36,7 +36,7 @@ class SafeModel
         $extArray = explode(',', $ext);
         $safeArray['upload'] = true;
         foreach ($extArray as $value) {
-            if (strstr($value, config('upload_exts'))) {
+            if (strstr($value, config('UPLOAD_EXTS'))) {
                 $safeArray['upload'] = false;
             }
         }
