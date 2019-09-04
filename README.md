@@ -28,6 +28,9 @@
 $ composer install
 ```
 
+## 预览
+[线上预览](https://duxcms.xiaodim.com)
+
 ## 数据库驱动
 * mysqli
 * pdo
