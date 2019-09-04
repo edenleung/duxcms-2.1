@@ -160,5 +160,7 @@ http://www.domain.com?l=zh-cn
 ```
 
 ## 在线更新
-为了不影响已有的文件，作了增量更新包。
-更新服务默认下载releases的Duxcms-update.zip压缩包，进行程序升级
+为了不影响已有的文件，作了增量更新包。  
+更新服务默认下载releases的Duxcms-update.zip压缩包，进行程序升级。  
+[更新服务](https://github.com/xiaodit/duxcms-update)  
+[检测地址](https://github.com/xiaodit/duxcms-update/blob/master/ver.txt)
