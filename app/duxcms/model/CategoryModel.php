@@ -54,10 +54,11 @@ class CategoryModel extends BaseModel
         if (defined('LANG_OPEN')) {
             $where['lang'] = APP_LANG;
         } else {
-            $where['lang'] = '';
+            $where[] = 'lang is NULL';
         }
         
         $pageList = $this->where($where)->limit($limit)->order("sequence ASC , class_id ASC")->select();
+
         $list = array();
         if (!empty($pageList)) {
             $i = 0;

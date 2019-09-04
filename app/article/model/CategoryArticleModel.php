@@ -35,7 +35,7 @@ class CategoryArticleModel extends BaseModel
         if (defined('LANG_OPEN')) {
             $where['A.lang'] = APP_LANG;
         } else {
-            $where['A.lang'] = '';
+            $where[] = 'A.lang is null';
         }
         
         $pageList = $this->table("category as A")

@@ -45,7 +45,7 @@ class ContentModel extends BaseModel
         if (defined('LANG_OPEN')) {
             $where['B.lang'] = APP_LANG;
         } else {
-            $where['B.lang'] = '';
+            $where[] = 'B.lang is null';
         }
         
         $pageList = $this->table("content as A")

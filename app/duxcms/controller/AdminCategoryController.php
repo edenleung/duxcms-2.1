@@ -45,14 +45,7 @@ class AdminCategoryController extends AdminController
         $breadCrumb = array('栏目列表' => url());
         $this->assign('breadCrumb', $breadCrumb);
 
-        // 多语言
-        if (defined('LANG_OPEN')) {
-            $where['lang'] = APP_LANG;
-        } else {
-            $where['lang'] = '';
-        }
-
-        $this->assign('list', target('Category')->loadList($where));
+        $this->assign('list', target('Category')->loadList());
         $this->adminDisplay();
     }
 }
