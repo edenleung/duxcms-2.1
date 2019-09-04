@@ -95,16 +95,18 @@ class TempalteHook
         $this->_template_preg[] = '/' . $__ltag . '\{(\#|\*)(.*?)(\#|\*)\}' . $__rtag . '/';
         $this->_template_replace[] = '';
 
-        //引入页面标签
-        $this->_template_preg[] = '/<!--#include\s*file=[\"|\'](.*)\.(html|htm)[\"|\']-->/';
-
-        // 多语言
-        if (defined('LANG_OPEN')) {
-            $this->_template_replace[] = "<?php \$__Template->display(\"".THEME_NAME.'/'. TPL_NAME . '/'. APP_LANG ."/$1\"); ?>";
-        } else {
-            $this->_template_replace[] = "<?php \$__Template->display(\"".THEME_NAME.'/'. TPL_NAME . "/$1\"); ?>";
+        if (!defined('INSTALL_STATUS')) {
+            //引入页面标签
+            $this->_template_preg[] = '/<!--#include\s*file=[\"|\'](.*)\.(html|htm)[\"|\']-->/';
+                        
+            // 多语言
+            if (defined('LANG_OPEN')) {
+                $this->_template_replace[] = "<?php \$__Template->display(\"".THEME_NAME.'/'. TPL_NAME . '/'. APP_LANG ."/$1\"); ?>";
+            } else {
+                $this->_template_replace[] = "<?php \$__Template->display(\"".THEME_NAME.'/'. TPL_NAME . "/$1\"); ?>";
+            }
         }
-
+        
         // 百度链接推送
         $this->_template_preg[] = '/<!--#pushBaidu-->/';
         $this->_template_replace[] = "<?php pushBaidu(); ?>";
@@ -138,7 +140,10 @@ class TempalteHook
         $template = preg_replace_callback('/' . $this->__ltag . '(\w+){([^"].*)}' . $this->__rtag . '/i', array($this, 'parse_for'), $template);
 
         //替换常量
-        $template = str_replace('__TPL__', ROOT_URL . THEME_NAME.'/'.TPL_NAME, $template);
+
+        if (!defined('INSTALL_STATUS')) {
+            $template = str_replace('__TPL__', ROOT_URL . THEME_NAME.'/'.TPL_NAME, $template);
+        }
         $template = str_replace('__PUBLIC__', __PUBLIC__, $template);
         $template = str_replace('__ROOT__', __ROOT__, $template);
         return $template;

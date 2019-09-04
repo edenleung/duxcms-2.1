@@ -13,6 +13,8 @@ class IndexController extends Controller
     {
         define('__PUBLIC__', substr(PUBLIC_URL, 0, -1));
         define('__ROOT__', substr(ROOT_URL, 0, -1));
+        define('NOW_TIME', $_SERVER['REQUEST_TIME']);
+        define('INSTALL_STATUS', true);
         include_once ROOT_PATH . 'app/base/util/Function.php';
         include_once ROOT_PATH . 'app/install/util/Function.php';
         $this->lock = ROOT_PATH . 'install.lock';

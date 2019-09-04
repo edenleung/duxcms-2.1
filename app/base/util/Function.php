@@ -345,16 +345,16 @@ function save_config($file, $config)
         $conf = preg_replace("/'" . $key . "'\s*=\>\s*(.*?),/iU", "'".$key."'=>".$value.",", $conf);
     }
     //写入应用配置文件
-    if (!IS_WRITE) {
-        return false;
-    } else {
+    // if (!IS_WRITE) {
+    //     return false;
+    // } else {
         if (file_put_contents($file, $conf)) {
             return true;
         } else {
             return false;
         }
         return '';
-    }
+    // }
 }
 
 /**
