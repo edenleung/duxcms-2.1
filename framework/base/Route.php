@@ -43,11 +43,18 @@ class Route
         }
         
         $routeArr = isset($_REQUEST['r']) ? explode("/", $_REQUEST['r']) : array();
-        $app_name = empty($routeArr[0]) ? Config::get('DEFAULT_APP') : $routeArr[0];
-        $controller_name = empty($routeArr[1]) ? Config::get('DEFAULT_CONTROLLER') : $routeArr[1];
-        $action_name = empty($routeArr[2]) ? Config::get('DEFAULT_ACTION') : $routeArr[2];
+        if (!defined('ADMIN_STATUS') && $_SERVER['REQUEST_URI'] !== '/' && false === stripos($_SERVER['REQUEST_URI'], '?')) {
+            $app_name = empty($routeArr[0]) ? Config::get('DEFAULT_APP') : $routeArr[0];
+            $controller_name = empty($routeArr[1]) ? Config::get('DEFAULT_CONTROLLER') : $routeArr[1];
+            $action_name = empty($routeArr[2]) ? 'error404' : $routeArr[2];
+        } else {
+            $app_name = empty($routeArr[0]) ? Config::get('DEFAULT_APP') : $routeArr[0];
+            $controller_name = empty($routeArr[1]) ? Config::get('DEFAULT_CONTROLLER') : $routeArr[1];
+            $action_name = empty($routeArr[2]) ? Config::get('DEFAULT_ACTION') : $routeArr[2];
+        }
+
         $_REQUEST['r'] = $app_name .'/'. $controller_name .'/'. $action_name;
-        
+
         if (!defined('APP_NAME')) {
             define('APP_NAME', strtolower($app_name));
         }
