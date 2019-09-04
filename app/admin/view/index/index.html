@@ -25,25 +25,39 @@
             <button class="button icon-navicon icon-ellipsis-v admin-menu-btn" data-target=".admin-menu"></button>
         </div>
         <div class="dux-nav">
+               
             <ul class="nav  nav-navicon nav-inline admin-nav" id="nav">
             </ul>
-            <ul class="nav  nav-navicon nav-menu nav-inline admin-nav nav-tool">
-               <li> <a href="__ROOT__/" target="_blank" class="icon-home"></a></li>
-                <li> <a href="{url('admin/AdminUser/edit',array('user_id'=>$loginUserInfo['user_id']))}" target="dux-iframe" class="icon-user"></a></li>
-
+            <ul class="nav  nav-navicon nav-menu nav-inline admin-nav nav-tool" id="nav">
                 <!--多语言菜单-->
                 <!--if{defined('LANG_OPEN')}-->
-                    <!--loop{$lang_list as $key=>$vo}-->
-                        <li> <a href="admin.php?l={$key}" style="<!--if{APP_LANG == $key}-->background: #3190ee;<!--{/if}-->color:#fff">
-                            {$vo.label}
-                        </a></li>
-                    <!--{/loop}-->
-               <!--{/if}-->
-                
+                <li>
+                    <a href="#" style="color:#fff"><span class="icon-language"></span></a>
+                    <ul class="drop-menu">
+                        <li class="drop-meun-head">切换语言</li>
+                        <!--loop{$lang_list as $key=>$vo}-->
+                            <li>
+                                <a href="admin.php?l={$key}" style="<!--if{APP_LANG == $key}-->background: #3190ee;color:#fff;<!--{/if}-->">
+                                    {$vo.label}
+                                </a>
+                            </li>
+                        <!--{/loop}-->
+                    </ul>
+                </li>
+                        
+                <!--{/if}-->
+                <li> <a href="__ROOT__/" target="_blank" class="icon-home"></a></li>
+                <li> <a href="{url('admin/AdminUser/edit',array('user_id'=>$loginUserInfo['user_id']))}" target="dux-iframe" class="icon-user"></a></li>
                 <li> <a href="{url('admin/Login/logout')}" class="dux-logout bg-red icon-power-off"></a></li>
+                
             </ul>
         </div>
+        
     </div>
+    <ul class="drop-menu" id="nav-link1">
+        <li><a href="#">动画</a> </li>
+        <li><a href="#">模块</a> </li>
+    </ul>
     <div class="dux-sidebar">
         <ul class="nav  nav-navicon admin-menu">
             <div class="nav-head" id="nav-head"></div>
