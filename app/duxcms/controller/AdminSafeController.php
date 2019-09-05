@@ -28,7 +28,7 @@ class AdminSafeController extends AdminController
     {
         $checkArray = array();
         //上传目录检测
-        $dir = @fopen(__ROOT__ .'/upload', 'wb');
+        $dir = is_writable(ROOT_PATH.'upload');
         if ($dir !== false) {
             $checkArray['upload'] = true;
         }
