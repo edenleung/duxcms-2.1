@@ -49,6 +49,7 @@ class SitemapController extends AdminController
     {
         //检查sitemap问及是否存在
         $this->sitemap = ROOT_PATH . 'sitemap.xml';
+        $this->robots = ROOT_PATH . 'robots.txt';
         if (is_file($this->sitemap)) {
             $info=simplexml_load_file($this->sitemap);
             $info=get_object_vars($info->url);
@@ -62,6 +63,9 @@ class SitemapController extends AdminController
             if (empty($categorys)) {
                 $this->error('至少选择一个栏目！');
             }
+
+            $site = $config['site_url'] ? $config['site_url'] : $_SERVER['REQUEST_SCHEME'] .'://'. $_SERVER['SERVER_NAME'];
+
             //进行循环取值
             foreach ($categorys as $key => $value) {
                 if ($value=='category') {
@@ -81,6 +85,12 @@ class SitemapController extends AdminController
                         $i++;
                     }
                     $sitemap[] = $tag;
+                } elseif ($value == 'robots') {
+                    $robots = "User-agent: * \r\nAllow: /\r\nAllow: /list/\r\nAllow: /page/\r\nAllow: /article/\r\nAllow: /tags/\r\nAllow: /tags-list/\r\n\r\nDisallow: /vendors/\r\nDisallow: /public/\r\n\r\nSitemap: {$site}/sitemap.xml";
+                    $file = fopen($this->robots, "w");
+                    fwrite($file, $robots);
+                    fclose($file);
+                    $data[]= array('app'=>'robots', 'title' => 'robots.txt', 'curl'=> "{$site}/robots.txt");
                 } else {
                     $content =  target('duxcms/Content')->loadList(array(), 5000);
                     $list = array();
@@ -99,8 +109,6 @@ class SitemapController extends AdminController
             //合并数组
             $urls = self::array2single(array_merge($sitemap));
             $config = target('admin/Config')->getInfo();
-
-            $site = $config['site_url'] ? $config['site_url'] : $_SERVER['REQUEST_SCHEME'] .'://'. $_SERVER['SERVER_NAME'];
 
             $sitemap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
             $sitemap .= "<url>\r\n"."<loc>".$site."</loc>\r\n"."<lastmod>".date('Y-m-d H:i:s')."</lastmod>\r\n</url>\r\n";
