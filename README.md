@@ -1,6 +1,7 @@
 # DUXCMS 2.1
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/xiaodit/duxcms-2.1.svg?branch=master)](https://travis-ci.org/xiaodit/duxcms-2.1)
+[![Release](https://img.shields.io/github/v/release/xiaodit/duxcms-2.1.svg?style=flat)](https://github.com/xiaodit/duxcms-2.1/releases/latest)
 [![HitCount](http://hits.dwyl.io/{username}/xiaodit/duxcms-21.svg)](http://hits.dwyl.io/{username}/xiaodit/duxcms-21)
 
 [最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)
