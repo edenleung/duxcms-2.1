@@ -834,6 +834,16 @@ function get_client_ip()
     return \framework\ext\Util::getIp();
 }
 
+function get_admin_id()
+{
+    $user = session('admin_user');
+    if (empty($user)) {
+        return 0;
+    } else {
+        return session('admin_user_sign') == data_auth_sign($user) ? $user['user_id'] : 0;
+    }
+}
+
 /**
  * 判断不为空
  */

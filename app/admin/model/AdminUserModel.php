@@ -156,14 +156,16 @@ class AdminUserModel extends BaseModel
             'last_login_ip' => \framework\ext\Util::getIp(),
         );
         $this->save($data);
-        //写入系统记录
-        api('Admin', 'AdminLog', 'addLog', '登录系统');
+        
         //设置cookie
         $auth = array(
             'user_id' => $userId,
         );
         session('admin_user', $auth);
         session('admin_user_sign', data_auth_sign($auth));
+
+        //写入系统记录
+        api('Admin', 'AdminLog', 'addLog', '登录系统');
         return true;
     }
 
