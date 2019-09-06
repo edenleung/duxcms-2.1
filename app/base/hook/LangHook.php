@@ -37,32 +37,68 @@ class LangHook
         $this->config = array_merge($this->config, $c_config);
     }
 
+    /**
+     * 后台
+     *
+     * @return void
+     */
+    public function CheckAdminLang()
+    {
+        // 开启多语言
+        if ($this->config['LANG_OPEN']) {
+            define('LANG_OPEN', true);
+            define('LANG_CONFIG', serialize($this->config));
+            $defaultLang = $this->getDefaultLang();
+
+            $lang = request('get.l') ?: session('APP_LANG');
+
+            if (empty($lang)) {
+                $lang = $defaultLang;
+            } else {
+                $langs = array_keys($this->config['LANG_LIST']);
+                if (in_array($lang, $langs)) {
+                    session('APP_LANG', $lang);
+                }
+            }
+
+            define('APP_LANG', $lang);
+        }
+    }
+
+    /**
+     * 前台
+     *
+     * @return void
+     */
     public function CheckLang()
     {
         // 开启多语言
         if ($this->config['LANG_OPEN']) {
             define('LANG_OPEN', true);
             define('LANG_CONFIG', serialize($this->config));
-
             $defaultLang = $this->getDefaultLang();
-            
-            $lang = request('get.l', null, function ($lang) use ($defaultLang) {
-                $langs = array_keys($this->config['LANG_LIST']);
-                if ($lang && in_array($lang, $langs)) {
-                    $url = defined('ADMIN_STATUS') ? '/admin.php' : '/';
-                    $this->setCookie($lang);
-                    header('location:' .$url, true, $code);
-                    exit();
-                }
 
-                if (in_array($defaultLang, $langs)) {
-                    return $defaultLang;
-                } else {
-                    return $this->config['LANG_DEFAULT'];
+            $s = request('get.s');
+            if (empty($s)) {
+                if ($l = cookie($this->cookie_name)) 
+                {
+                    header('location:' . '/' .$l, true, $code);
+                    exit();
+
                 }
-            });
+                header('location:' . '/' .$defaultLang, true, $code);
+                exit();
+            }
+
+            list($temp, $lang) = explode('/', $s);
+            $langs = array_keys($this->config['LANG_LIST']);
+            if ($lang && !in_array($lang, $langs)) {
+                header('location:' . '/' .$defaultLang, true, $code);
+                exit();
+            }
 
             define('APP_LANG', $lang);
+            $this->setCookie($lang);
         }
     }
 

@@ -20,13 +20,20 @@ class CategoryController extends SiteController
         if (empty($classId)&&empty($urlName)) {
             $this->error404();
         }
+
+        $map = [];
+        // 多语言
+        if (defined('LANG_OPEN')) {
+            $map['A.lang'] = APP_LANG;
+        }
+
         //获取栏目信息
         $model = target('CategoryArticle');
         if (!empty($classId)) {
-            $categoryInfo=$model->getInfo($classId);
+            $map['A.class_id'] = $classId;
+            $categoryInfo=$model->getWhereInfo($map);
         } elseif (!empty($urlName)) {
-            $map = array();
-            $map['urlname'] = $urlName;
+            $map['A.urlname'] = $urlName;
             $categoryInfo=$model->getWhereInfo($map);
         } else {
             $this->error404();
@@ -35,11 +42,6 @@ class CategoryController extends SiteController
         //信息判断
         if (!is_array($categoryInfo)) {
             $this->error404();
-        }
-
-        // 多语言
-        if (defined('LANG_OPEN') && $categoryInfo['lang'] !== APP_LANG) {
-            changeLang($categoryInfo['lang'], $_REQUEST['s']);
         }
 
         if (strtolower($categoryInfo['app'])<>APP_NAME) {

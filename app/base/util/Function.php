@@ -120,20 +120,6 @@ function push($urls)
 }
 
 /**
- * 切换语言
- *
- * @param [type] $lang
- * @param [type] $uri
- * @return void
- */
-function changeLang($lang, $uri)
-{
-    $hook = new \app\base\hook\LangHook();
-    $hook->setCookie($lang);
-    redirect($uri);
-}
-
-/**
  * 获取request请求方法
  */
 function request($str, $default = null, $function = null)
