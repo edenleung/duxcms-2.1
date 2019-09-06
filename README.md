@@ -1,6 +1,7 @@
 # DUXCMS 2.1
 [![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/xiaodit/duxcms-2.1.svg?branch=master)](https://travis-ci.org/xiaodit/duxcms-2.1)
+[![Release](https://img.shields.io/github/v/release/xiaodit/duxcms-2.1.svg?style=flat)](https://github.com/xiaodit/duxcms-2.1/releases/latest)
 [![HitCount](http://hits.dwyl.io/{username}/xiaodit/duxcms-21.svg)](http://hits.dwyl.io/{username}/xiaodit/duxcms-21)
 
 [最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)
@@ -13,7 +14,7 @@
 **此项目只是方便自己平时做私单项目顺便共享给其它人用， 不会频繁地添加新功能**
 
 ## 特征
-* 支持php 5.6+
+* 支持php 5.6+ 7.4-
 * [支持多语言](#多语言)
 * [添加常用判断标签](#标签)
 * [提供更稳定的分词服务](#分词功能)
@@ -166,3 +167,7 @@ http://www.domain.com?l=zh-cn
 更新服务默认下载releases的Duxcms-update.zip压缩包，进行程序升级。  
 [更新服务](https://github.com/xiaodit/duxcms-update)  
 [检测地址](https://github.com/xiaodit/duxcms-update/blob/master/ver.txt)
+
+## 打赏
+如果对你有帮助的，打赏下小弟吧。  
+<img src="https://raw.githubusercontent.com/xiaodit/duxcms-update/master/WechatIMG4.jpeg" title="微信" width="300">
