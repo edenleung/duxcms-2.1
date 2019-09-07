@@ -118,7 +118,7 @@ class CategoryController extends SiteController
         if (!empty($categoryInfo['content_order'])) {
             $categoryInfo['content_order'] = $categoryInfo['content_order'].',';
         }
-        $pageList = $modelContent->page($listRows)->loadList($where, $limit, $categoryInfo['content_order'].'A.time desc,A.content_id desc', $categoryInfo['fieldset_id']);
+        $pageList = $modelContent->page($listRows)->loadList($where, $listRows, $categoryInfo['content_order'].'A.time desc,A.content_id desc', $categoryInfo['fieldset_id']);
         $this->pager = $modelContent->pager;
         
         //URL参数

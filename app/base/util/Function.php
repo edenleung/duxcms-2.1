@@ -38,6 +38,7 @@ function articleSumByCid($cid, $positionId = '', $isShow = true)
     $categoryInfo=$model->getInfo($cid);
 
     // 频道页(统计频道页下所有分类)
+    $classIds = '';
     if ($categoryInfo['type'] == 0) {
         $classIds = target('duxcms/Category')->getSubClassId($categoryInfo['class_id']);
     }
@@ -61,7 +62,7 @@ function articleSumByCid($cid, $positionId = '', $isShow = true)
         $where['A.status'] = 0;
     }
 
-    $data = target('article/ContentArticle')->loadList($where, $limit);
+    $data = target('article/ContentArticle')->loadList($where);
 
     return count($data);
 }
@@ -148,6 +149,10 @@ function request($str, $default = null, $function = null)
     if (empty($name)) {
         $request = filter_string($type);
     } else {
+        if (!isset($type[$name]))
+        {
+            return;
+        }
         if ($method == 'GET') {
             $request = urldecode($type[$name]);
         } else {

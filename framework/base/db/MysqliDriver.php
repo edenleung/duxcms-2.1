@@ -222,8 +222,7 @@ class MysqliDriver implements DbInterface
 
         $version = mysqli_get_server_info($link);
         if ($version > '4.1') {
-            mysqli_query($link, "SET character_set_connection = " . $db['DB_CHARSET'] . ", character_set_results = " . $db['DB_CHARSET'] . ", character_set_client = binary", $link);
-                
+            mysqli_query($link,"SET character_set_connection = " . $db['DB_CHARSET'] . ", character_set_results = " . $db['DB_CHARSET'] . ", character_set_client = binary");
             if ($version > '5.0.1') {
                 mysqli_query($link, "SET sql_mode = ''");
             }
@@ -254,11 +253,11 @@ class MysqliDriver implements DbInterface
     
     public function __destruct()
     {
-        if ($this->_writeLink) {
-            @mysqli_close($this->_writeLink);
+        if ($this->writeLink) {
+            @mysqli_close($this->writeLink);
         }
-        if ($this->_readLink) {
-            @mysqli_close($this->_readLink);
+        if ($this->readLink) {
+            @mysqli_close($this->readLink);
         }
     }
 }

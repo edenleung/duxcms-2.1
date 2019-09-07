@@ -46,7 +46,7 @@ class FormController extends SiteController
             $where[] = $formInfo['list_where'];
         }
         //查询内容
-        $list = $model->page($listRows)->loadList($where, $limit, $formInfo['list_order']);
+        $list = $model->page($listRows)->loadList($where, $listRows, $formInfo['list_order']);
         $this->pager = $model->pager;
         //字段列表
         $where = array();

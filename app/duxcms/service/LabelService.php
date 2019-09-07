@@ -36,7 +36,8 @@ class LabelService
         $where['show'] = 1;
         $where;
         $model = target('duxcms/Category');
-        return $model->loadData($where, $data['limit']);
+        $limit = isset($data['limit']) ? $data['limit'] : 0;
+        return $model->loadData($where, $limit);
     }
 
     /**
@@ -50,7 +51,7 @@ class LabelService
             $classWhere = 'A.class_id in ('.$data['class_id'].')';
         }
         //指定栏目下子栏目内容
-        if ($data['sub']&&!empty($data['class_id'])) {
+        if (isset($data['sub']) && $data['sub'] &&!empty($data['class_id'])) {
             $classIds = target('duxcms/Category')->getSubClassId($data['class_id']);
             if (!empty($classIds)) {
                 $classWhere = "A.class_id in ({$classIds})";

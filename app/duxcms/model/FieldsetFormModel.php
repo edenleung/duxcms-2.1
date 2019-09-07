@@ -56,11 +56,14 @@ class FieldsetFormModel extends BaseModel
      */
     public function getWhereInfo($where)
     {
-        return $this->table("fieldset as A")
+        
+        $data = $this->table("fieldset as A")
                     ->join('{pre}fieldset_form as B ON A.fieldset_id = B.fieldset_id')
                     ->field('B.*,A.*')
                     ->where($where)
                     ->find();
+                    $sql = $this->getSql();
+        return $data;
     }
 
     /**

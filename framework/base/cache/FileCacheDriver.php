@@ -17,6 +17,9 @@ class FileCacheDriver implements CacheInterface
 
     public function get($key)
     {
+        if (!file_exists($this->_getFilePath($key))) {
+            return false;
+        }
         $content = @file_get_contents($this->_getFilePath($key));
         if (empty($content)) {
             return false;

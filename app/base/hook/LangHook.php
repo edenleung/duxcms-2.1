@@ -30,7 +30,7 @@ class LangHook
             define('LANG_CONFIG', serialize($this->config));
             $defaultLang = $this->getDefaultLang();
 
-            $lang = request('get.l') ?: session('APP_LANG');
+            $lang = request('get.l') ? request('get.l') : session('APP_LANG');
 
             if (empty($lang)) {
                 $lang = $defaultLang;

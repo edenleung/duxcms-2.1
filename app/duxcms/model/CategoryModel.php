@@ -262,6 +262,6 @@ class CategoryModel extends BaseModel
      */
     public function getUrl($info)
     {
-        return match_url(strtolower($info['app']).'/Category/index', array('class_id'=>$info['class_id'],'urlname'=>$info['urlname']));
+        return match_url(strtolower($info['app']).'/Category/index', array('class_id'=>$info['class_id']));
     }
 }

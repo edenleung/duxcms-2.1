@@ -92,7 +92,7 @@ class TempalteHook
         $this->_template_replace[] = '<?php for (\\1) { ?>';
 
         //注释标签
-        $this->_template_preg[] = '/' . $__ltag . '\{(\#|\*)(.*?)(\#|\*)\}' . $__rtag . '/';
+        $this->_template_preg[] = '/' . $this->__ltag . '\{(\#|\*)(.*?)(\#|\*)\}' . $this->__rtag . '/';
         $this->_template_replace[] = '';
 
         if (!defined('INSTALL_STATUS')) {
