@@ -614,6 +614,8 @@ function session($name='', $value = '')
     $pre = config('COOKIE_PREFIX');
     if ($value === '') {
         $session = $_SESSION[$pre . $name];
+    } else if (is_null($value)) {
+        unset($_SESSION[$pre . $name]);
     } else {
         $session = $_SESSION[$pre . $name] = $value;
     }

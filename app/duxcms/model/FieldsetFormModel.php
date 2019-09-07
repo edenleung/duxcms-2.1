@@ -148,15 +148,15 @@ class FieldsetFormModel extends BaseModel
      */
     public function validToken($table, $token)
     {
-        $token = session('form_'.$table);
+        $session_token = session('form_'.$table);
         if (empty($token)) {
             return false;
         }
         $formToken = trim($token);
-        if ($token<>$formToken) {
+        if ($formToken<>$session_token) {
             return false;
         }
-        session('form_'.$table, ' ');
+        session('form_'.$table, null);
         return true;
     }
 
