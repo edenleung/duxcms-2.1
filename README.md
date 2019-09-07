@@ -39,7 +39,8 @@ $ composer install
 * pdo
 
 ## 参考模板
-[GITEE](https://gitee.com/duxcms/DuxCms-2.0/tree/master/themes/default)
+[GITEE](https://gitee.com/duxcms/DuxCms-2.0/tree/master/themes/default)  
+[开发文档](http://doc.duxcms.com/)
 
 ## 多语言
 
