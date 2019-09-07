@@ -3,25 +3,6 @@ namespace app\base\hook;
 
 class LangHook
 {
-    /**
-     * 默认配置
-     *
-     * @var array
-     */
-    protected $config = [
-        'LANG_OPEN' => 0,
-        'LANG_DEFAULT' => 'en-us',
-        'LANG_AUTO_DETEC' => 1,
-        'LANG_LIST' => [
-            'en-us' => [
-                'label' => '英文',
-            ],
-            'zh-cn' => [
-                'label' => '中文-简体'
-            ]
-        ]
-    ];
-
     protected $cookie_name = 'APP_LANG';
 
     /**
@@ -33,8 +14,7 @@ class LangHook
 
     public function __construct()
     {
-        $c_config = include CONFIG_PATH . 'lang.php';
-        $this->config = array_merge($this->config, $c_config);
+        $this->config = config('LANG');
     }
 
     /**
@@ -77,26 +57,27 @@ class LangHook
             define('LANG_OPEN', true);
             define('LANG_CONFIG', serialize($this->config));
             $defaultLang = $this->getDefaultLang();
-
-            $s = request('get.s');
+            $s = config('REWRITE_ON') ? request('get.s') : request('get.lang', $defaultLang);
             if (empty($s)) {
-                if ($l = cookie($this->cookie_name)) 
+                if (!cookie($this->cookie_name)) 
                 {
-                    header('location:' . '/' .$l, true, $code);
+                    define('APP_LANG', $defaultLang);
+                    header('location:' . url('home/index/index'), true, $code);
                     exit();
-
                 }
-                header('location:' . '/' .$defaultLang, true, $code);
-                exit();
+                $lang = cookie($this->cookie_name);
+            } else {
+                if (config('REWRITE_ON') ) {
+                    list($temp, $lang) = explode('/', $s);
+                } else {
+                    $lang = $s;
+                }
             }
 
-            list($temp, $lang) = explode('/', $s);
             $langs = array_keys($this->config['LANG_LIST']);
             if ($lang && !in_array($lang, $langs)) {
-                header('location:' . '/' .$defaultLang, true, $code);
-                exit();
+                throw new \Exception("404页面不存在！", 404);
             }
-
             define('APP_LANG', $lang);
             $this->setCookie($lang);
         }

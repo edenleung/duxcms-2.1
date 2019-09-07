@@ -374,12 +374,6 @@ class ContentModel extends BaseModel
      */
     public function getUrl($info)
     {
-        $params = array('content_id'=>$info['content_id'],'urltitle'=>$info['urltitle'],'class_urlname'=>$info['class_urlname']);
-
-        if (defined('LANG_OPEN')) {
-            $params['lang'] = APP_LANG;
-        }
-        
-        return match_url(strtolower($info['app']).'/Content/index', $params);
+        return match_url(strtolower($info['app']).'/Content/index', array('content_id'=>$info['content_id'],'urltitle'=>$info['urltitle'],'class_urlname'=>$info['class_urlname']));
     }
 }

@@ -262,11 +262,6 @@ class CategoryModel extends BaseModel
      */
     public function getUrl($info)
     {
-        $params = array('class_id'=>$info['class_id'],'urlname'=>$info['urlname']);
-        if (defined('LANG_OPEN')) {
-            $params['lang'] = APP_LANG;
-        }
-        
-        return match_url(strtolower($info['app']).'/Category/index', $params);
+        return match_url(strtolower($info['app']).'/Category/index', array('class_id'=>$info['class_id'],'urlname'=>$info['urlname']));
     }
 }

@@ -16,7 +16,6 @@ class Config
             
             'REWRITE_ON' =>false,
             'REWRITE_RULE' =>array(
-                //'<app>/<c>/<a>'=>'<app>/<c>/<a>',
             ),
             
             'DEFAULT_APP' => 'main',
@@ -35,16 +34,6 @@ class Config
                         'DB_PREFIX' => '',
                         'DB_CACHE' => 'DB_CACHE',
                         'DB_SLAVE' => array(),
-                        /*
-                        'DB_SLAVE' => array(
-                                            array(
-                                                    'DB_HOST' => '127.0.0.1',
-                                                ),
-                                            array(
-                                                    'DB_HOST' => '127.0.0.2',
-                                                ),
-                                        ),
-                        */
                     ),
             ),
             
@@ -74,6 +63,8 @@ class Config
             'STORAGE'=>array(
                 'default'=>array('STORAGE_TYPE'=>'File'),
             ),
+
+            'LANG' => []
         );
     }
         

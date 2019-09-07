@@ -90,6 +90,10 @@ class Route
             }
         }
         $route = $app.'/'.$controller.'/'.$action;
+        // 多语言
+        if (defined('LANG_OPEN')) {
+            $params['lang'] = APP_LANG;
+        }
         $paramStr = empty($params) ? '' : '&' . http_build_query($params);
         $url = $_SERVER["SCRIPT_NAME"] . '?r=' . $route . $paramStr;
             

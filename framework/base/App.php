@@ -29,14 +29,16 @@ class App
             Hook::init(BASE_PATH);
             Hook::listen('appBegin');
 
+            // // 检查是否开启多语言
+            // if (!defined('ADMIN_STATUS')) {
+            //     Hook::listen('CheckLang');
+            // } else {
+            //     Hook::listen('CheckAdminLang');
+            // }
+
             Hook::listen('routeParseUrl', array( Config::get('REWRITE_RULE'), Config::get('REWRITE_ON')));
             
-            // 检查是否开启多语言
-            if (!defined('ADMIN_STATUS')) {
-                Hook::listen('CheckLang');
-            } else {
-                Hook::listen('CheckAdminLang');
-            }
+            
 
             //default route
             if (!defined('APP_NAME') || !defined('CONTROLLER_NAME') || !defined('ACTION_NAME')) {

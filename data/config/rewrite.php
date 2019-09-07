@@ -9,14 +9,5 @@ return array(
         'form-<name>.html' => 'duxcms/Form/index',
         'tags-list/<name>.html' => 'duxcms/Tags/index',
         'tags/<name>.html' => 'duxcms/TagsContent/index',
-
-        '<lang>/list/<class_id>.html' => 'article/Category/index',
-        '<lang>/page/<class_id>.html' => 'page/Category/index',
-        '<lang>/article/<content_id>.html' => 'article/Content/index',
-        '<lang>/form-<name>/<id>.html' => 'duxcms/Form/info',
-        '<lang>/form-<name>.html' => 'duxcms/Form/index',
-        '<lang>/tags-list/<name>.html' => 'duxcms/Tags/index',
-        '<lang>/tags/<name>.html' => 'duxcms/TagsContent/index',
-        '<lang>' => 'home/index/index',
-    ),
+    )
 );

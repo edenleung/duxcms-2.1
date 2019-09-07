@@ -1,6 +1,8 @@
 <?php
 namespace app\base\hook;
 
+use framework\base\Hook;
+use framework\base\Config;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 
@@ -37,6 +39,36 @@ class AppHook
     
     public function routeParseUrl($rewriteRule, $rewriteOn)
     {
+        // 多语言
+        $config = include CONFIG_PATH . 'lang.php';
+        Config::set('LANG', $config);
+        if ($config['LANG_OPEN']) {
+
+            if ($rewriteOn) {
+                // 添加多语言首页伪静态规则
+                $rewrite = [];
+                $rewrite_rule = config('REWRITE_RULE');
+
+                foreach($rewrite_rule as $key=>$item)
+                {
+                    $rewrite['<lang>/' . $key] = $item;
+                }
+
+                foreach(config('LANG.LANG_LIST') as $key => $item){
+                    $rewrite[$key] = 'home/index/index';
+                }
+    
+                config('REWRITE_RULE', $rewrite);
+            }
+
+            // 检查是否开启多语言
+            if (!defined('ADMIN_STATUS')) {
+                Hook::listen('CheckLang');
+            } else {
+                Hook::listen('CheckAdminLang');
+            }
+        }
+       
     }
 
     public function actionBefore($obj, $action)
