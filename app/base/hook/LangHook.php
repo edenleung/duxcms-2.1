@@ -62,7 +62,8 @@ class LangHook
                 if (!cookie($this->cookie_name)) 
                 {
                     define('APP_LANG', $defaultLang);
-                    header('location:' . url('home/index/index'), true, $code);
+                    $url = config('REWRITE_ON') ? '/' .$defaultLang : url('home/index/index');
+                    header('location:' . $url, true, $code);
                     exit();
                 }
                 $lang = cookie($this->cookie_name);
