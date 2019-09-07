@@ -54,10 +54,10 @@ $ composer install
 #### 前台切换
 ```php
 // 切换英文
-http://www.domain.com?l=en-us
+http://www.domain.com/en-us
 
 // 切换中文
-http://www.domain.com?l=zh-cn
+http://www.domain.com/zh-cn
 ```
 #### 前台获取语言配置
 模板调用 `$lang_list` 获取列表
@@ -70,7 +70,7 @@ http://www.domain.com?l=zh-cn
 ```html
 <ul>
 <!--foreach{$lang_list as $key=>$vo}-->
-  <li><a href="/index.php?l={$key}">{$vo.label}</a></li>
+  <li><a href="/{$key}">{$vo.label}</a></li>
 <!--{/foreach}-->
 </ul>
 ```
