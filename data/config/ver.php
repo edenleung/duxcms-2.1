@@ -1,6 +1,6 @@
 <?php
 return array(
     /* 版本信息请勿更改 */
-    'DUX_VER'   => 'v2.2.43',
-    'DUX_TIME'   => '20190845',
+    'DUX_VER'   => 'v2.2.44',
+    'DUX_TIME'   => '20190846',
 );
