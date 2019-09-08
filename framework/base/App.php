@@ -29,15 +29,7 @@ class App
             Hook::init(BASE_PATH);
             Hook::listen('appBegin');
 
-            // // 检查是否开启多语言
-            // if (!defined('ADMIN_STATUS')) {
-            //     Hook::listen('CheckLang');
-            // } else {
-            //     Hook::listen('CheckAdminLang');
-            // }
-
             Hook::listen('routeParseUrl', array( Config::get('REWRITE_RULE'), Config::get('REWRITE_ON')));
-            
             
 
             //default route
@@ -45,9 +37,14 @@ class App
                 Route::parseUrl(Config::get('REWRITE_RULE'), Config::get('REWRITE_ON'));
             }
             
+            if (defined('API_STATUS')) {
+                $controller = '\\app\\api\\controller\\IndexController';
+                $action = 'index';
+            } else {
+                $controller = '\app\\'. APP_NAME .'\controller\\'. CONTROLLER_NAME .'Controller';
+                $action = ACTION_NAME;
+            }
             //execute action
-            $controller = '\app\\'. APP_NAME .'\controller\\'. CONTROLLER_NAME .'Controller';
-            $action = ACTION_NAME;
 
             if (!class_exists($controller)) {
                 throw new \Exception("Controller '{$controller}' not found", 404);
