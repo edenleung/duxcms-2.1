@@ -60,8 +60,23 @@ class BaseController extends \framework\base\Controller
         if (defined('LANG_OPEN')) {
             // 赋值到模板
             
-            $this->assign('lang_list', unserialize(LANG_CONFIG)['LANG_LIST']);
-            $this->lang_list = unserialize(LANG_CONFIG)['LANG_LIST'];
+            $lang_list = unserialize(LANG_CONFIG)['LANG_LIST'];
+            foreach($lang_list as $key=>$item) {
+                if (config('REWRITE_ON')) {
+                    $url = '/' . $key;
+                } else {
+                    $url = '?' . http_build_query([
+                        'lang' => $key
+                    ]);
+                }
+                
+                // 是否已选择（用于高亮判断）
+                $lang_list[$key]['changed'] = ($key == APP_LANG) ? true : false;
+                $lang_list[$key]['url'] = $url;
+            }
+
+            $this->assign('lang_list', $lang_list);
+
             $site_lang_file = CONFIG_PATH . 'lang/' . APP_LANG . '.php';
             $lang_config = load_config($site_lang_file);
             $siteConfig = array_merge($siteConfig, $lang_config);
