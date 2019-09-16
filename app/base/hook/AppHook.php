@@ -3,10 +3,6 @@ namespace app\base\hook;
 
 use framework\base\Hook;
 use framework\base\Config;
-use Whoops\Run;
-use Whoops\Handler\PrettyPageHandler;
-
-require BASE_PATH . '/vendor/autoload.php';
 
 class AppHook
 {
@@ -14,10 +10,36 @@ class AppHook
 
     public function appBegin()
     {
-        // 注册异常接管
-        $whoops = new Run();
-        $whoops->prependHandler(new PrettyPageHandler);
-        $whoops->register();
+        // 多语言
+        $config = include CONFIG_PATH . 'lang.php';
+        Config::set('LANG', $config);
+        if ($config['LANG_OPEN']) {
+            $file = CONFIG_PATH . 'performance.php';
+            $data = load_config($file);
+            $rewrite  = $data['REWRITE_ON'] ? true : false;
+            if ($rewrite) {
+                // 添加多语言首页伪静态规则
+                $rewrite = [];
+                $rewrite_rule = config('REWRITE_RULE');
+
+                foreach ($rewrite_rule as $key=>$item) {
+                    $rewrite['<lang>/' . $key] = $item;
+                }
+
+                foreach (config('LANG.LANG_LIST') as $key => $item) {
+                    $rewrite[$key] = 'home/index/index';
+                }
+    
+                config('REWRITE_RULE', $rewrite);
+            }
+
+            // 检查是否开启多语言
+            if (!defined('ADMIN_STATUS')) {
+                Hook::listen('CheckLang');
+            } else {
+                Hook::listen('CheckAdminLang');
+            }
+        }
 
         $this->startTime = microtime(true);
     }
@@ -39,36 +61,6 @@ class AppHook
     
     public function routeParseUrl($rewriteRule, $rewriteOn)
     {
-        // 多语言
-        $config = include CONFIG_PATH . 'lang.php';
-        Config::set('LANG', $config);
-        if ($config['LANG_OPEN']) {
-
-            if ($rewriteOn) {
-                // 添加多语言首页伪静态规则
-                $rewrite = [];
-                $rewrite_rule = config('REWRITE_RULE');
-
-                foreach($rewrite_rule as $key=>$item)
-                {
-                    $rewrite['<lang>/' . $key] = $item;
-                }
-
-                foreach(config('LANG.LANG_LIST') as $key => $item){
-                    $rewrite[$key] = 'home/index/index';
-                }
-    
-                config('REWRITE_RULE', $rewrite);
-            }
-
-            // 检查是否开启多语言
-            if (!defined('ADMIN_STATUS')) {
-                Hook::listen('CheckLang');
-            } else {
-                Hook::listen('CheckAdminLang');
-            }
-        }
-       
     }
 
     public function actionBefore($obj, $action)

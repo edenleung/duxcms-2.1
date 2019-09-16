@@ -27,7 +27,7 @@ class TagsModel extends BaseModel
             $i = 0;
             foreach ($pageList as $key=>$value) {
                 $list[$key]=$value;
-                $list[$key]['url'] = url('duxcms/TagsContent/index', array('name' => $value['name']));
+                $list[$key]['url'] = url('duxcms/TagsContent/index', array('name' => $value['name'], 'lang' => 'zh-cn'));
                 $list[$key]['i'] = $i++;
             }
         }

@@ -31,12 +31,6 @@ class CategoryArticleModel extends BaseModel
      */
     public function loadData($where = array(), $limit = 0)
     {
-        // 多语言
-        if (defined('LANG_OPEN')) {
-            $where['A.lang'] = APP_LANG;
-        } else {
-            $where[] = 'A.lang is null';
-        }
         
         $pageList = $this->table("category as A")
                     ->join('{pre}category_article as B ON A.class_id = B.class_id')

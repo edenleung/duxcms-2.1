@@ -2,7 +2,7 @@
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
-
+use framework\base\Config;
 /**
  * 网站地图生成
  */
@@ -69,8 +69,8 @@ class SitemapController extends AdminController
             //进行循环取值
             foreach ($categorys as $key => $value) {
                 if ($value=='category') {
-                    $class_id = target('duxcms/Category')->loadList();
-                    foreach ($class_id as $key => $value) {
+                    $categorys = target('duxcms/Category')->loadList();
+                    foreach ($categorys as $key => $value) {
                         $sitemap[] = self::getPage($value['class_id'], $value);
                     }
                 } elseif ($value=='tag') {

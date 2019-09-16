@@ -1,6 +1,11 @@
 <?php
 namespace framework\base;
 
+use Whoops\Run;
+use Whoops\Handler\PrettyPageHandler;
+
+require BASE_PATH . '/vendor/autoload.php';
+
 class App
 {
     protected static function init()
@@ -26,6 +31,11 @@ class App
         try {
             self::init();
             
+            // 注册异常接管
+            $whoops = new Run();
+            $whoops->prependHandler(new PrettyPageHandler);
+            $whoops->register();
+
             Hook::init(BASE_PATH);
             Hook::listen('appBegin');
 
@@ -58,6 +68,13 @@ class App
             $obj->$action();
             Hook::listen('actionAfter', array($obj, $action));
         } catch (\Exception $e) {
+            // //关闭调试或者是线上版本，不显示详细错误
+            // if (false==config('DEBUG') || 'production' == config('ENV')) {
+            //     $home = new \app\home\controller\IndexController();
+            //     $home->error404();
+            // } else {
+            //     throw $e;
+            // }
             Hook::listen('appError', array($e));
         }
         

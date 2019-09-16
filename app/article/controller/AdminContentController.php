@@ -73,6 +73,13 @@ class AdminContentController extends AdminController
         $pageMaps['class_id'] = $classId;
         $pageMaps['position_id'] = $positionId;
 
+        // 多语言
+        if (defined('LANG_OPEN')) {
+            $where['C.lang'] = APP_LANG;
+        } else {
+            $where[] = 'C.lang is null';
+        }
+
         //查询数据
         $list = target('ContentArticle')->page(30)->loadList($where, $limit);
         $this->pager = target('ContentArticle')->pager;
@@ -82,7 +89,15 @@ class AdminContentController extends AdminController
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', $list);
         $this->assign('page', $this->getPageShow($pageMaps));
-        $this->assign('categoryList', target('duxcms/Category')->loadList());
+
+        // 多语言
+        if (defined('LANG_OPEN')) {
+            $map['lang'] = APP_LANG;
+        } else {
+            $map[] = 'lang is null';
+        }
+
+        $this->assign('categoryList', target('duxcms/Category')->loadList($map));
         $this->assign('positionList', target('duxcms/Position')->loadList());
         $this->assign('pageMaps', $pageMaps);
 

@@ -91,7 +91,7 @@ class Route
         }
         $route = $app.'/'.$controller.'/'.$action;
         // 多语言
-        if (defined('LANG_OPEN')) {
+        if (defined('LANG_OPEN') && !isset($params['lang'])) {
             if ($route != 'home/Index/index') {
                 $params['lang'] = APP_LANG;
             }

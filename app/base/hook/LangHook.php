@@ -59,14 +59,10 @@ class LangHook
             $defaultLang = $this->getDefaultLang();
             $s = config('REWRITE_ON') ? request('get.s') : request('get.lang', $defaultLang);
             if (empty($s)) {
-                if (!cookie($this->cookie_name)) 
-                {
-                    define('APP_LANG', $defaultLang);
-                    $url = config('REWRITE_ON') ? '/' .$defaultLang : url('home/index/index');
-                    header('location:' . $url, true, $code);
-                    exit();
-                }
-                $lang = cookie($this->cookie_name);
+                define('APP_LANG', $defaultLang);
+                $url = config('REWRITE_ON') ? '/' .$defaultLang : url('home/index/index');
+                header('location:' . $url, true, $code);
+                exit();
             } else {
                 if (config('REWRITE_ON') ) {
                     list($temp, $lang) = explode('/', $s);
@@ -77,6 +73,8 @@ class LangHook
 
             $langs = array_keys($this->config['LANG_LIST']);
             if ($lang && !in_array($lang, $langs)) {
+                define('APP_NAME', 'home');
+                define('APP_LANG', $defaultLang);
                 throw new \Exception("404页面不存在！", 404);
             }
             define('APP_LANG', $lang);
@@ -102,9 +100,7 @@ class LangHook
      */
     protected function getDefaultLang()
     {
-        if (cookie($this->cookie_name)) {
-            return cookie($this->cookie_name);
-        } elseif ($this->config['LANG_AUTO_DETEC']) {
+        if ($this->config['LANG_AUTO_DETEC']) {
             // 自动侦测语言
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 preg_match('/^([a-z\d\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);

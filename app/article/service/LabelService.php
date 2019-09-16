@@ -35,6 +35,14 @@ class LabelService
         //其他属性
         $where['show'] = 1;
         $model = target('article/CategoryArticle');
+
+        // 多语言
+        if (defined('LANG_OPEN')) {
+            $where['A.lang'] = APP_LANG;
+        } else {
+            $where[] = 'A.lang is null';
+        }
+
         return $model->loadData($where, $data['limit']);
     }
 
@@ -49,7 +57,7 @@ class LabelService
             $classWhere = 'A.class_id in ('.$data['class_id'].')';
         }
         //指定栏目下子栏目内容
-        if ($data['sub']&&!empty($data['class_id'])) {
+        if (isset($data['sub']) && $data['sub'] && !empty($data['class_id'])) {
             $classIds = target('duxcms/Category')->getSubClassId($data['class_id']);
             if (!empty($classIds)) {
                 $classWhere = "A.class_id in ({$classIds})";
@@ -74,6 +82,8 @@ class LabelService
         if (!empty($data['pos_id'])) {
             $where[] = 'find_in_set('.$data['pos_id'].',A.position) ';
         }
+
+        $expand_id = 0;
         //调用扩展字段
         if (!empty($data['expand_id'])) {
             $expand_id = intval($data['expand_id']);
@@ -92,6 +102,14 @@ class LabelService
         }
         //其他属性
         $where['status'] = 1;
+
+        // 多语言过滤
+        if (defined('LANG_OPEN')) {
+            $where['C.lang'] = APP_LANG;
+        } else {
+            $where[] = 'C.lang is null';
+        }
+        
         return target('article/ContentArticle')->loadList($where, $data['limit'], $data['order'], $expand_id);
     }
 }

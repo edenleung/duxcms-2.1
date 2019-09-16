@@ -50,13 +50,6 @@ class CategoryModel extends BaseModel
      */
     public function loadData($where = array(), $limit = 0)
     {
-        // 多语言
-        if (defined('LANG_OPEN')) {
-            $where['lang'] = APP_LANG;
-        } else {
-            $where[] = 'lang is NULL';
-        }
-        
         $pageList = $this->where($where)->limit($limit)->order("sequence ASC , class_id ASC")->select();
 
         $list = array();
@@ -262,6 +255,14 @@ class CategoryModel extends BaseModel
      */
     public function getUrl($info)
     {
-        return match_url(strtolower($info['app']).'/Category/index', array('class_id'=>$info['class_id']));
+        $params = [
+            'class_id'=>$info['class_id']
+        ];
+
+        if (defined('LANG_OPEN')) {
+            $params['lang'] = $info['lang'];
+        }
+        
+        return match_url(strtolower($info['app']).'/Category/index', $params);
     }
 }

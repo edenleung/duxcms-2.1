@@ -41,13 +41,6 @@ class ContentModel extends BaseModel
      */
     public function loadList($where = array(), $limit = 50, $order = 'A.time desc,A.content_id desc')
     {
-        // 多语言
-        if (defined('LANG_OPEN')) {
-            $where['B.lang'] = APP_LANG;
-        } else {
-            $where[] = 'B.lang is null';
-        }
-        
         $pageList = $this->table("content as A")
                     ->join('{pre}category as B ON A.class_id = B.class_id')
                     ->field('A.*,B.name as class_name,B.app,B.urlname as class_urlname,B.image as class_image,B.parent_id')
@@ -374,6 +367,17 @@ class ContentModel extends BaseModel
      */
     public function getUrl($info)
     {
-        return match_url(strtolower($info['app']).'/Content/index', array('content_id'=>$info['content_id'],'urltitle'=>$info['urltitle'],'class_urlname'=>$info['class_urlname']));
+        $params = [
+            'content_id'=>$info['content_id'],
+            'urltitle'=>$info['urltitle'],
+            'class_urlname'=>$info['class_urlname']
+        ];
+
+        if (defined('LANG_OPEN')) {
+            $category = target('duxcms/Category')->getInfo($info['class_id']);
+            $params['lang'] = $category['lang'];
+        }
+        
+        return match_url(strtolower($info['app']).'/Content/index', $params);
     }
 }
