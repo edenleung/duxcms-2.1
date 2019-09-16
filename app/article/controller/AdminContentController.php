@@ -77,7 +77,7 @@ class AdminContentController extends AdminController
         if (defined('LANG_OPEN')) {
             $where['C.lang'] = APP_LANG;
         } else {
-            $where[] = 'C.lang is null';
+            $where[] = "C.lang = ''";
         }
 
         //查询数据
@@ -94,7 +94,7 @@ class AdminContentController extends AdminController
         if (defined('LANG_OPEN')) {
             $map['lang'] = APP_LANG;
         } else {
-            $map[] = 'lang is null';
+            $map[] = "lang = ''";
         }
 
         $this->assign('categoryList', target('duxcms/Category')->loadList($map));
@@ -136,7 +136,13 @@ class AdminContentController extends AdminController
             $breadCrumb = array('文章列表'=>url('index'),'文章添加'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
-            $this->assign('categoryList', target('duxcms/Category')->loadList());
+            // 多语言
+            if (defined('LANG_OPEN')) {
+                $where['lang'] = APP_LANG;
+            } else {
+                $where[] = "lang = ''";
+            }
+            $this->assign('categoryList', target('duxcms/Category')->loadList($where));
             $this->assign('tplList', target('admin/Config')->tplList());
             $this->assign('positionList', target('duxcms/Position')->loadList());
             $this->assign('default_config', current_config());
@@ -175,7 +181,13 @@ class AdminContentController extends AdminController
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);
-            $this->assign('categoryList', target('duxcms/Category')->loadList());
+            // 多语言
+            if (defined('LANG_OPEN')) {
+                $where['lang'] = APP_LANG;
+            } else {
+                $where[] = "lang = ''";
+            }
+            $this->assign('categoryList', target('duxcms/Category')->loadList($where));
             $this->assign('tplList', target('admin/Config')->tplList());
             $this->assign('positionList', target('duxcms/Position')->loadList());
             $this->assign('default_config', current_config());
