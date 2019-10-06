@@ -53,7 +53,7 @@ class LangHook
     public function CheckLang()
     {
         // 开启多语言
-        if ($this->config['LANG_OPEN']) {
+        if ($this->config['LANG_OPEN'] && !defined('API_STATUS')) {
             define('LANG_OPEN', true);
             define('LANG_CONFIG', serialize($this->config));
             $defaultLang = $this->getDefaultLang();
