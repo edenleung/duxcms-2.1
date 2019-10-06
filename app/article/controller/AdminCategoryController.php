@@ -27,7 +27,15 @@ class AdminCategoryController extends AdminController
             $breadCrumb = array('栏目列表'=>url('duxcms/AdminCategory/index'),'文章栏目添加'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
-            $this->assign('categoryList', target('duxcms/Category')->loadList());
+
+            // 多语言
+            if (defined('LANG_OPEN')) {
+                $map['lang'] = APP_LANG;
+            } else {
+                $map[] = 'lang is null';
+            }
+
+            $this->assign('categoryList', target('duxcms/Category')->loadList($map));
             $this->assign('tplList', target('admin/Config')->tplList());
             $this->assign('expandList', target('duxcms/FieldsetExpand')->loadList());
             $this->assign('default_config', current_config());
