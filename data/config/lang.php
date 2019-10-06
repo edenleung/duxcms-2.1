@@ -1,7 +1,7 @@
 <?php
 /* 多语言设置 */
 return array(
-  'LANG_OPEN'=>1,
+  'LANG_OPEN'=>0,
   'LANG_DEFAULT'=>'en-us',
   'LANG_AUTO_DETEC'=>1,
   'LANG_LIST'=> [
