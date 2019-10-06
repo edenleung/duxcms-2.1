@@ -6,6 +6,8 @@
 
 [最新版本](https://github.com/xiaodit/duxcms-2.1/releases/latest)
 
+默认没有前台模板的，请下载[官方仓库](https://gitee.com/duxcms/DuxCms-2.0/tree/master/themes/default)模板文件进行开发  
+
 没安装Composer？ 请在最新版本链接下找`DuxCMS_Full.zip`下载
 
 * `DuxCMS_Full.zip` 含composer包的完整程序 建议首次下载
@@ -23,6 +25,7 @@
 * [提供多条件筛选](#多条件筛选)
 * [提供在线更新服务(增量更新)](#在线更新) 🚀
 * 提供网站地图生成
+* [提供api接口调用（暂时未添加token限制）](#api-调用)
 
 ## 安装
 * mysqli扩展必须安装
@@ -162,6 +165,18 @@ http://www.domain.com/zh-cn
   </ul>
   <!--{/foreach}--> 
 ```
+
+## api 调用
+
+GET `/api.php`
+
+**注意区分大小写**  
+
+| 参数 | 说明(参数范围)| 是否必传 | 
+| ----|----|----|
+| app |  ['DuxCms', 'Article']| 是 |
+| label | ['contentList', 'categoryList', 'tagsList'] | 是 |
+| ... | 其它查询参数，与普通模板标签一样 | 否 |
 
 ## 在线更新
 为了不影响已有的文件，作了增量更新包。  
