@@ -11,7 +11,7 @@ use app\article\service\LabelService;
 class IndexController extends Response
 {
     const APPS = ['DuxCms', 'Article'];
-    const LABELS = ['contentList', 'categoryList', 'tagsList'];
+    const LABELS = ['contentList', 'categoryList', 'tagsList', 'formList'];
 
     protected $app;
     protected $label;
