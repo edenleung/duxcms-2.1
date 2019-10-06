@@ -42,7 +42,7 @@ class LabelService
         if (defined('LANG_OPEN')) {
             $where['lang'] = APP_LANG;
         } else {
-            $where[] = "lang = ''";
+            $where[] = "lang  is null";
         }
         return $model->loadData($where, $limit);
     }

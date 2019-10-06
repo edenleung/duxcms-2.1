@@ -107,7 +107,7 @@ class LabelService
         if (defined('LANG_OPEN')) {
             $where['C.lang'] = APP_LANG;
         } else {
-            $where[] = "C.lang = ''";
+            $where[] = "C.lang is null";
         }
         
         return target('article/ContentArticle')->loadList($where, $data['limit'], $data['order'], $expand_id);

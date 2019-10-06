@@ -77,7 +77,7 @@ class AdminContentController extends AdminController
         if (defined('LANG_OPEN')) {
             $where['C.lang'] = APP_LANG;
         } else {
-            $where[] = "C.lang = ''";
+            $where[] = "C.lang is null";
         }
 
         //查询数据
@@ -94,7 +94,7 @@ class AdminContentController extends AdminController
         if (defined('LANG_OPEN')) {
             $map['lang'] = APP_LANG;
         } else {
-            $map[] = "lang = ''";
+            $map[] = "lang is null";
         }
 
         $this->assign('categoryList', target('duxcms/Category')->loadList($map));
@@ -140,7 +140,7 @@ class AdminContentController extends AdminController
             if (defined('LANG_OPEN')) {
                 $where['lang'] = APP_LANG;
             } else {
-                $where[] = "lang = ''";
+                $where[] = "lang  is null";
             }
             $this->assign('categoryList', target('duxcms/Category')->loadList($where));
             $this->assign('tplList', target('admin/Config')->tplList());
@@ -185,7 +185,7 @@ class AdminContentController extends AdminController
             if (defined('LANG_OPEN')) {
                 $where['lang'] = APP_LANG;
             } else {
-                $where[] = "lang = ''";
+                $where[] = "lang  is null";
             }
             $this->assign('categoryList', target('duxcms/Category')->loadList($where));
             $this->assign('tplList', target('admin/Config')->tplList());
