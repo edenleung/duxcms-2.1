@@ -169,7 +169,9 @@ http://www.domain.com/zh-cn
 ## api 调用
 
 GET `/api.php`
+
 **注意区分大小写**  
+
 | 参数 | 说明(参数范围)| 是否必传 | 
 | ----|----|----|
 | app |  ['DuxCms', 'Article']| 是 |
