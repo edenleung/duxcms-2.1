@@ -8,12 +8,6 @@ use framework\base\Config;
  */
 class SitemapController extends AdminController
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->rewrite();
-        define('TPL_NAME', config('tpl_member'));
-    }
     /**
      * 判断是否开启伪静态
      */
@@ -59,6 +53,7 @@ class SitemapController extends AdminController
         }
         if (IS_POST) {
             //接收ajax传回的选择项
+            $this->rewrite();
             $categorys = request('post.sitemap');
             if (empty($categorys)) {
                 $this->error('至少选择一个栏目！');
@@ -124,6 +119,7 @@ class SitemapController extends AdminController
             $this->success($data);
         }
 
+        $this->assign('url', $_SERVER['REQUEST_URI']);
         $this->assign('text', $text);
         $this->adminDisplay();
     }

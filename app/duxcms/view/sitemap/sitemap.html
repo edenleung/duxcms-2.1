@@ -12,7 +12,6 @@
         <strong>生成sitemap</strong>
 
     </div>
-
     <div class="panel-body">
 
 
@@ -117,7 +116,7 @@
 
             type: "POST",
 
-            url: '/admin.php?r=duxcms/Sitemap/sitemap',
+            url: '{url("duxcms/Sitemap/sitemap")}',
 
             data: { sitemap: chk_value, time: $('input[name="time"]:checked').val() },
 
