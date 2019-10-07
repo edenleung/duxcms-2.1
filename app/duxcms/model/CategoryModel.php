@@ -256,7 +256,8 @@ class CategoryModel extends BaseModel
     public function getUrl($info)
     {
         $params = [
-            'class_id'=>$info['class_id']
+            'class_id'=> $info['class_id'],
+            'urlname' => $info['urlname'],
         ];
 
         if (defined('LANG_OPEN')) {
