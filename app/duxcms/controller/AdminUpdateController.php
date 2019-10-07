@@ -50,14 +50,16 @@ class AdminUpdateController extends AdminController
         if (empty($verTime)) {
             $this->error('没有发现版本号！');
         }
+
         $url = $this->domain . '/ver.json';
         $info = \framework\ext\Http::doGet($url);
         $info = json_decode($info, true);
+
         if (empty($info)) {
             $this->error('无法获取版本信息，请稍后再试！');
         }
 
-        if ($verTime === $info['data']['version']) {
+        if ($verTime == $info['data']['version']) {
             $this->error('已经是最新版本了！');
         }
 
@@ -97,7 +99,12 @@ class AdminUpdateController extends AdminController
             $this->error('无法保存更新文件请检查目录【'.$updateDir.'】是否有写入权限！');
         };
 
-        $this->success('文件下载成功，正在执行解压操作！');
+        $flag = $this->backup();
+        if (false === $flag) {
+            $this->error('备份站点文件失败!');
+        };
+
+        $this->success("备份整站成功({$flag})，文件下载成功，正在执行解压操作！");
     }
 
     /**
@@ -122,7 +129,7 @@ class AdminUpdateController extends AdminController
         if ($res === true) {
             $zip->extractTo($dir);
             $zip->close();
-            $this->success('文件解压成功，等待更新操作！');
+            $this->success("文件解压成功，等待更新操作！");
         } else {
             $this->error('解压文件失败请检查目录【'.$dir.'】是否有写入权限！');
         }
@@ -180,5 +187,50 @@ class AdminUpdateController extends AdminController
         $url = 'http://www.duxcms.com/index.php?r=service/Authorize/index';
         $info = \framework\ext\Http::doGet($url, 30);
         echo $info;
+    }
+
+    /**
+     * 备份整站
+     *
+     * @return void
+     */
+    protected function backup()
+    {
+        $zip = new \ZipArchive();
+        $fileName = date('Ymd') .'-'. time() . '.zip';
+        
+        if ($zip->open(ROOT_PATH . 'data/backup/'. $fileName, \ZIPARCHIVE::CREATE)!==true) {
+            return false;
+        }
+
+        $this->makeZip(ROOT_PATH, $zip);
+        $zip->close();
+
+        return 'data/backup/'. $fileName;
+    }
+
+    private function makeZip($path, $zip)
+    {
+        $handler=opendir($path);
+
+        while (($filename=readdir($handler))!==false) {
+            if ($filename != "." && $filename != "..") {
+                // 默认只备份以下三个文件夹
+                $save = [
+                    'app',
+                    'themes',
+                    'framework'
+                ];
+        
+                $t = explode('/', $path. '/' .$filename)[6];
+                if (in_array($t, $save)) {
+                    if (is_dir($path. '/' .$filename)) {
+                        $this->makeZip($path . '/' . $filename, $zip);
+                    } else {
+                        $zip->addFile($path . '/' . $filename);
+                    }
+                }
+            }
+        }
     }
 }

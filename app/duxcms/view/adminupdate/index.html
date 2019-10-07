@@ -5,6 +5,15 @@
     <div class="panel-body">
         <div class="form-group">
             <div class="label">
+                <label>备份提示 系统自动备份以下文件夹内容到data/backup</label>
+            </div>
+            <div class="field">
+                <code>'app','themes','framework'</code>
+            </div>
+        </div>
+            
+        <div class="form-group">
+            <div class="label">
                 <label>当前版本</label>
             </div>
             <div class="field">
@@ -79,11 +88,13 @@
             return
         }
         offUpdateBtn();
-        $('#updateMsg').html('下载更新中，请稍等...');
+        $('#updateMsg').html('下载更新中，下载更新后会自动备份整站数据，请稍等...');
         $.post("{url('duxcms/AdminUpdate/dowload')}",{url:$('#url_fix').val(), version:$("#version").val()},function(data){
             $('#updateMsg').html(data.info);
             if(data.status){
-                unzip();
+                setTimeout(function(){
+                    unzip(); 
+                }, 2000)
             }else{
                 onUpdateBtn();
             }

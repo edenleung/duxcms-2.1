@@ -34,7 +34,6 @@ class LabelService
         }
         //其他属性
         $where['show'] = 1;
-        $where;
         $model = target('duxcms/Category');
         $limit = isset($data['limit']) ? $data['limit'] : 0;
 
@@ -42,7 +41,7 @@ class LabelService
         if (defined('LANG_OPEN')) {
             $where['lang'] = APP_LANG;
         } else {
-            $where[] = "lang  is null";
+            $where[] = "lang is null";
         }
         return $model->loadData($where, $limit);
     }
