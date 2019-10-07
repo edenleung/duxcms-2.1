@@ -7,3 +7,5 @@
 install.lock
 composer.lock
 /data/update
+sitemap.xml
+robots.txt
