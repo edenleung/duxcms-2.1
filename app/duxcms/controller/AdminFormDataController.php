@@ -61,7 +61,7 @@ class AdminFormDataController extends AdminController
                 if ($value['show']) {
                     $tableTh[] = $value['name'];
                 }
-                if ($value['search']&&!empty($keyword)) {
+                if ($value['search'] && !empty($keyword)) {
                     $searchWhere[$value['field']] = $keyword;
                 }
             }
@@ -103,7 +103,7 @@ class AdminFormDataController extends AdminController
             $where['A.fieldset_id'] = $this->formInfo['fieldset_id'];
             $fieldList = target('FieldForm')->loadList($where);
             //获取HTML
-            $html='';
+            $html = '';
             foreach ($fieldList as $value) {
                 $html .= target('Field')->htmlFieldFull($value);
             }
@@ -157,7 +157,7 @@ class AdminFormDataController extends AdminController
             $where['A.fieldset_id'] = $this->formInfo['fieldset_id'];
             $fieldList = target('FieldForm')->loadList($where);
             //获取HTML
-            $html='';
+            $html = '';
             foreach ($fieldList as $value) {
                 $html .= target('Field')->htmlFieldFull($value, $info[$value['field']]);
             }

@@ -25,7 +25,7 @@ class ContentModel extends BaseModel
         array('position','formatPosition',3,'callback'), //推荐
         //编辑
         array('content_id','intval',2,'function'), //内容ID
-     );
+        );
     //验证
     protected $_validate = array(
         //全部验证
@@ -49,12 +49,12 @@ class ContentModel extends BaseModel
                     ->order($order)
                     ->select();
         //处理数据类型
-        $list=array();
+        $list = array();
         if (!empty($pageList)) {
             $i = 0;
             foreach ($pageList as $key=>$value) {
-                $list[$key]=$value;
-                $list[$key]['app']=strtolower($value['app']);
+                $list[$key] = $value;
+                $list[$key]['app'] = strtolower($value['app']);
                 $list[$key]['aurl'] = target('duxcms/Content')->getUrl($value);
                 $list[$key]['curl'] = target('duxcms/Category')->getUrl($value);
                 $list[$key]['i'] = $i++;
@@ -318,12 +318,12 @@ class ContentModel extends BaseModel
         $description = request('post.description');
         $content = request('post.content');
         //处理数据
-        if (!$getDescStatus||empty($content)) {
+        if (!$getDescStatus || empty($content)) {
             return $description;
         }
         $description = html_out($content);
         $description = strip_tags($description);
-        $description = str_replace(array("\r\n","\t",'&ldquo;','&rdquo;','&nbsp;'), '', $description);
+        $description = str_replace(array("\r\n", "\t", '&ldquo;', '&rdquo;', '&nbsp;'), '', $description);
         $description = substr($description, 0, 250);
         return $description;
     }
@@ -340,7 +340,7 @@ class ContentModel extends BaseModel
         $image = request('post.image');
         $content = request('post.content');
         //处理数据
-        if (!$getImageStatus||!empty($image)||!$content||!$getImageNum) {
+        if (!$getImageStatus || !empty($image) || !$content || !$getImageNum) {
             return $image;
         }
         return target('duxcms/ContentTools')->getImage($content, $getImageNum);
@@ -356,7 +356,7 @@ class ContentModel extends BaseModel
         if (!empty($position)) {
             return implode(',', $position);
         } else {
-            return ;
+            return;
         }
     }
 

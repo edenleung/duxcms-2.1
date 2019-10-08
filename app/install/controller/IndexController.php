@@ -15,9 +15,9 @@ class IndexController extends Controller
         define('__ROOT__', substr(ROOT_URL, 0, -1));
         define('NOW_TIME', $_SERVER['REQUEST_TIME']);
         define('INSTALL_STATUS', true);
-        include_once ROOT_PATH . 'app/base/util/Function.php';
-        include_once ROOT_PATH . 'app/install/util/Function.php';
-        $this->lock = ROOT_PATH . 'install.lock';
+        include_once ROOT_PATH.'app/base/util/Function.php';
+        include_once ROOT_PATH.'app/install/util/Function.php';
+        $this->lock = ROOT_PATH.'install.lock';
         if (is_file($this->lock)) {
             $this->redirect(url('home/Index/index'));
         }
@@ -82,12 +82,12 @@ class IndexController extends Controller
             show_msg('请填写COOKIE前缀！', false);
         }
         //检查数据库
-        $link = @mysqli_connect($data['DB_HOST'] . ':' . $data['DB_PORT'], $data['DB_USER'], $data['DB_PWD']);
+        $link = @mysqli_connect($data['DB_HOST'].':'.$data['DB_PORT'], $data['DB_USER'], $data['DB_PWD']);
         if (!$link) {
             show_msg('数据库连接失败，请检查连接信息是否正确！', false);
         }
         $mysqlInfo = mysqli_get_server_info($link);
-        if ($mysqlInfo < '5.1.0') {
+        if ($mysqlInfo<'5.1.0') {
             show_msg('mysql版本低于5.1，无法继续安装！', false);
         }
 
@@ -96,14 +96,14 @@ class IndexController extends Controller
             //尝试创建数据库
             $sql = "CREATE DATABASE IF NOT EXISTS `".$data['DB_NAME']."` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
             if (!mysqli_query($link, $sql)) {
-                show_msg('数据库'. $data['DB_NAME'].'自动创建失败，请手动建立数据库！', false);
+                show_msg('数据库'.$data['DB_NAME'].'自动创建失败，请手动建立数据库！', false);
             }
             mysqli_select_db($link, $data['DB_NAME']);
         }
         show_msg('数据库检查创建完成...');
 
         //修改数据库文件
-        $file = CONFIG_PATH . 'db.php';
+        $file = CONFIG_PATH.'db.php';
         if (save_config($file, $data)) {
             show_msg('配置数据库信息完成...');
         } else {
@@ -111,7 +111,7 @@ class IndexController extends Controller
         }
 
         //安装数据库
-        $file = ROOT_PATH . 'app/install/data/install.sql';
+        $file = ROOT_PATH.'app/install/data/install.sql';
         $sqlData = \framework\ext\Install::mysql($file, 'dux_', $data['DB_PREFIX']);
         mysqli_query($link, "SET NAMES utf8");
         foreach ($sqlData as $sql) {
@@ -121,7 +121,7 @@ class IndexController extends Controller
             }
         }
         //修改安全配置文件
-        $file = CONFIG_PATH . 'performance.php';
+        $file = CONFIG_PATH.'performance.php';
         if (save_config($file, $data)) {
             show_msg('配置站点安全完成...');
         } else {
@@ -144,13 +144,13 @@ class IndexController extends Controller
     {
         $str = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
         $result = '';
-        $l = strlen($str)-1;
-        $num=0;
+        $l = strlen($str) - 1;
+        $num = 0;
 
-        for ($i = 0;$i < $length;$i ++) {
+        for ($i = 0; $i<$length; $i++) {
             $num = rand(0, $l);
-            $a=$str[$num];
-            $result =$result.$a;
+            $a = $str[$num];
+            $result = $result.$a;
         }
         return $result;
     }

@@ -129,7 +129,7 @@ class FunctionsController extends AdminController
         $config = array();
         $config['APP_INSTALL'] = 0;
         $config['APP_STATE'] = 0;
-        $file = APP_PATH. $app .'/Conf/config.php';
+        $file = APP_PATH.$app.'/Conf/config.php';
         if (!save_config($file, $config)) {
             $this->error('应用配置失败，请确保应用写入权限！');
         }

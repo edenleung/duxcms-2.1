@@ -31,51 +31,51 @@ class Mobile_Detect
      *
      * @deprecated since version 2.6.9
      */
-    const DETECTION_TYPE_MOBILE     = 'mobile';
+    const DETECTION_TYPE_MOBILE = 'mobile';
 
     /**
      * Extended detection type.
      *
      * @deprecated since version 2.6.9
      */
-    const DETECTION_TYPE_EXTENDED   = 'extended';
+    const DETECTION_TYPE_EXTENDED = 'extended';
 
     /**
      * A frequently used regular expression to extract version #s.
      *
      * @deprecated since version 2.6.9
      */
-    const VER                       = '([\w._\+]+)';
+    const VER = '([\w._\+]+)';
 
     /**
      * Top-level device.
      */
-    const MOBILE_GRADE_A            = 'A';
+    const MOBILE_GRADE_A = 'A';
 
     /**
      * Mid-level device.
      */
-    const MOBILE_GRADE_B            = 'B';
+    const MOBILE_GRADE_B = 'B';
 
     /**
      * Low-level device.
      */
-    const MOBILE_GRADE_C            = 'C';
+    const MOBILE_GRADE_C = 'C';
 
     /**
      * Stores the version number of the current release.
      */
-    const VERSION                   = '2.8.2';
+    const VERSION = '2.8.2';
 
     /**
      * A type for the version() method indicating a string return value.
      */
-    const VERSION_TYPE_STRING       = 'text';
+    const VERSION_TYPE_STRING = 'text';
 
     /**
      * A type for the version() method indicating a float return value.
      */
-    const VERSION_TYPE_FLOAT        = 'float';
+    const VERSION_TYPE_FLOAT = 'float';
 
     /**
      * The User-Agent HTTP header is stored in here.
@@ -161,7 +161,7 @@ class Mobile_Detect
         'Pantech'       => 'PANTECH|IM-A850S|IM-A840S|IM-A830L|IM-A830K|IM-A830S|IM-A820L|IM-A810K|IM-A810S|IM-A800S|IM-T100K|IM-A725L|IM-A780L|IM-A775C|IM-A770K|IM-A760S|IM-A750K|IM-A740S|IM-A730S|IM-A720L|IM-A710K|IM-A690L|IM-A690S|IM-A650S|IM-A630K|IM-A600S|VEGA PTL21|PT003|P8010|ADR910L|P6030|P6020|P9070|P4100|P9060|P5000|CDM8992|TXT8045|ADR8995|IS11PT|P2030|P6010|P8000|PT002|IS06|CDM8999|P9050|PT001|TXT8040|P2020|P9020|P2000|P7040|P7000|C790',
         // @ref: http://www.fly-phone.com/devices/smartphones/ ; Included only smartphones.
         'Fly'           => 'IQ230|IQ444|IQ450|IQ440|IQ442|IQ441|IQ245|IQ256|IQ236|IQ255|IQ235|IQ245|IQ275|IQ240|IQ285|IQ280|IQ270|IQ260|IQ250',
-       'iMobile'        => 'i-mobile (IQ|i-STYLE|idea|ZAA|Hitz)',
+        'iMobile'        => 'i-mobile (IQ|i-STYLE|idea|ZAA|Hitz)',
         // Added simvalley mobile just for fun. They have some interesting devices.
         // @ref: http://www.simvalley.fr/telephonie---gps-_22_telephonie-mobile_telephones_.html
         'SimValley'     => '\b(SP-80|XT-930|SX-340|XT-930|SX-310|SP-360|SP60|SPT-800|SP-120|SPT-800|SP-140|SPX-5|SPX-8|SP-100|SPX-8|SPX-12)\b',
@@ -492,7 +492,7 @@ class Mobile_Detect
         // http://en.wikipedia.org/wiki/NetFront
         'NetFront'      => 'NetFront/[VER]',
         'NokiaBrowser'  => 'NokiaBrowser/[VER]',
-        'Opera'         => array( ' OPR/[VER]', 'Opera Mini/[VER]', 'Version/[VER]' ),
+        'Opera'         => array(' OPR/[VER]', 'Opera Mini/[VER]', 'Version/[VER]'),
         'Opera Mini'    => 'Opera Mini/[VER]',
         'Opera Mobi'    => 'Version/[VER]',
         'UC Browser'    => 'UC Browser[VER]',
@@ -500,7 +500,7 @@ class Mobile_Detect
         'MicroMessenger' => 'MicroMessenger/[VER]',
         // @note: Safari 7534.48.3 is actually Version 5.1.
         // @note: On BlackBerry the Version is overwriten by the OS.
-        'Safari'        => array( 'Version/[VER]', 'Safari/[VER]' ),
+        'Safari'        => array('Version/[VER]', 'Safari/[VER]'),
         'Skyfire'       => 'Skyfire/[VER]',
         'Tizen'         => 'Tizen/[VER]',
         'Webkit'        => 'webkit[ /][VER]',
@@ -518,7 +518,7 @@ class Mobile_Detect
         'Java'             => 'Java/[VER]',
         // @reference: http://windowsteamblog.com/windows_phone/b/wpdev/archive/2011/08/29/introducing-the-ie9-on-windows-phone-mango-user-agent-string.aspx
         // @reference: http://en.wikipedia.org/wiki/Windows_NT#Releases
-        'Windows Phone OS' => array( 'Windows Phone OS [VER]', 'Windows Phone [VER]'),
+        'Windows Phone OS' => array('Windows Phone OS [VER]', 'Windows Phone [VER]'),
         'Windows Phone'    => 'Windows Phone [VER]',
         'Windows CE'       => 'Windows CE/[VER]',
         // http://social.msdn.microsoft.com/Forums/en-US/windowsdeveloperpreviewgeneral/thread/6be392da-4d2f-41b4-8354-8dcee20c85cd
@@ -544,13 +544,13 @@ class Mobile_Detect
     }
 
     /**
-    * Get the current script version.
-    * This is useful for the demo.php file,
-    * so people can check on what version they are testing
-    * for mobile devices.
-    *
-    * @return string The version number in semantic version format.
-    */
+     * Get the current script version.
+     * This is useful for the demo.php file,
+     * so people can check on what version they are testing
+     * for mobile devices.
+     *
+     * @return string The version number in semantic version format.
+     */
     public static function getScriptVersion()
     {
         return self::VERSION;
@@ -610,7 +610,7 @@ class Mobile_Detect
         }
 
         //test the alternate, too
-        $altHeader = 'HTTP_' . $header;
+        $altHeader = 'HTTP_'.$header;
 
         //Test both the regular and the HTTP_ prefix
         if (isset($this->httpHeaders[$header])) {
@@ -650,7 +650,7 @@ class Mobile_Detect
 
             foreach ($this->getUaHttpHeaders() as $altHeader) {
                 if (!empty($this->httpHeaders[$altHeader])) { // @todo: should use getHttpHeader(), but it would be slow. (Serban)
-                    $this->userAgent .= $this->httpHeaders[$altHeader] . " ";
+                    $this->userAgent .= $this->httpHeaders[$altHeader]." ";
                 }
             }
 
@@ -818,12 +818,12 @@ class Mobile_Detect
     }
 
     /**
-    * Check the HTTP headers for signs of mobile.
-    * This is the fastest mobile check possible; it's used
-    * inside isMobile() method.
-    *
-    * @return bool
-    */
+     * Check the HTTP headers for signs of mobile.
+     * This is the fastest mobile check possible; it's used
+     * inside isMobile() method.
+     *
+     * @return bool
+     */
     public function checkHttpHeadersForMobile()
     {
         foreach ($this->getMobileHeaders() as $mobileHeader => $matchType) {
@@ -868,11 +868,11 @@ class Mobile_Detect
     }
 
     /**
-    * Find a detection rule that matches the current User-agent.
-    *
-    * @param null $userAgent deprecated
-    * @return boolean
-    */
+     * Find a detection rule that matches the current User-agent.
+     *
+     * @param null $userAgent deprecated
+     * @return boolean
+     */
     protected function matchDetectionRulesAgainstUA($userAgent = null)
     {
         // Begin general search.
@@ -889,14 +889,14 @@ class Mobile_Detect
     }
 
     /**
-    * Search for a certain key in the rules array.
-    * If the key is found the try to match the corresponding
-    * regex agains the User-Agent.
-    *
-    * @param string $key
-    * @param null $userAgent deprecated
-    * @return mixed
-    */
+     * Search for a certain key in the rules array.
+     * If the key is found the try to match the corresponding
+     * regex agains the User-Agent.
+     *
+     * @param string $key
+     * @param null $userAgent deprecated
+     * @return mixed
+     */
     protected function matchUAAgainstKey($key, $userAgent = null)
     {
         // Make the keys lowercase so we can match: isIphone(), isiPhone(), isiphone(), etc.
@@ -917,12 +917,12 @@ class Mobile_Detect
     }
 
     /**
-    * Check if the device is mobile.
-    * Returns true if any type of mobile device detected, including special ones
-    * @param null $userAgent deprecated
-    * @param null $httpHeaders deprecated
-    * @return bool
-    */
+     * Check if the device is mobile.
+     * Returns true if any type of mobile device detected, including special ones
+     * @param null $userAgent deprecated
+     * @param null $httpHeaders deprecated
+     * @return bool
+     */
     public function isMobile($userAgent = null, $httpHeaders = null)
     {
         if ($httpHeaders) {
@@ -1009,7 +1009,7 @@ class Mobile_Detect
         // Escape the special character which is the delimiter.
         $regex = str_replace('/', '\/', $regex);
 
-        return (bool) preg_match('/'.$regex.'/is', (!empty($userAgent) ? $userAgent : $this->userAgent));
+        return (bool)preg_match('/'.$regex.'/is', (!empty($userAgent) ? $userAgent : $this->userAgent));
     }
 
     /**
@@ -1040,7 +1040,7 @@ class Mobile_Detect
             $arrVer[1] = @str_replace('.', '', $arrVer[1]); // @todo: treat strings versions.
         }
 
-        return (float) implode('.', $arrVer);
+        return (float)implode('.', $arrVer);
     }
 
     /**
@@ -1074,7 +1074,7 @@ class Mobile_Detect
 
             // Prepare the pattern to be matched.
             // Make sure we always deal with an array (string is converted).
-            $properties[$propertyName] = (array) $properties[$propertyName];
+            $properties[$propertyName] = (array)$properties[$propertyName];
 
             foreach ($properties[$propertyName] as $propertyMatchString) {
                 $propertyPattern = str_replace('[VER]', self::VER, $propertyMatchString);

@@ -29,8 +29,8 @@ class AdminCategoryController extends AdminController
             $i = 0;
             foreach ($modelList as $key => $value) {
                 $i++;
-                $data['add'][$i]['name'] = '添加' . $value['name'] . '栏目';
-                $data['add'][$i]['url'] = url($key . '/AdminCategory/add');
+                $data['add'][$i]['name'] = '添加'.$value['name'].'栏目';
+                $data['add'][$i]['url'] = url($key.'/AdminCategory/add');
                 $data['add'][$i]['icon'] = 'plus';
             }
         }

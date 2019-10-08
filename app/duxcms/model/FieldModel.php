@@ -27,7 +27,7 @@ class FieldModel extends BaseModel
         array('verify_data_js','base64_encode',3,'function'), //JS验证规则
         //编辑
         array('field_id','intval',2,'function'), //字段ID
-     );
+        );
 
     /**
      * 获取列表
@@ -72,20 +72,20 @@ class FieldModel extends BaseModel
             return false;
         }
         //字段集信息
-        $fieldsetInfo=target('duxcms/Fieldset')->getInfo($data['fieldset_id']);
+        $fieldsetInfo = target('duxcms/Fieldset')->getInfo($data['fieldset_id']);
         //获取字段类型属性
         $typeField = $this->typeField();
         $propertyField = $this->propertyField();
         $typeData = $typeField[$data['type']];
         $property = $propertyField[$typeData['property']];
         if ($property['decimal']) {
-            $property['decimal']=','.$property['decimal'];
+            $property['decimal'] = ','.$property['decimal'];
         } else {
-            $property['decimal']='';
+            $property['decimal'] = '';
         }
         if ($type == 'add') {
             //插入字段
-            $sqlText="
+            $sqlText = "
             ALTER TABLE {pre}ext_{$fieldsetInfo['table']} ADD {$data['field']} {$property['name']}({$property['maxlen']}{$property['decimal']}) DEFAULT NULL
             ";
             $sql = $this->execute($sqlText);
@@ -103,8 +103,8 @@ class FieldModel extends BaseModel
             //获取信息
             $info = $this->getInfo($data['field_id']);
             //修改字段
-            if ($info['type']<>$data['type']||$info['field']<>$data['field']) {
-                $sql="
+            if ($info['type'] <> $data['type'] || $info['field'] <> $data['field']) {
+                $sql = "
                 ALTER TABLE {pre}ext_{$fieldsetInfo['table']} CHANGE {$info['field']} {$data['field']} {$property['name']}({$property['maxlen']}{$property['decimal']})
                 ";
                 $statusSql = $this->execute($sql);
@@ -140,7 +140,7 @@ class FieldModel extends BaseModel
             return false;
         }
         //删除字段
-        $sql="
+        $sql = "
              ALTER TABLE {pre}ext_{$fieldsetInfo['table']} DROP {$info['field']}
             ";
         $statusSql = $this->execute($sql);
@@ -184,7 +184,7 @@ class FieldModel extends BaseModel
      */
     public function typeField()
     {
-        $list=array(
+        $list = array(
             1=> array(
                 'name'=>'文本框',
                 'property'=>1,
@@ -252,7 +252,7 @@ class FieldModel extends BaseModel
      */
     public function propertyField()
     {
-        $list=array(
+        $list = array(
             1=> array(
                 'name'=>'varchar',
                 'maxlen'=>250,
@@ -376,21 +376,21 @@ class FieldModel extends BaseModel
     public function htmlFieldFull($value, $data = null, $model = 'duxcms/Field')
     {
         //获取字段属性
-        $typeField=$this->typeField();
+        $typeField = $this->typeField();
         //生成新配置
-        $config=array();
-        $config['type']=$typeField[$value['type']]['html'];
-        $config['title']=$value['name'];
-        $config['name']='Fieldset_'.$value['field'];
+        $config = array();
+        $config['type'] = $typeField[$value['type']]['html'];
+        $config['title'] = $value['name'];
+        $config['name'] = 'Fieldset_'.$value['field'];
         if ($data) {
             $config['value'] = $data;
         } else {
             $config['value'] = $value['default'];
         }
-        $config['verify_data_js']=base64_decode($value['verify_data_js']);
-        $config['tip']=$value['tip'];
-        $config['errormsg']=$value['errormsg'];
-        $config['config']=$value['config'];
+        $config['verify_data_js'] = base64_decode($value['verify_data_js']);
+        $config['tip'] = $value['tip'];
+        $config['errormsg'] = $value['errormsg'];
+        $config['config'] = $value['config'];
         //返回字段HTML
         return target($model)->htmlField($config);
     }
@@ -447,9 +447,9 @@ class FieldModel extends BaseModel
                     <div class="media-inline  clearfix dux-multi-image" id="'.$config['name'].'">';
                     if (!empty($config['value'])) {
                         $list = unserialize($config['value']);
-                        if (is_array($list)&&!empty($list)) {
+                        if (is_array($list) && !empty($list)) {
                             foreach ($list as $value) {
-                                $html.='
+                                $html .= '
                                 <div class="media radius clearfix">
                                     <a class="del" href="javascript:;" alt="删除"><img src="'.$value['url'].'" ></a>
                                     <div class="media-body">

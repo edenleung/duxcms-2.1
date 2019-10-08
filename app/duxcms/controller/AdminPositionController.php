@@ -51,7 +51,7 @@ class AdminPositionController extends AdminController
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('推荐位列表'=>url('index'),'添加'=>url());
+            $breadCrumb = array('推荐位列表'=>url('index'), '添加'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->adminDisplay('info');
@@ -86,7 +86,7 @@ class AdminPositionController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('推荐位列表'=>url('index'),'修改'=>url('', array('position_id'=>$positionId)));
+            $breadCrumb = array('推荐位列表'=>url('index'), '修改'=>url('', array('position_id'=>$positionId)));
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);

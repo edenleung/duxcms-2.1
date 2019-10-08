@@ -16,7 +16,7 @@ class IndexController extends SiteController
     public function index()
     {
         //MEDIA信息
-        $media=$this->getMedia();
+        $media = $this->getMedia();
         $this->assign('media', $media);
         $this->siteDisplay(config('tpl_index'));
     }

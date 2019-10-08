@@ -11,19 +11,19 @@ class AppHook
     public function appBegin()
     {
         // 多语言
-        $config = include CONFIG_PATH . 'lang.php';
+        $config = include CONFIG_PATH.'lang.php';
         Config::set('LANG', $config);
         if ($config['LANG_OPEN']) {
-            $file = CONFIG_PATH . 'performance.php';
+            $file = CONFIG_PATH.'performance.php';
             $data = load_config($file);
-            $rewrite  = $data['REWRITE_ON'] ? true : false;
+            $rewrite = $data['REWRITE_ON'] ? true : false;
             if ($rewrite) {
                 // 添加多语言首页伪静态规则
                 $rewrite = [];
                 $rewrite_rule = config('REWRITE_RULE');
 
                 foreach ($rewrite_rule as $key=>$item) {
-                    $rewrite['<lang>/' . $key] = $item;
+                    $rewrite['<lang>/'.$key] = $item;
                 }
 
                 foreach (config('LANG.LANG_LIST') as $key => $item) {

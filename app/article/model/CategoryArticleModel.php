@@ -10,14 +10,14 @@ class CategoryArticleModel extends BaseModel
 {
     //验证
     protected $_validate = array(
-        array('content_tpl','1,200', '内容模板未选择', 0 ,'length',3),
+        array('content_tpl', '1,200', '内容模板未选择', 0, 'length', 3),
     );
 
     /**
      * 获取列表
      * @return array 列表
      */
-    public function loadList($where = array(), $classId=0)
+    public function loadList($where = array(), $classId = 0)
     {
         $data = $this->loadData($where);
         $cat = new \framework\ext\Category(array('class_id', 'parent_id', 'name', 'cname'));
@@ -40,12 +40,12 @@ class CategoryArticleModel extends BaseModel
                     ->order("A.sequence ASC , A.class_id ASC")
                     ->select();
         //处理数据类型
-        $list=array();
+        $list = array();
         if (!empty($pageList)) {
             $i = 0;
             foreach ($pageList as $key=>$value) {
-                $list[$key]=$value;
-                $list[$key]['app']=strtolower($value['app']);
+                $list[$key] = $value;
+                $list[$key]['app'] = strtolower($value['app']);
                 $list[$key]['curl'] = target('duxcms/Category')->getUrl($value);
                 $list[$key]['i'] = $i++;
             }
@@ -148,7 +148,7 @@ class CategoryArticleModel extends BaseModel
     {
         $data = target('duxcms/Category')->where([
             "lang <> ''",
-            "lang <> '" . APP_LANG . "'"
+            "lang <> '".APP_LANG."'"
         ])->select();
 
         $cat = new \framework\ext\Category(array('class_id', 'parent_id', 'name', 'cname'));

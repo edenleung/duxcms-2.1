@@ -18,12 +18,12 @@ class MenuModel
         $list = get_all_service('Menu', 'Admin');
         //合并菜单
         foreach ($list as $value) {
-            $menu=array_merge_recursive((array)$menu, (array)$value);
+            $menu = array_merge_recursive((array)$menu, (array)$value);
         }
         //排序菜单
-        foreach ((array) $menu as $topKey => $top) {
+        foreach ((array)$menu as $topKey => $top) {
             if (!empty($top['menu']) && is_array($top['menu'])) {
-                if (!empty($menuPurview)&&$top['menu']&&$loginUserInfo['user_id']<>1) {
+                if (!empty($menuPurview) && $top['menu'] && $loginUserInfo['user_id'] <> 1) {
                     $subMenu = array();
                     foreach ($top['menu'] as $vo) {
                         if (in_array($top['name'].'_'.$vo['name'], $menuPurview)) {
@@ -40,12 +40,12 @@ class MenuModel
         //递归循环
         if (!empty($cutUrl)) {
             if ($urlComplete) {
-                $url = $_SERVER["SCRIPT_NAME"]. '?r='.$cutUrl;
+                $url = $_SERVER["SCRIPT_NAME"].'?r='.$cutUrl;
             } else {
                 $url = $cutUrl;
             }
         } else {
-            $url = $_SERVER["SCRIPT_NAME"] . '?r='.APP_NAME .'/' . CONTROLLER_NAME;
+            $url = $_SERVER["SCRIPT_NAME"].'?r='.APP_NAME.'/'.CONTROLLER_NAME;
         }
 
         $urlLen = strlen($url);

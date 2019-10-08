@@ -68,7 +68,7 @@ class SettingController extends AdminController
             $breadCrumb = array('站点信息'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             if (defined('LANG_OPEN')) {
-                $file = CONFIG_PATH . '/lang/'. APP_LANG .'.php';
+                $file = CONFIG_PATH.'/lang/'.APP_LANG.'.php';
                 $config = load_config($file);
             } else {
                 $config = target('Config')->getInfo();
@@ -77,7 +77,7 @@ class SettingController extends AdminController
             $this->adminDisplay();
         } else {
             if (defined('LANG_OPEN')) {
-                $file = CONFIG_PATH . '/lang/'. APP_LANG .'.php';
+                $file = CONFIG_PATH.'/lang/'.APP_LANG.'.php';
 
                 if (save_config($file, $_POST)) {
                     $this->success('站点配置成功！');
@@ -138,7 +138,7 @@ class SettingController extends AdminController
      */
     public function performance()
     {
-        $file = CONFIG_PATH . 'performance.php';
+        $file = CONFIG_PATH.'performance.php';
         if (!IS_POST) {
             $breadCrumb = array('性能设置'=>url());
             $this->assign('breadCrumb', $breadCrumb);
@@ -157,7 +157,7 @@ class SettingController extends AdminController
      */
     public function upload()
     {
-        $file = CONFIG_PATH . 'upload.php';
+        $file = CONFIG_PATH.'upload.php';
         if (!IS_POST) {
             $breadCrumb = array('上传设置'=>url());
             $this->assign('breadCrumb', $breadCrumb);
@@ -179,7 +179,7 @@ class SettingController extends AdminController
      */
     public function lang()
     {
-        $file = CONFIG_PATH . 'lang.php';
+        $file = CONFIG_PATH.'lang.php';
         if (!IS_POST) {
             $this->assign('info', load_config($file));
             $this->adminDisplay();
@@ -202,7 +202,7 @@ class SettingController extends AdminController
      */
     public function push()
     {
-        $file = CONFIG_PATH . 'push.php';
+        $file = CONFIG_PATH.'push.php';
         if (!IS_POST) {
             $this->assign('info', load_config($file));
             $this->adminDisplay();

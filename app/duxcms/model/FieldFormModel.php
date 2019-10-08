@@ -11,8 +11,8 @@ class FieldFormModel extends BaseModel
 
     //完成
     protected $_auto = array(
-        array('show','intval',3,'function'),
-        array('post','intval',3,'function'),
+        array('show', 'intval', 3, 'function'),
+        array('post', 'intval', 3, 'function'),
     );
 
     /**

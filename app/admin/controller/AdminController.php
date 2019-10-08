@@ -61,12 +61,12 @@ class AdminController extends BaseController
         if (empty($action)) {
             return true;
         }
-        $current = APP_NAME . '_' . CONTROLLER_NAME;
-        if (!in_array($current, (array) $basePurview)) {
+        $current = APP_NAME.'_'.CONTROLLER_NAME;
+        if (!in_array($current, (array)$basePurview)) {
             $this->error('您没有权限访问此功能！');
         }
-        $current = APP_NAME . '_' . CONTROLLER_NAME . '_' . ACTION_NAME;
-        if (!in_array($current, (array) $basePurview)) {
+        $current = APP_NAME.'_'.CONTROLLER_NAME.'_'.ACTION_NAME;
+        if (!in_array($current, (array)$basePurview)) {
             $this->error('您没有权限访问此功能！');
         }
         return true;
@@ -98,7 +98,7 @@ class AdminController extends BaseController
         $this->assign('self', __SELF__);
         $common = $this->display('app/admin/view/common', true);
         $tplArray = get_method_array($tpl);
-        $tpl = 'app/'. strtolower($tplArray['app']) . '/view/' . strtolower($tplArray['controller']) . '/' . strtolower($tplArray['action']);
+        $tpl = 'app/'.strtolower($tplArray['app']).'/view/'.strtolower($tplArray['controller']).'/'.strtolower($tplArray['action']);
         $html = $this->display($tpl, true);
         echo str_replace('<!--common-->', $html, $common);
     }

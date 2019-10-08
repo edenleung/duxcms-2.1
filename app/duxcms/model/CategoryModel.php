@@ -15,7 +15,7 @@ class CategoryModel extends BaseModel
         array('name','htmlspecialchars',3,'function'),
         array('urlname','getUrlName',3,'callback'),
         array('class_id','intval',2,'function'),
-     );
+        );
     //验证
     protected $_validate = array(
         array('name','1,200', '栏目名称只能为1~200个字符', 1 ,'length'),
@@ -56,7 +56,7 @@ class CategoryModel extends BaseModel
         if (!empty($pageList)) {
             $i = 0;
             foreach ($pageList as $key=>$value) {
-                $list[$key]=$value;
+                $list[$key] = $value;
                 $list[$key]['app'] = strtolower($value['app']);
                 $list[$key]['curl'] = target('duxcms/Category')->getUrl($value);
                 $list[$key]['i'] = $i++;
@@ -242,7 +242,7 @@ class CategoryModel extends BaseModel
         $list = array();
         foreach ($data as $value) {
             if ($value['show']) {
-                $list[]=$value['class_id'];
+                $list[] = $value['class_id'];
             }
         }
         return implode(',', $list);

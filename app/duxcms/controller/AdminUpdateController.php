@@ -4,7 +4,7 @@ namespace app\duxcms\controller;
 use app\admin\controller\AdminController;
 use GuzzleHttp\Client;
 
-require BASE_PATH . '/vendor/autoload.php';
+require BASE_PATH.'/vendor/autoload.php';
 
 /**
  * 更新管理
@@ -51,7 +51,7 @@ class AdminUpdateController extends AdminController
             $this->error('没有发现版本号！');
         }
 
-        $url = $this->domain . '/ver.json';
+        $url = $this->domain.'/ver.json';
         $info = \framework\ext\Http::doGet($url);
         $info = json_decode($info, true);
 
@@ -78,7 +78,7 @@ class AdminUpdateController extends AdminController
         $url = request('post.url');
         $fileName = end(explode('/', $url));
         if (!$fileName) {
-            $this->error($fileName . '没有发现更新地址，请稍后重试！');
+            $this->error($fileName.'没有发现更新地址，请稍后重试！');
         }
         $updateDir = DATA_PATH.'update/';
         if (!file_exists($updateDir)) {
@@ -123,7 +123,7 @@ class AdminUpdateController extends AdminController
             $this->error('没有发现更新文件，请稍后重试！');
         }
 
-        $dir = $updateDir.'tmp_' . $version;
+        $dir = $updateDir.'tmp_'.$version;
         $zip = new \ZipArchive;
         $res = $zip->open($file);
         if ($res === true) {
@@ -146,17 +146,17 @@ class AdminUpdateController extends AdminController
 
         // 不用覆盖文件与文件夹
         $diss = [
-            $dir . '/data/config/lang',
-            $dir . '/app/install',
-            $dir . '/data/config/admin.php',
-            $dir . '/data/config/db.php',
-            $dir . '/data/config/development.php',
-            $dir . '/data/config/global.php',
-            $dir . '/data/config/lang.php',
-            $dir . '/data/config/performance.php',
-            $dir . '/data/config/push.php',
-            $dir . '/data/config/tongji.php',
-            $dir . '/data/config/upload.php'
+            $dir.'/data/config/lang',
+            $dir.'/app/install',
+            $dir.'/data/config/admin.php',
+            $dir.'/data/config/db.php',
+            $dir.'/data/config/development.php',
+            $dir.'/data/config/global.php',
+            $dir.'/data/config/lang.php',
+            $dir.'/data/config/performance.php',
+            $dir.'/data/config/push.php',
+            $dir.'/data/config/tongji.php',
+            $dir.'/data/config/upload.php'
         ];
 
         if (!copy_dir($dir, ROOT_PATH, $diss)) {
@@ -170,7 +170,7 @@ class AdminUpdateController extends AdminController
             //开始导入数据库
             foreach ($sqlData as $sql) {
                 if (false === target('Update')->execute($sql)) {
-                    $this->error($sql . '...失败！');
+                    $this->error($sql.'...失败！');
                 }
             }
         }
@@ -197,23 +197,23 @@ class AdminUpdateController extends AdminController
     protected function backup()
     {
         $zip = new \ZipArchive();
-        $fileName = date('Ymd') .'-'. time() . '.zip';
+        $fileName = date('Ymd').'-'.time().'.zip';
         
-        if ($zip->open(ROOT_PATH . 'data/backup/'. $fileName, \ZIPARCHIVE::CREATE)!==true) {
+        if ($zip->open(ROOT_PATH.'data/backup/'.$fileName, \ZIPARCHIVE::CREATE) !== true) {
             return false;
         }
 
         $this->makeZip(ROOT_PATH, $zip);
         $zip->close();
 
-        return 'data/backup/'. $fileName;
+        return 'data/backup/'.$fileName;
     }
 
     private function makeZip($path, $zip)
     {
-        $handler=opendir($path);
+        $handler = opendir($path);
 
-        while (($filename=readdir($handler))!==false) {
+        while (($filename = readdir($handler)) !== false) {
             if ($filename != "." && $filename != "..") {
                 // 默认只备份以下三个文件夹
                 $save = [
@@ -222,12 +222,12 @@ class AdminUpdateController extends AdminController
                     'framework'
                 ];
         
-                $t = explode('/', $path. '/' .$filename)[6];
+                $t = explode('/', $path.'/'.$filename)[6];
                 if (in_array($t, $save)) {
-                    if (is_dir($path. '/' .$filename)) {
-                        $this->makeZip($path . '/' . $filename, $zip);
+                    if (is_dir($path.'/'.$filename)) {
+                        $this->makeZip($path.'/'.$filename, $zip);
                     } else {
-                        $zip->addFile($path . '/' . $filename);
+                        $zip->addFile($path.'/'.$filename);
                     }
                 }
             }

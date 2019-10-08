@@ -10,9 +10,9 @@ class AdminGroupModel extends BaseModel
 {
     //完成
     protected $_auto = array(
-         array('status','intval',3,'function'),
-         array('name','htmlspecialchars',3,'function'),
-     );
+            array('status','intval',3,'function'),
+            array('name','htmlspecialchars',3,'function'),
+        );
     //验证
     protected $_validate = array(
         array('name','1,20', '用户组名称只能为1~20个字符', 0 ,'length',3),
@@ -24,7 +24,7 @@ class AdminGroupModel extends BaseModel
      */
     public function loadList()
     {
-        $data   = $this->select();
+        $data = $this->select();
         return $data;
     }
 

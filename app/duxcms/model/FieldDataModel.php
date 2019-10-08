@@ -13,7 +13,7 @@ class FieldDataModel extends BaseModel
      * 获取列表
      * @return array 列表
      */
-    public function loadList($where, $limit = 0, $order='data_id DESC')
+    public function loadList($where, $limit = 0, $order = 'data_id DESC')
     {
         return  $this->where($where)->limit($limit)->order($order)->select();
     }
@@ -56,8 +56,8 @@ class FieldDataModel extends BaseModel
         //获取字段列表
         $where = array();
         $where['fieldset_id'] = $fieldsetId;
-        $fieldList=target('duxcms/Field')->loadList($where);
-        if (empty($fieldList)||!is_array($fieldList)) {
+        $fieldList = target('duxcms/Field')->loadList($where);
+        if (empty($fieldList) || !is_array($fieldList)) {
             return;
         }
         //设置数据列表
@@ -72,9 +72,9 @@ class FieldDataModel extends BaseModel
                 if (empty($errormsg)) {
                     $errormsg = $value['name'].'填写不正确！';
                 }
-                $valiRules[] = array($value['field'], $verify_data ,$errormsg,$value['verify_condition'],$value['verify_type'],3);
+                $valiRules[] = array($value['field'], $verify_data, $errormsg, $value['verify_condition'], $value['verify_type'], 3);
             }
-            $autoRules[] = array($value['field'],'formatField',3,'callback',array($value['field'],$value['type']));
+            $autoRules[] = array($value['field'], 'formatField', 3, 'callback', array($value['field'], $value['type']));
         }
 
         $data = $this->auto($autoRules)->validate($valiRules)->create($data);
@@ -127,7 +127,7 @@ class FieldDataModel extends BaseModel
                 return $data;
                 break;
             case '6':
-                $fileData=array();
+                $fileData = array();
                 if (is_array($data)) {
                     foreach ($data['url'] as $key => $value) {
                         $fileData[$key]['url'] = $value;
@@ -148,7 +148,7 @@ class FieldDataModel extends BaseModel
                 }
                 break;
             case '9':
-                if (!empty($data)&&is_array($data)) {
+                if (!empty($data) && is_array($data)) {
                     return implode(',', $data);
                 }
                 break;
@@ -171,9 +171,9 @@ class FieldDataModel extends BaseModel
             case '6':
                 //文件列表
                 if (empty($data)) {
-                    return ;
+                    return;
                 }
-                $list=unserialize($data);
+                $list = unserialize($data);
                 return $list;
                 break;
             case '7':
@@ -186,7 +186,7 @@ class FieldDataModel extends BaseModel
                 $i = 0;
                 foreach ($list as $value) {
                     $i++;
-                    $listData[$i] =  $value;
+                    $listData[$i] = $value;
                 }
                 return array(
                         'list' => $listData,
@@ -202,7 +202,7 @@ class FieldDataModel extends BaseModel
                 $i = 0;
                 foreach ($list as $value) {
                     $i++;
-                    $listData[$i] =  $value;
+                    $listData[$i] = $value;
                 }
                 return array(
                         'list' => $listData,
@@ -239,11 +239,11 @@ class FieldDataModel extends BaseModel
                 if (empty($data)) {
                     return '无';
                 }
-                $list=unserialize($data);
-                $html='';
+                $list = unserialize($data);
+                $html = '';
                 if (!empty($list)) {
                     foreach ($list as $key => $value) {
-                        $html.=$value['url'].'<br>';
+                        $html .= $value['url'].'<br>';
                     }
                 }
                 return $html;
@@ -253,9 +253,9 @@ class FieldDataModel extends BaseModel
                 if (empty($config)) {
                     return $data;
                 }
-                $list=explode(",", trim($config));
+                $list = explode(",", trim($config));
                 foreach ($list as $key => $vo) {
-                    if ($data==intval($key)+1) {
+                    if ($data == intval($key) + 1) {
                         return $vo;
                     }
                 }
@@ -269,12 +269,12 @@ class FieldDataModel extends BaseModel
                 $i = 0;
                 foreach ($list as $value) {
                     $i++;
-                    $newList[$i] =  $value;
+                    $newList[$i] = $value;
                 }
                 $data = explode(",", trim($data));
-                $html='';
+                $html = '';
                 foreach ($data as $key => $vo) {
-                    $html.=' '.$newList[$vo].' |';
+                    $html .= ' '.$newList[$vo].' |';
                 }
                 return substr($html, 0, -1);
                 break;

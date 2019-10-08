@@ -89,7 +89,7 @@ class ImageImagick
         $this->img->stripImage();
 
         //保存图像
-        $imgname = realpath(dirname($imgname)) . '/' . basename($imgname); //强制绝对路径
+        $imgname = realpath(dirname($imgname)).'/'.basename($imgname); //强制绝对路径
         if ('gif' == $type) {
             $this->img->writeImages($imgname, true);
         } else {
@@ -173,7 +173,7 @@ class ImageImagick
         }
 
         //设置保存尺寸
-        empty($width)  && $width  = $w;
+        empty($width) && $width  = $w;
         empty($height) && $height = $h;
 
         //裁剪图片
@@ -237,12 +237,12 @@ class ImageImagick
             /* 等比例缩放 */
             case THINKIMAGE_THUMB_SCALE:
                 //原图尺寸小于缩略图尺寸则不进行缩略
-                if ($w < $width && $h < $height) {
+                if ($w<$width && $h<$height) {
                     return;
                 }
 
                 //计算缩放比例
-                $scale = min($width/$w, $height/$h);
+                $scale = min($width / $w, $height / $h);
                 
                 //设置缩略图的坐标及宽度和高度
                 $x = $y = 0;
@@ -253,34 +253,34 @@ class ImageImagick
             /* 居中裁剪 */
             case THINKIMAGE_THUMB_CENTER:
                 //计算缩放比例
-                $scale = max($width/$w, $height/$h);
+                $scale = max($width / $w, $height / $h);
 
                 //设置缩略图的坐标及宽度和高度
-                $w = $width/$scale;
-                $h = $height/$scale;
-                $x = ($this->info['width'] - $w)/2;
-                $y = ($this->info['height'] - $h)/2;
+                $w = $width / $scale;
+                $h = $height / $scale;
+                $x = ($this->info['width'] - $w) / 2;
+                $y = ($this->info['height'] - $h) / 2;
                 break;
 
             /* 左上角裁剪 */
             case THINKIMAGE_THUMB_NORTHWEST:
                 //计算缩放比例
-                $scale = max($width/$w, $height/$h);
+                $scale = max($width / $w, $height / $h);
 
                 //设置缩略图的坐标及宽度和高度
                 $x = $y = 0;
-                $w = $width/$scale;
-                $h = $height/$scale;
+                $w = $width / $scale;
+                $h = $height / $scale;
                 break;
 
             /* 右下角裁剪 */
             case THINKIMAGE_THUMB_SOUTHEAST:
                 //计算缩放比例
-                $scale = max($width/$w, $height/$h);
+                $scale = max($width / $w, $height / $h);
 
                 //设置缩略图的坐标及宽度和高度
-                $w = $width/$scale;
-                $h = $height/$scale;
+                $w = $width / $scale;
+                $h = $height / $scale;
                 $x = $this->info['width'] - $w;
                 $y = $this->info['height'] - $h;
                 break;
@@ -288,17 +288,17 @@ class ImageImagick
             /* 填充 */
             case THINKIMAGE_THUMB_FILLED:
                 //计算缩放比例
-                if ($w < $width && $h < $height) {
+                if ($w<$width && $h<$height) {
                     $scale = 1;
                 } else {
-                    $scale = min($width/$w, $height/$h);
+                    $scale = min($width / $w, $height / $h);
                 }
 
                 //设置缩略图的坐标及宽度和高度
                 $neww = $w * $scale;
                 $newh = $h * $scale;
-                $posx = ($width  - $w * $scale)/2;
-                $posy = ($height - $h * $scale)/2;
+                $posx = ($width - $w * $scale) / 2;
+                $posy = ($height - $h * $scale) / 2;
 
                 //创建一张新图像
                 $newimg = new Imagick();
@@ -415,32 +415,32 @@ class ImageImagick
 
             /* 居中水印 */
             case THINKIMAGE_WATER_CENTER:
-                $x = ($this->info['width'] - $info[0])/2;
-                $y = ($this->info['height'] - $info[1])/2;
+                $x = ($this->info['width'] - $info[0]) / 2;
+                $y = ($this->info['height'] - $info[1]) / 2;
                 break;
 
             /* 下居中水印 */
             case THINKIMAGE_WATER_SOUTH:
-                $x = ($this->info['width'] - $info[0])/2;
+                $x = ($this->info['width'] - $info[0]) / 2;
                 $y = $this->info['height'] - $info[1];
                 break;
 
             /* 右居中水印 */
             case THINKIMAGE_WATER_EAST:
                 $x = $this->info['width'] - $info[0];
-                $y = ($this->info['height'] - $info[1])/2;
+                $y = ($this->info['height'] - $info[1]) / 2;
                 break;
 
             /* 上居中水印 */
             case THINKIMAGE_WATER_NORTH:
-                $x = ($this->info['width'] - $info[0])/2;
+                $x = ($this->info['width'] - $info[0]) / 2;
                 $y = 0;
                 break;
 
             /* 左居中水印 */
             case THINKIMAGE_WATER_WEST:
                 $x = 0;
-                $y = ($this->info['height'] - $info[1])/2;
+                $y = ($this->info['height'] - $info[1]) / 2;
                 break;
 
             default:
@@ -511,7 +511,7 @@ class ImageImagick
             foreach ($color as &$value) {
                 $value = str_pad($value, 2, '0', STR_PAD_LEFT);
             }
-            $color = '#' . implode('', $color);
+            $color = '#'.implode('', $color);
         } elseif (!is_string($color) || 0 !== strpos($color, '#')) {
             throw new Exception('错误的颜色值');
         }
@@ -524,7 +524,7 @@ class ImageImagick
         $draw->setFont(realpath($font));
         $draw->setFontSize($size);
         $draw->setFillColor($col);
-        $draw->setFillAlpha(1-hexdec($alp)/127);
+        $draw->setFillAlpha(1 - hexdec($alp) / 127);
         $draw->setTextAntialias(true);
         $draw->setStrokeAntialias(true);
         
@@ -540,7 +540,7 @@ class ImageImagick
         switch ($locate) {
             /* 右下角文字 */
             case THINKIMAGE_WATER_SOUTHEAST:
-                $x += $this->info['width']  - $w;
+                $x += $this->info['width'] - $w;
                 $y += $this->info['height'] - $h;
                 break;
 
@@ -561,30 +561,30 @@ class ImageImagick
 
             /* 居中文字 */
             case THINKIMAGE_WATER_CENTER:
-                $x += ($this->info['width']  - $w)/2;
-                $y += ($this->info['height'] - $h)/2;
+                $x += ($this->info['width'] - $w) / 2;
+                $y += ($this->info['height'] - $h) / 2;
                 break;
 
             /* 下居中文字 */
             case THINKIMAGE_WATER_SOUTH:
-                $x += ($this->info['width'] - $w)/2;
+                $x += ($this->info['width'] - $w) / 2;
                 $y += $this->info['height'] - $h;
                 break;
 
             /* 右居中文字 */
             case THINKIMAGE_WATER_EAST:
                 $x += $this->info['width'] - $w;
-                $y += ($this->info['height'] - $h)/2;
+                $y += ($this->info['height'] - $h) / 2;
                 break;
 
             /* 上居中文字 */
             case THINKIMAGE_WATER_NORTH:
-                $x += ($this->info['width'] - $w)/2;
+                $x += ($this->info['width'] - $w) / 2;
                 break;
 
             /* 左居中文字 */
             case THINKIMAGE_WATER_WEST:
-                $y += ($this->info['height'] - $h)/2;
+                $y += ($this->info['height'] - $h) / 2;
                 break;
 
             default:

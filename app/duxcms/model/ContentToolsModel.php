@@ -35,7 +35,7 @@ class ContentToolsModel
         $word = urlencode($title);
         $url = "http://api.pullword.com/get.php?source={$word}&param1=0&param2=1&json=1";
 
-        $data= \framework\ext\Http::doGet($url, 5);
+        $data = \framework\ext\Http::doGet($url, 5);
         $list = json_decode($data, true);
         if (empty($data)) {
             return;
@@ -62,21 +62,21 @@ class ContentToolsModel
         //文件路径
         $filePath = './uploads/'.$filesName;
         //文件URL路径
-        $fileUrl = __ROOT__ .'/uploads/'. $filesName;
-        $body=htmlspecialchars_decode($content);
+        $fileUrl = __ROOT__.'/uploads/'.$filesName;
+        $body = htmlspecialchars_decode($content);
         $imgArray = array();
         preg_match_all("/(src|SRC)=[\"|'| ]{0,}(http:\/\/(.*)\.(gif|jpg|jpeg|bmp|png))/isU", $body, $imgArray);
         $imgArray = array_unique($imgArray[2]);
         set_time_limit(0);
-        $milliSecond = date("dHis") . '_';
+        $milliSecond = date("dHis").'_';
         if (!is_dir($filePath)) {
             @mkdir($filePath, 0777, true);
         }
         $http = new \framework\ext\Http;
         foreach ($imgArray as $key =>$value) {
             $value = trim($value);
-            $ext=explode('.', $value);
-            $ext=end($ext);
+            $ext = explode('.', $value);
+            $ext = end($ext);
             $getFile = $http->doGet($value, 5);
             $getfileName = $milliSecond.$key.'.'.$ext;
             $getFilePath = $filePath.$getfileName;

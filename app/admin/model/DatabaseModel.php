@@ -18,12 +18,12 @@ class DatabaseModel extends BaseModel
      */
     public function backupList()
     {
-        $fileDir = ROOT_PATH . $this->backupDir;
+        $fileDir = ROOT_PATH.$this->backupDir;
         if (!is_dir($fileDir)) {
             return false;
         }
         $listFile = glob($fileDir.'*');
-        $list=array();
+        $list = array();
         if (is_array($listFile)) {
             foreach ($listFile as $key => $value) {
                 $value = basename($value);
@@ -111,10 +111,10 @@ class DatabaseModel extends BaseModel
         }
         $list = $this->tableList;
         //生成备份文件信息
-        $dir = ROOT_PATH . $this->backupDir;
+        $dir = ROOT_PATH.$this->backupDir;
         $path = $dir.date('Ymd-His', NOW_TIME).'/';
         //检查是否有正在执行的任务
-        $lock = $dir ."backup.lock";
+        $lock = $dir."backup.lock";
         if (is_file($lock)) {
             $this->error = '检测到有一个备份任务正在执行，请稍后再试！';
             return false;
@@ -153,7 +153,7 @@ class DatabaseModel extends BaseModel
      */
     public function importData($time)
     {
-        $path  = ROOT_PATH . $this->backupDir . $time.'/';
+        $path = ROOT_PATH.$this->backupDir.$time.'/';
         $fileList = glob($path.'*.sql.php');
         if (empty($fileList)) {
             $this->error = '没有发现数据库文件！';
@@ -174,7 +174,7 @@ class DatabaseModel extends BaseModel
      */
     public function delData($time)
     {
-        $path  = ROOT_PATH . $this->backupDir . $time.'/';
+        $path = ROOT_PATH.$this->backupDir.$time.'/';
         if (\framework\ext\Util::delDir($path)) {
             return true;
         } else {

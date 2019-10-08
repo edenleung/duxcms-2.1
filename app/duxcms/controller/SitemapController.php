@@ -13,9 +13,9 @@ class SitemapController extends AdminController
      */
     protected function rewrite()
     {
-        $file = CONFIG_PATH . 'performance.php';
+        $file = CONFIG_PATH.'performance.php';
         $data = load_config($file);
-        $rewrite  = $data['REWRITE_ON']?true:false;
+        $rewrite = $data['REWRITE_ON'] ?true:false;
         $_SERVER["SCRIPT_NAME"] = 'index.php';
         if (!$rewrite) {
             $this->error('请先开启伪静态');
@@ -42,14 +42,14 @@ class SitemapController extends AdminController
     public function sitemap()
     {
         //检查sitemap问及是否存在
-        $this->sitemap = ROOT_PATH . 'sitemap.xml';
-        $this->robots = ROOT_PATH . 'robots.txt';
+        $this->sitemap = ROOT_PATH.'sitemap.xml';
+        $this->robots = ROOT_PATH.'robots.txt';
         if (is_file($this->sitemap)) {
-            $info=simplexml_load_file($this->sitemap);
-            $info=get_object_vars($info->url);
-            $text='sitemap.xml文件存在。上次生成时间：'.$info['lastmod'];
+            $info = simplexml_load_file($this->sitemap);
+            $info = get_object_vars($info->url);
+            $text = 'sitemap.xml文件存在。上次生成时间：'.$info['lastmod'];
         } else {
-            $text='还未生成sitemap.xml文件,请选择栏目并生成！';
+            $text = '还未生成sitemap.xml文件,请选择栏目并生成！';
         }
         if (IS_POST) {
             //接收ajax传回的选择项
@@ -59,16 +59,16 @@ class SitemapController extends AdminController
                 $this->error('至少选择一个栏目！');
             }
 
-            $site = $config['site_url'] ? $config['site_url'] : $_SERVER['REQUEST_SCHEME'] .'://'. $_SERVER['SERVER_NAME'];
+            $site = $config['site_url'] ? $config['site_url'] : $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'];
 
             //进行循环取值
             foreach ($categorys as $key => $value) {
-                if ($value=='category') {
+                if ($value == 'category') {
                     $categorys = target('duxcms/Category')->loadList();
                     foreach ($categorys as $key => $value) {
                         $sitemap[] = self::getPage($value['class_id'], $value);
                     }
-                } elseif ($value=='tag') {
+                } elseif ($value == 'tag') {
                     $tags = target('duxcms/Tags')->loadList(array(), 5000);
                     $tag = array();
                     $i = 0;
@@ -85,9 +85,9 @@ class SitemapController extends AdminController
                     $file = fopen($this->robots, "w");
                     fwrite($file, $robots);
                     fclose($file);
-                    $data[]= array('app'=>'robots', 'title' => 'robots.txt', 'curl'=> "{$site}/robots.txt");
+                    $data[] = array('app'=>'robots', 'title' => 'robots.txt', 'curl'=> "{$site}/robots.txt");
                 } else {
-                    $content =  target('duxcms/Content')->loadList(array(), 5000);
+                    $content = target('duxcms/Content')->loadList(array(), 5000);
                     $list = array();
                     $i = 0;
                     foreach ($content as $key => $vo) {
@@ -108,9 +108,9 @@ class SitemapController extends AdminController
             $sitemap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
             $sitemap .= "<url>\r\n"."<loc>".$site."</loc>\r\n"."<lastmod>".date('Y-m-d H:i:s')."</lastmod>\r\n</url>\r\n";
             foreach ($urls as $k=>$v) {
-                $time = empty($v['time'])?date('Y-m-d H:i:s'):date('Y-m-d H:i:s', $v['time']);
+                $time = empty($v['time']) ?date('Y-m-d H:i:s') : date('Y-m-d H:i:s', $v['time']);
                 $sitemap .= "<url>\r\n"."<loc>".$v['curl']."</loc>\r\n"."<lastmod>".$time."</lastmod>\r\n</url>\r\n";
-                $data[]= array('app'=>$v['app'], 'title' => $v['title'], 'curl'=>$v['curl']);
+                $data[] = array('app'=>$v['app'], 'title' => $v['title'], 'curl'=>$v['curl']);
             }
             $sitemap .= '</urlset>';
             $file = fopen($this->sitemap, "w");
@@ -128,13 +128,13 @@ class SitemapController extends AdminController
      */
     public function array2single($array)
     {
-        $arr2=array();
+        $arr2 = array();
         foreach ($array as $value) {
             foreach ($value as $v) {
-                $arr2[]=$v;
+                $arr2[] = $v;
             }
         }
-        unset($arr3,$value,$v);
+        unset($arr3, $value, $v);
         return $arr2;
     }
     public function getPage($class_id, $info)

@@ -56,7 +56,7 @@ class AdminBackupController extends AdminController
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('备份列表'=>url('index'),'新建'=>url());
+            $breadCrumb = array('备份列表'=>url('index'), '新建'=>url());
             //查询数据
             $list = target('Database')->loadTableList();
             $this->assign('breadCrumb', $breadCrumb);

@@ -41,7 +41,7 @@ class LoginController extends AdminController
         } else {
             $userName = request('post.username');
             $passWord = request('post.password');
-            if (empty($userName)||empty($passWord)) {
+            if (empty($userName) || empty($passWord)) {
                 $this->error('用户名或密码未填写！');
             }
             //查询用户
@@ -51,10 +51,10 @@ class LoginController extends AdminController
             if (empty($userInfo)) {
                 $this->error('登录用户不能存在！');
             }
-            if (!$userInfo['status']||!$userInfo['group_status']) {
+            if (!$userInfo['status'] || !$userInfo['group_status']) {
                 $this->error('该用户已被禁止登录！');
             }
-            if ($userInfo['password']<>md5($passWord)) {
+            if ($userInfo['password'] <> md5($passWord)) {
                 $this->error('您输入的密码不正确！');
             }
             $model = target('AdminUser');

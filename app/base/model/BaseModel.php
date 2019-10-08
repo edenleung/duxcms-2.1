@@ -69,7 +69,7 @@ class BaseModel extends \framework\base\Model
         }
         //获取验证
         if (!$time) {
-            if (empty($this->primary)||empty($data[$this->primary])) {
+            if (empty($this->primary) || empty($data[$this->primary])) {
                 $time = 1;
             } else {
                 $time = 2;
@@ -115,7 +115,7 @@ class BaseModel extends \framework\base\Model
                 $opportunity = 3;
             }
             $value = $data[$field];
-            if ($opportunity == $time ||$opportunity == 3) {
+            if ($opportunity == $time || $opportunity == 3) {
                 if ($condition == 0) {
                     //不存在字段跳过
                     if (!isset($data[$field])) {
@@ -139,7 +139,7 @@ class BaseModel extends \framework\base\Model
                         break;
                     case 'callback':
                         //回调方法
-                        if (call_user_func(array(&$this,$rule), $value)) {
+                        if (call_user_func(array(&$this, $rule), $value)) {
                             $error = true;
                         }
                         break;
@@ -152,16 +152,16 @@ class BaseModel extends \framework\base\Model
                     case 'length':
                         //验证长度
                         $length  =  mb_strlen($value, 'utf-8');
-                       if (strpos($rule, ',')) {
-                           list($min, $max)   =  explode(',', $rule);
-                           if ($length >= $min && $length <= $max) {
-                               $error = true;
-                           }
-                       } else {
-                           if ($length == $rule) {
-                               $error = true;
-                           }
-                       }
+                        if (strpos($rule, ',')) {
+                            list($min, $max)   =  explode(',', $rule);
+                            if ($length >= $min && $length <= $max) {
+                                $error = true;
+                            }
+                        } else {
+                            if ($length == $rule) {
+                                $error = true;
+                            }
+                        }
                         break;
                     case 'unique':
                         //判断唯一值
@@ -219,13 +219,13 @@ class BaseModel extends \framework\base\Model
             if ($v[2] == $time || $v[2] == 3) {
                 switch (strtolower($v[3])) {
                     case 'function':
-                        $data[$v[0]] =  call_user_func($v[1], $data[$v[0]]);
+                        $data[$v[0]] = call_user_func($v[1], $data[$v[0]]);
                         break;
                     case 'callback':
                         if ($v[4]) {
-                            $data[$v[0]] =  call_user_func_array(array(&$this,$v[1]), $v[4]);
+                            $data[$v[0]] = call_user_func_array(array(&$this, $v[1]), $v[4]);
                         } else {
-                            $data[$v[0]] =  call_user_func(array(&$this,$v[1]), $data[$v[0]]);
+                            $data[$v[0]] = call_user_func(array(&$this, $v[1]), $data[$v[0]]);
                         }
                         break;
                     case 'field':
@@ -319,7 +319,7 @@ class BaseModel extends \framework\base\Model
         $where = $this->options['where'];
         $info = $this->where($where)->find();
         $data = array();
-        $data[$key] =  intval($info[$key]) + intval($value);
+        $data[$key] = intval($info[$key]) + intval($value);
         $this->where($where)->data($data)->update();
     }
 
@@ -331,7 +331,7 @@ class BaseModel extends \framework\base\Model
         $where = $this->options['where'];
         $info = $this->where($where)->find();
         $data = array();
-        $data[$key] =  intval($info[$key]) - intval($value);
+        $data[$key] = intval($info[$key]) - intval($value);
         $this->where($where)->data($data)->update();
     }
 
