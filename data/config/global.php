@@ -1,6 +1,6 @@
 <?php
 $dir = dirname(__FILE__);
-$files = array('performance.php','rewrite.php','upload.php','ver.php');
+$files = array('performance.php', 'rewrite.php', 'upload.php', 'ver.php');
 $db = include $dir.'/db.php';
 $config = array(
     //默认模块
@@ -20,7 +20,7 @@ $config = array(
     'CACHE' => array(
         'default' => array(
             'CACHE_TYPE' => 'FileCache',
-            'CACHE_PATH' => ROOT_PATH . 'data/cache/',
+            'CACHE_PATH' => ROOT_PATH.'data/cache/',
             'GROUP' => 'db',
             'HASH_DEEP' => 0,
         ),

@@ -12,22 +12,22 @@ class Install
         $new_prefix:新表前缀；
         $separator:分隔符 参数可为";\n"或";\r\n"或";\r"
     */
-    public static function mysql($sql_path, $old_prefix="", $new_prefix="", $separator=";\n")
+    public static function mysql($sql_path, $old_prefix = "", $new_prefix = "", $separator = ";\n")
     {
-        $commenter = array('#','--');
+        $commenter = array('#', '--');
         //判断文件是否存在
         if (!file_exists($sql_path)) {
             return false;
         }
         
-        $content = file_get_contents($sql_path);   //读取sql文件
-        $content = str_replace(array($old_prefix, "\r"), array($new_prefix, "\n"), $content);//替换前缀
+        $content = file_get_contents($sql_path); //读取sql文件
+        $content = str_replace(array($old_prefix, "\r"), array($new_prefix, "\n"), $content); //替换前缀
         
         //通过sql语法的语句分割符进行分割
         $segment = explode($separator, trim($content));
 
         //去掉注释和多余的空行
-        $data=array();
+        $data = array();
         foreach ($segment as  $statement) {
             $sentence = explode("\n", $statement);
             $newStatement = array();

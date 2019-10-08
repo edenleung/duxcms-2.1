@@ -25,13 +25,13 @@ class FileCacheDriver implements CacheInterface
             return false;
         }
         
-        $expire  =  (int) substr($content, 13, 12);
-        if (time() >= $expire) {
+        $expire = (int)substr($content, 13, 12);
+        if (time()>=$expire) {
             return false;
         }
 
-        $md5Sign  =  substr($content, 25, 32);
-        $content   =  substr($content, 57);
+        $md5Sign = substr($content, 25, 32);
+        $content = substr($content, 57);
         if ($md5Sign != md5($content)) {
             return false;
         }
@@ -45,7 +45,7 @@ class FileCacheDriver implements CacheInterface
         $value = serialize($value);
         $md5Sign = md5($value);
         $expire = time() + $expire;
-        $content    = '<?php exit;?>' . sprintf('%012d', $expire) . $md5Sign . $value;
+        $content = '<?php exit;?>'.sprintf('%012d', $expire).$md5Sign.$value;
        
         return @file_put_contents($this->_getFilePath($key, true), $content, LOCK_EX);
     }
@@ -65,10 +65,10 @@ class FileCacheDriver implements CacheInterface
         return @unlink($this->_getFilePath($key));
     }
     
-    public function clear($dir='')
+    public function clear($dir = '')
     {
         if (empty($dir)) {
-            $dir = $this->config['CACHE_PATH'] . '/' . $this->config['GROUP'] . '/';
+            $dir = $this->config['CACHE_PATH'].'/'.$this->config['GROUP'].'/';
             $dir = str_replace('/', DIRECTORY_SEPARATOR, $dir);
         }
         if (!is_dir($dir)) {
@@ -78,7 +78,7 @@ class FileCacheDriver implements CacheInterface
         $handle = opendir($dir);
         while (($file = readdir($handle)) !== false) {
             if ('.' != $file && '..' != $file) {
-                is_dir("$dir/$file")? $this->clear("$dir/$file") : @unlink("$dir/$file");
+                is_dir("$dir/$file") ? $this->clear("$dir/$file") : @unlink("$dir/$file");
             }
         }
         if (readdir($handle) == false) {
@@ -91,9 +91,9 @@ class FileCacheDriver implements CacheInterface
     {
         $key = md5($key);
         
-        $dir = $this->config['CACHE_PATH'] . '/' . $this->config['GROUP'] . '/';
-        for ($i=0; $i<$this->config['HASH_DEEP']; $i++) {
-            $dir = $dir. substr($key, $i*2, 2).'/';
+        $dir = $this->config['CACHE_PATH'].'/'.$this->config['GROUP'].'/';
+        for ($i = 0; $i<$this->config['HASH_DEEP']; $i++) {
+            $dir = $dir.substr($key, $i * 2, 2).'/';
         }
         $dir = str_replace('/', DIRECTORY_SEPARATOR, $dir);
         
@@ -106,7 +106,7 @@ class FileCacheDriver implements CacheInterface
             @chmod($dir, 0777);
         }
         
-        return $dir. $key . '.php';
+        return $dir.$key.'.php';
         ;
     }
 }

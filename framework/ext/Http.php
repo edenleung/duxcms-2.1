@@ -3,17 +3,17 @@ namespace framework\ext;
 
 class Http
 {
-    public static $way=0;
+    public static $way = 0;
     //手动设置访问方式
     public static function setWay($way)
     {
-        self::$way=intval($way);
+        self::$way = intval($way);
     }
     
     public static function getSupport()
     {
         //如果指定访问方式，则按指定的方式去访问
-        if (isset(self::$way) && in_array(self::$way, array(1,2,3))) {
+        if (isset(self::$way) && in_array(self::$way, array(1, 2, 3))) {
             return self::$way;
         }
             
@@ -29,57 +29,57 @@ class Http
         }
     }
     //通过get方式获取数据
-    public static function doGet($url, $timeout=5, $header="")
+    public static function doGet($url, $timeout = 5, $header = "")
     {
-        if (empty($url)||empty($timeout)) {
+        if (empty($url) || empty($timeout)) {
             return false;
         }
         if (!preg_match('/^(http|https)/is', $url)) {
-            $url="http://".$url;
+            $url = "http://".$url;
         }
-        $code=self::getSupport();
+        $code = self::getSupport();
         switch ($code) {
-            case 1:return self::curlGet($url, $timeout, $header);break;
-            case 2:return self::socketGet($url, $timeout, $header);break;
-            case 3:return self::phpGet($url, $timeout, $header);break;
+            case 1:return self::curlGet($url, $timeout, $header); break;
+            case 2:return self::socketGet($url, $timeout, $header); break;
+            case 3:return self::phpGet($url, $timeout, $header); break;
             default:return false;
         }
     }
     //通过POST方式发送数据
-    public static function doPost($url, $post_data=array(), $timeout=5, $header="")
+    public static function doPost($url, $post_data = array(), $timeout = 5, $header = "")
     {
-        if (empty($url)||empty($post_data)||empty($timeout)) {
+        if (empty($url) || empty($post_data) || empty($timeout)) {
             return false;
         }
         if (!preg_match('/^(http|https)/is', $url)) {
-            $url="http://".$url;
+            $url = "http://".$url;
         }
-        $code=self::getSupport();
+        $code = self::getSupport();
         switch ($code) {
-            case 1:return self::curlPost($url, $post_data, $timeout, $header);break;
-            case 2:return self::socketPost($url, $post_data, $timeout, $header);break;
-            case 3:return self::phpPost($url, $post_data, $timeout, $header);break;
+            case 1:return self::curlPost($url, $post_data, $timeout, $header); break;
+            case 2:return self::socketPost($url, $post_data, $timeout, $header); break;
+            case 3:return self::phpPost($url, $post_data, $timeout, $header); break;
             default:return false;
         }
     }
     //通过curl get数据
-    public static function curlGet($url, $timeout=5, $header="")
+    public static function curlGet($url, $timeout = 5, $header = "")
     {
-        $header=empty($header)?self::defaultHeader():$header;
+        $header = empty($header) ?self::defaultHeader() : $header;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($header));//模拟的header头
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array($header)); //模拟的header头
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;
     }
     //通过curl post数据
-    public static function curlPost($url, $post_data=array(), $timeout=5, $header="")
+    public static function curlPost($url, $post_data = array(), $timeout = 5, $header = "")
     {
-        $header=empty($header)?'':$header;
+        $header = empty($header) ? '' : $header;
         $post_string = http_build_query($post_data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_POST, true);
@@ -88,28 +88,28 @@ class Http
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
         curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($header));//模拟的header头
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array($header)); //模拟的header头
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;
     }
     //通过socket get数据
-    public static function socketGet($url, $timeout=5, $header="")
+    public static function socketGet($url, $timeout = 5, $header = "")
     {
-        $header=empty($header)?self::defaultHeader():$header;
+        $header = empty($header) ?self::defaultHeader() : $header;
         $url2 = parse_url($url);
-        $url2["path"] = isset($url2["path"])? $url2["path"]: "/" ;
-        $url2["port"] = isset($url2["port"])? $url2["port"] : 80;
-        $url2["query"] = isset($url2["query"])? "?".$url2["query"] : "";
+        $url2["path"] = isset($url2["path"]) ? $url2["path"] : "/";
+        $url2["port"] = isset($url2["port"]) ? $url2["port"] : 80;
+        $url2["query"] = isset($url2["query"]) ? "?".$url2["query"] : "";
         $host_ip = @gethostbyname($url2["host"]);
 
-        if (($fsock = fsockopen($host_ip, $url2['port'], $errno, $errstr, $timeout)) < 0) {
+        if (($fsock = fsockopen($host_ip, $url2['port'], $errno, $errstr, $timeout))<0) {
             return false;
         }
-        $request =  $url2["path"] .$url2["query"];
-        $in  = "GET " . $request . " HTTP/1.0\r\n";
-        if (false===strpos($header, "Host:")) {
-            $in .= "Host: " . $url2["host"] . "\r\n";
+        $request = $url2["path"].$url2["query"];
+        $in = "GET ".$request." HTTP/1.0\r\n";
+        if (false === strpos($header, "Host:")) {
+            $in .= "Host: ".$url2["host"]."\r\n";
         }
         $in .= $header;
         $in .= "Connection: Close\r\n\r\n";
@@ -121,9 +121,9 @@ class Http
         return self::GetHttpContent($fsock);
     }
     //通过socket post数据
-    public static function socketPost($url, $post_data=array(), $timeout=5, $header="")
+    public static function socketPost($url, $post_data = array(), $timeout = 5, $header = "")
     {
-        $header=empty($header)?self::defaultHeader():$header;
+        $header = empty($header) ?self::defaultHeader() : $header;
         $post_string = http_build_query($post_data);
         
         
@@ -132,17 +132,17 @@ class Http
         $url2["port"] = ($url2["port"] == "" ? 80 : $url2["port"]);
         $host_ip = @gethostbyname($url2["host"]);
         $fsock_timeout = $timeout; //超时时间
-        if (($fsock = fsockopen($host_ip, $url2['port'], $errno, $errstr, $fsock_timeout)) < 0) {
+        if (($fsock = fsockopen($host_ip, $url2['port'], $errno, $errstr, $fsock_timeout))<0) {
             return false;
         }
-        $request =  $url2["path"].($url2["query"] ? "?" . $url2["query"] : "");
-        $in  = "POST " . $request . " HTTP/1.0\r\n";
-        $in .= "Host: " . $url2["host"] . "\r\n";
+        $request = $url2["path"].($url2["query"] ? "?".$url2["query"] : "");
+        $in  = "POST ".$request." HTTP/1.0\r\n";
+        $in .= "Host: ".$url2["host"]."\r\n";
         $in .= $header;
         $in .= "Content-type: application/x-www-form-urlencoded\r\n";
-        $in .= "Content-Length: " . strlen($post_string) . "\r\n";
+        $in .= "Content-Length: ".strlen($post_string)."\r\n";
         $in .= "Connection: Close\r\n\r\n";
-        $in .= $post_string . "\r\n\r\n";
+        $in .= $post_string."\r\n\r\n";
         unset($post_string);
         if (!@fwrite($fsock, $in, strlen($in))) {
             @fclose($fsock);
@@ -161,7 +161,7 @@ class Http
                             'method'=>"GET",//获取方式
                             'timeout' => $timeout ,//超时时间
                             'header'=> $header)
-                  );
+                    );
         $context = stream_context_create($opts);
         return  @file_get_contents($url, false, $context);
     }
@@ -178,7 +178,7 @@ class Http
                             'timeout' => $timeout ,//超时时间
                             'header'=> $header,
                             'content'=> $post_string)
-                  );
+                    );
         $context = stream_context_create($opts);
         return  @file_get_contents($url, false, $context);
     }
@@ -186,14 +186,14 @@ class Http
     //默认模拟的header头
     private static function defaultHeader()
     {
-        $header="User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12\r\n";
-        $header.="Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n";
-        $header.="Accept-language: zh-cn,zh;q=0.5\r\n";
-        $header.="Accept-Charset: GB2312,utf-8;q=0.7,*;q=0.7\r\n";
+        $header = "User-Agent:Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12\r\n";
+        $header .= "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\n";
+        $header .= "Accept-language: zh-cn,zh;q=0.5\r\n";
+        $header .= "Accept-Charset: GB2312,utf-8;q=0.7,*;q=0.7\r\n";
         return $header;
     }
     //获取通过socket方式get和post页面的返回数据
-    private static function GetHttpContent($fsock=null)
+    private static function GetHttpContent($fsock = null)
     {
         $out = null;
         while ($buff = @fgets($fsock, 2048)) {
@@ -201,9 +201,9 @@ class Http
         }
         fclose($fsock);
         $pos = strpos($out, "\r\n\r\n");
-        $head = substr($out, 0, $pos);    //http head
-        $status = substr($head, 0, strpos($head, "\r\n"));    //http status line
-        $body = substr($out, $pos + 4, strlen($out) - ($pos + 4));//page body
+        $head = substr($out, 0, $pos); //http head
+        $status = substr($head, 0, strpos($head, "\r\n")); //http status line
+        $body = substr($out, $pos + 4, strlen($out) - ($pos + 4)); //page body
         if (preg_match("/^HTTP\/\d\.\d\s([\d]+)\s.*$/", $status, $matches)) {
             if (intval($matches[1]) / 100 == 2) {
                 return $body;
@@ -221,9 +221,9 @@ class Http
      $showname 下载显示的文件名
      $expire  下载内容浏览器缓存时间
     */
-    public static function download($filename, $showname='', $expire=1800)
+    public static function download($filename, $showname = '', $expire = 1800)
     {
-        if (file_exists($filename)&&is_file($filename)) {
+        if (file_exists($filename) && is_file($filename)) {
             $length = filesize($filename);
         } else {
             die('下载文件不存在！');
@@ -235,8 +235,8 @@ class Http
         header("Pragma: public");
         header("Cache-control: max-age=".$expire);
         //header('Cache-Control: no-store, no-cache, must-revalidate');
-        header("Expires: " . gmdate("D, d M Y H:i:s", time()+$expire) . "GMT");
-        header("Last-Modified: " . gmdate("D, d M Y H:i:s", time()) . "GMT");
+        header("Expires: ".gmdate("D, d M Y H:i:s", time() + $expire)."GMT");
+        header("Last-Modified: ".gmdate("D, d M Y H:i:s", time())."GMT");
         header("Content-Disposition: attachment; filename=".$showname);
         header("Content-Length: ".$length);
         header("Content-type: ".$type);
@@ -276,20 +276,20 @@ if (!function_exists('mime_content_type')) {
                 'cpp'	=> 'text/x-c++src', //added by skwashd
                 'cxx'	=> 'text/x-c++src', //added by skwashd
                 'cdf'	=> 'application/x-netcdf',
-                'class'	=> 'application/octet-stream',//secure but application/java-class is correct
-                'com'	=> 'application/octet-stream',//added by skwashd
+                'class'	=> 'application/octet-stream', //secure but application/java-class is correct
+                'com'	=> 'application/octet-stream', //added by skwashd
                 'cpio'	=> 'application/x-cpio',
                 'cpt'	=> 'application/mac-compactpro',
                 'csh'	=> 'application/x-csh',
                 'css'	=> 'text/css',
-                'csv'	=> 'text/comma-separated-values',//added by skwashd
+                'csv'	=> 'text/comma-separated-values', //added by skwashd
                 'dcr'	=> 'application/x-director',
                 'diff'	=> 'text/diff',
                 'dir'	=> 'application/x-director',
                 'dll'	=> 'application/octet-stream',
                 'dms'	=> 'application/octet-stream',
                 'doc'	=> 'application/msword',
-                'dot'	=> 'application/msword',//added by skwashd
+                'dot'	=> 'application/msword', //added by skwashd
                 'dvi'	=> 'application/x-dvi',
                 'dxr'	=> 'application/x-director',
                 'eps'	=> 'application/postscript',
@@ -351,7 +351,7 @@ if (!function_exists('mime_content_type')) {
                 'pdf'	=> 'application/pdf',
                 'pgm'	=> 'image/x-portable-graymap',
                 'pgn'	=> 'application/x-chess-pgn',
-                'pgp'	=> 'application/pgp',//added by skwashd
+                'pgp'	=> 'application/pgp', //added by skwashd
                 'php'	=> 'application/x-httpd-php',
                 'php3'	=> 'application/x-httpd-php3',
                 'pl'	=> 'application/x-perl',
@@ -451,7 +451,7 @@ if (!function_exists('mime_content_type')) {
                 'xyz'	=> 'chemical/x-xyz',
                 'z'	=> 'application/x-compress',
                 'zip'	=> 'application/zip',
-       );
+        );
         $type = strtolower(substr(strrchr($filename, '.'), 1));
         if (isset($contentType[$type])) {
             $mime = $contentType[$type];
@@ -469,23 +469,23 @@ if (!function_exists('image_type_to_extension')) {
             return false;
         }
         switch ($imagetype) {
-           case IMAGETYPE_GIF: return '.gif';
-           case IMAGETYPE_JPEG: return '.jpg';
-           case IMAGETYPE_PNG: return '.png';
-           case IMAGETYPE_SWF: return '.swf';
-           case IMAGETYPE_PSD: return '.psd';
-           case IMAGETYPE_BMP: return '.bmp';
-           case IMAGETYPE_TIFF_II: return '.tiff';
-           case IMAGETYPE_TIFF_MM: return '.tiff';
-           case IMAGETYPE_JPC: return '.jpc';
-           case IMAGETYPE_JP2: return '.jp2';
-           case IMAGETYPE_JPX: return '.jpf';
-           case IMAGETYPE_JB2: return '.jb2';
-           case IMAGETYPE_SWC: return '.swc';
-           case IMAGETYPE_IFF: return '.aiff';
-           case IMAGETYPE_WBMP: return '.wbmp';
-           case IMAGETYPE_XBM: return '.xbm';
-           default: return false;
-       }
+            case IMAGETYPE_GIF: return '.gif';
+            case IMAGETYPE_JPEG: return '.jpg';
+            case IMAGETYPE_PNG: return '.png';
+            case IMAGETYPE_SWF: return '.swf';
+            case IMAGETYPE_PSD: return '.psd';
+            case IMAGETYPE_BMP: return '.bmp';
+            case IMAGETYPE_TIFF_II: return '.tiff';
+            case IMAGETYPE_TIFF_MM: return '.tiff';
+            case IMAGETYPE_JPC: return '.jpc';
+            case IMAGETYPE_JP2: return '.jp2';
+            case IMAGETYPE_JPX: return '.jpf';
+            case IMAGETYPE_JB2: return '.jb2';
+            case IMAGETYPE_SWC: return '.swc';
+            case IMAGETYPE_IFF: return '.aiff';
+            case IMAGETYPE_WBMP: return '.wbmp';
+            case IMAGETYPE_XBM: return '.xbm';
+            default: return false;
+        }
     }
 }

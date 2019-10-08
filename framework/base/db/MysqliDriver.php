@@ -5,7 +5,7 @@ use framework\base\Hook;
 
 class MysqliDriver implements DbInterface
 {
-    protected $config =array();
+    protected $config = array();
     protected $writeLink = null;
     protected $readLink = null;
     protected $sqlMeta = array('sql'=>'', 'params'=>array(), 'link'=>null);
@@ -15,7 +15,7 @@ class MysqliDriver implements DbInterface
         $this->config = $config;
     }
 
-    public function select($table, array $condition = array(), $field='*', $order=null, $limit=null)
+    public function select($table, array $condition = array(), $field = '*', $order = null, $limit = null)
     {
         $field = !empty($field) ? $field : '*';
         $order = !empty($order) ? ' ORDER BY '.$order : '';
@@ -46,7 +46,7 @@ class MysqliDriver implements DbInterface
 
         $err = mysqli_error($con);
         Hook::listen('dbException', array($this->getSql(), $err));
-        throw new \Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. $err, 500);
+        throw new \Exception('Database SQL: "'.$this->getSql().'". ErrorInfo: '.$err, 500);
     }
     
     public function execute($sql, array $params = array())
@@ -64,7 +64,7 @@ class MysqliDriver implements DbInterface
         
         $err = mysqli_error($con);
         Hook::listen('dbException', array($this->getSql(), $err));
-        throw new \Exception('Database SQL: "' . $this->getSql(). '". ErrorInfo: '. $err, 500);
+        throw new \Exception('Database SQL: "'.$this->getSql().'". ErrorInfo: '.$err, 500);
     }
     
     public function insert($table, array $data)
@@ -97,7 +97,7 @@ class MysqliDriver implements DbInterface
         }
         $table = $this->_table($table);
         $condition = $this->_where($condition);
-        return $this->execute("UPDATE {$table} SET ".implode(', ', $keys) . $condition['_where'], $condition['_bindParams'] + $values);
+        return $this->execute("UPDATE {$table} SET ".implode(', ', $keys).$condition['_where'], $condition['_bindParams'] + $values);
     }
     
     public function delete($table, array $condition = array())
@@ -128,11 +128,11 @@ class MysqliDriver implements DbInterface
     {
         $sql = $this->sqlMeta['sql'];
         $arr = $this->sqlMeta['params'];
-        uksort($arr, function ($a, $b) {
-            return strlen($b)-strlen($a);
+        uksort($arr, function($a, $b) {
+            return strlen($b) - strlen($a);
         });
         foreach ($arr as $k=>$v) {
-            $sql = str_replace($k, "'" . mysqli_real_escape_string($this->_getReadLink(), $v) . "'", $sql);
+            $sql = str_replace($k, "'".mysqli_real_escape_string($this->_getReadLink(), $v)."'", $sql);
         }
         return $sql;
     }
@@ -152,25 +152,25 @@ class MysqliDriver implements DbInterface
         return $this->execute('ROLLBACK');
     }
     
-    protected function _bindParams($sql, array $params, $link=null)
+    protected function _bindParams($sql, array $params, $link = null)
     {
         $this->sqlMeta = array('sql'=>$sql, 'params'=>$params, 'link'=>$link);
     }
 
     protected function _table($table)
     {
-        return (false===strpos($table, ' '))? "`{$table}`": $table;
+        return (false === strpos($table, ' ')) ? "`{$table}`" : $table;
     }
     
     protected function _where(array $condition)
     {
-        $result = array( '_where' => '', '_bindParams' => array() );
+        $result = array('_where' => '', '_bindParams' => array());
         $sql = null;
         $sqlArr = array();
         $params = array();
         foreach ($condition as $k => $v) {
             if (!is_numeric($k)) {
-                if (false===strpos($k, ':')) {
+                if (false === strpos($k, ':')) {
                     $k = str_replace('`', '', $k);
                     $key = ':__'.str_replace('.', '_', $k);
                     $field = '`'.str_replace('.', '`.`', $k).'`';
@@ -188,7 +188,7 @@ class MysqliDriver implements DbInterface
         }
 
         if ($sql) {
-            $result['_where'] = " WHERE ". $sql;
+            $result['_where'] = " WHERE ".$sql;
         }
         
         $result['_bindParams'] = $params;
@@ -198,7 +198,7 @@ class MysqliDriver implements DbInterface
     protected function _connect($isMaster = true)
     {
         $dbArr = array();
-        if (false==$isMaster && !empty($this->config['DB_SLAVE'])) {
+        if (false == $isMaster && !empty($this->config['DB_SLAVE'])) {
             $master = $this->config;
             unset($master['DB_SLAVE']);
             foreach ($this->config['DB_SLAVE'] as $k=>$v) {
@@ -209,9 +209,9 @@ class MysqliDriver implements DbInterface
             $dbArr[] = $this->config;
         }
         
-        $link =null;
+        $link = null;
         foreach ($dbArr as $db) {
-            if ($link = @mysqli_connect($db['DB_HOST'] . ':' . $db['DB_PORT'], $db['DB_USER'], $db['DB_PWD'])) {
+            if ($link = @mysqli_connect($db['DB_HOST'].':'.$db['DB_PORT'], $db['DB_USER'], $db['DB_PWD'])) {
                 break;
             }
         }
@@ -221,9 +221,9 @@ class MysqliDriver implements DbInterface
         }
 
         $version = mysqli_get_server_info($link);
-        if ($version > '4.1') {
-            mysqli_query($link,"SET character_set_connection = " . $db['DB_CHARSET'] . ", character_set_results = " . $db['DB_CHARSET'] . ", character_set_client = binary");
-            if ($version > '5.0.1') {
+        if ($version>'4.1') {
+            mysqli_query($link, "SET character_set_connection = ".$db['DB_CHARSET'].", character_set_results = ".$db['DB_CHARSET'].", character_set_client = binary");
+            if ($version>'5.0.1') {
                 mysqli_query($link, "SET sql_mode = ''");
             }
         }

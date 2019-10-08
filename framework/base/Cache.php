@@ -3,10 +3,10 @@ namespace framework\base;
 
 class Cache
 {
-    protected $config =array();
+    protected $config = array();
     protected $cache = 'default';
-    public $proxyObj=null;
-    public $proxyExpire=1800;
+    public $proxyObj = null;
+    public $proxyExpire = 1800;
     protected static $objArr = array();
     
     public function __construct($cache = 'default')
@@ -14,7 +14,7 @@ class Cache
         if ($cache) {
             $this->cache = $cache;
         }
-        $this->config = Config::get('CACHE.' . $this->cache);
+        $this->config = Config::get('CACHE.'.$this->cache);
         if (empty($this->config) || !isset($this->config['CACHE_TYPE'])) {
             throw new \Exception($this->cache.' cache config error', 500);
         }
@@ -23,7 +23,7 @@ class Cache
     public function __call($method, $args)
     {
         if (!isset(self::$objArr[$this->cache])) {
-            $cacheDriver = __NAMESPACE__.'\cache\\' . ucfirst($this->config['CACHE_TYPE']).'Driver';
+            $cacheDriver = __NAMESPACE__.'\cache\\'.ucfirst($this->config['CACHE_TYPE']).'Driver';
             if (!class_exists($cacheDriver)) {
                 throw new \Exception("Cache Driver '{$cacheDriver}' not found'", 500);
             }
@@ -31,9 +31,9 @@ class Cache
         }
         
         if ($this->proxyObj) { //proxy mode
-            $key = md5(get_class($this->proxyObj) . '_'.$method.'_' . var_export($args));
+            $key = md5(get_class($this->proxyObj).'_'.$method.'_'.var_export($args));
             $value = self::$objArr[$this->cache]->get($key);
-            if (false===$value) {
+            if (false === $value) {
                 $value = call_user_func_array(array($this->proxyObj, $method), $args);
                 self::$objArr[$this->cache]->set($key, $value, $this->proxyExpire);
             }

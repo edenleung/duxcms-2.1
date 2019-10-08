@@ -6,12 +6,12 @@ class Lang
 {
     public static $config;
     private static $langArray;
-    public static function init($config=array())
+    public static function init($config = array())
     {
-        self::$config['LANG_DEFAULT']=	isset($config['LANG_DEFAULT'])?$config['LANG_DEFAULT']:'zh';//默认语言
-        self::$config['LANG_PACK_PATH']=isset($config['LANG_PACK_PATH'])?$config['LANG_PACK_PATH']:'./lang/';//语言包目录
-        self::$config['LANG_PACK_SUFFIX']=isset($config['LANG_PACK_SUFFIX'])?$config['LANG_PACK_SUFFIX']:'.lang.php';//语言包后缀
-        self::$config['LANG_PACK_COMMON']=isset($config['LANG_PACK_COMMON'])?$config['LANG_PACK_COMMON']:'common';//公用语言包，默认会自动加载
+        self::$config['LANG_DEFAULT'] = isset($config['LANG_DEFAULT']) ? $config['LANG_DEFAULT'] : 'zh'; //默认语言
+        self::$config['LANG_PACK_PATH'] = isset($config['LANG_PACK_PATH']) ? $config['LANG_PACK_PATH'] : './lang/'; //语言包目录
+        self::$config['LANG_PACK_SUFFIX'] = isset($config['LANG_PACK_SUFFIX']) ? $config['LANG_PACK_SUFFIX'] : '.lang.php'; //语言包后缀
+        self::$config['LANG_PACK_COMMON'] = isset($config['LANG_PACK_COMMON']) ? $config['LANG_PACK_COMMON'] : 'common'; //公用语言包，默认会自动加载
         //语言包目录不以“/”结尾，加上“/”
         if (substr(self::$config['LANG_PACK_PATH'], -1) != "/") {
             self::$config['LANG_PACK_PATH'] .= "/";
@@ -39,7 +39,7 @@ class Lang
             if ($pack==$common_pack) {
                 self::$langArray[$pack]=self::_loadLangPack($common_pack);
             } else {//加载公共语言包和指定的语言包
-                  self::$langArray[$pack]=@array_merge(self::_loadLangPack($common_pack), self::_loadLangPack($pack));//两个数组合并
+                    self::$langArray[$pack]=@array_merge(self::_loadLangPack($common_pack), self::_loadLangPack($pack));//两个数组合并
             }
         }
         return self::$langArray[$pack];

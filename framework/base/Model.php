@@ -3,7 +3,7 @@ namespace framework\base;
 
 class Model
 {
-    protected $config =array();
+    protected $config = array();
     protected $options = array(
                             'table' => '',
                             'field' => '*',
@@ -24,11 +24,11 @@ class Model
         if ($database) {
             $this->database = $database;
         }
-        $this->config = Config::get('DB.' . $this->database);
+        $this->config = Config::get('DB.'.$this->database);
         if (empty($this->config) || !isset($this->config['DB_TYPE'])) {
             throw new \Exception($this->database.' database config error', 500);
         }
-        $this->table = (null==$this->trueTable) ? $this->config['DB_PREFIX'].$this->table : $this->trueTable;
+        $this->table = (null == $this->trueTable) ? $this->config['DB_PREFIX'].$this->table : $this->trueTable;
         $this->trueTable = $this->table;
         $this->table($this->trueTable, true);
     }
@@ -64,7 +64,7 @@ class Model
     {
         $field = $this->options['field'];
         if (empty($field)) {
-            $field  = '*';
+            $field = '*';
         }
         $this->options['field'] = '*';
         
@@ -87,7 +87,7 @@ class Model
                 $count
             );
             $this->options['pager'] = array();
-            $limit = $this->pager['offset'] . ',' . $this->pager['limit'];
+            $limit = $this->pager['offset'].','.$this->pager['limit'];
         }
         
         return $this->getDb()->select($table, $where, $field, $order, $limit);
@@ -155,11 +155,11 @@ class Model
 
     public function table($table, $ignorePre = false)
     {
-        $this->options['table'] = $ignorePre ? $table : $this->config['DB_PREFIX'] . $table;
+        $this->options['table'] = $ignorePre ? $table : $this->config['DB_PREFIX'].$table;
         return $this;
     }
 
-    public function join($join, $way='inner')
+    public function join($join, $way = 'inner')
     {
         $join = str_replace('{pre}', $this->config['DB_PREFIX'], $join);
         $this->options['table'] = " {$this->options['table']} {$way} join {$join} ";
@@ -220,7 +220,7 @@ class Model
     protected function getDb()
     {
         if (empty(self::$objArr[$this->database])) {
-            $dbDriver = __NAMESPACE__.'\db\\' . ucfirst($this->config['DB_TYPE']).'Driver';
+            $dbDriver = __NAMESPACE__.'\db\\'.ucfirst($this->config['DB_TYPE']).'Driver';
             self::$objArr[$this->database] = new $dbDriver($this->config);
         }
         return self::$objArr[$this->database];
@@ -236,14 +236,14 @@ class Model
     protected function _getWhere()
     {
         $where = $this->options['where'];
-        $this->options['where']= array();
+        $this->options['where'] = array();
         return $where;
     }
 
     protected function _getData()
     {
         $data = $this->options['data'];
-        $this->options['data']= array();
+        $this->options['data'] = array();
         return $data;
     }
 
@@ -267,15 +267,15 @@ class Model
             'limit'       => $pageSize,
         );
         
-        if ($totalPage <= $scope) {
+        if ($totalPage<=$scope) {
             $this->pager['allPages'] = range(1, $totalPage);
-        } elseif ($page <= $scope/2) {
+        } elseif ($page<=$scope / 2) {
             $this->pager['allPages'] = range(1, $scope);
-        } elseif ($page <= $totalPage - $scope/2) {
-            $right = $page + (int)($scope/2);
-            $this->pager['allPages'] = range($right-$scope+1, $right);
+        } elseif ($page<=$totalPage - $scope / 2) {
+            $right = $page + (int)($scope / 2);
+            $this->pager['allPages'] = range($right - $scope + 1, $right);
         } else {
-            $this->pager['allPages'] = range($totalPage-$scope+1, $totalPage);
+            $this->pager['allPages'] = range($totalPage - $scope + 1, $totalPage);
         }
     }
 }

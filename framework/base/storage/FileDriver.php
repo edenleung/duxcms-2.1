@@ -8,14 +8,14 @@ class FileDriver implements StorageInterface
         return file_get_contents($name);
     }
     
-    public function write($name, $content, $option=null)
+    public function write($name, $content, $option = null)
     {
         return file_put_contents($name, $content, LOCK_EX);
     }
     
     public function append($name, $content)
     {
-        return file_put_contents($name, $content, LOCK_EX|FILE_APPEND);
+        return file_put_contents($name, $content, LOCK_EX | FILE_APPEND);
     }
     
     public function delete($name)

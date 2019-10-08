@@ -14,16 +14,16 @@ class Check
         若有一个验证函数返回false,则返回对应的错误返回值，若全部通过验证，则返回true。
         验证函数，可以是自定义的函数或类方法，返回true表示通过，返回false，表示没有通过
     */
-    public static function rule($array=array())
+    public static function rule($array = array())
     {
         //可以采用数组传参，也可以采用无限个参数方式传参
         if (!isset($array[0][0])) {
-            $array=func_get_args();
+            $array = func_get_args();
         }
             
         if (is_array($array)) {
             foreach ($array as $vo) {
-                if (is_array($vo)&&isset($vo[0])&&isset($vo[1])) {
+                if (is_array($vo) && isset($vo[0]) && isset($vo[1])) {
                     if (!$vo[0]) {
                         return $vo[1];
                     }
@@ -34,14 +34,14 @@ class Check
     }
     
     //检查字符串长度
-    public static function len($str, $min=0, $max=255)
+    public static function len($str, $min = 0, $max = 255)
     {
-        $str=trim($str);
+        $str = trim($str);
         if (empty($str)) {
             return true;
         }
-        $len=strlen($str);
-        if (($len>=$min)&&($len<=$max)) {
+        $len = strlen($str);
+        if (($len>=$min) && ($len<=$max)) {
             return true;
         } else {
             return false;
@@ -73,11 +73,11 @@ class Check
                             case "EN":$pattern="/^[a-zA-Z]+$/";break;
                                 //英文数字
                             case "ENNUM":$pattern="/^[a-zA-Z0-9]+$/"; break;
-                              //允许的符号(|-_字母数字)
+                                //允许的符号(|-_字母数字)
                             case "ALL":$pattern="/^[\-\_a-zA-Z0-9]+$/"; break;
                             //用户自定义正则
                             default:$pattern=$type;break;
-             }
+                }
              
         if (preg_match($pattern, $str)) {
             return true;
@@ -157,7 +157,7 @@ class Check
     //验证身份证(中国)
     public static function idCard($str)
     {
-        $str=trim($str);
+        $str = trim($str);
         if (empty($str)) {
             return true;
         }

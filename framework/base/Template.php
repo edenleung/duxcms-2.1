@@ -3,7 +3,7 @@ namespace framework\base;
 
 class Template
 {
-    protected $config =array();
+    protected $config = array();
     protected $label = null;
     protected $vars = array();
     protected $cache = null;
@@ -93,7 +93,7 @@ class Template
         }
         
         extract($this->vars, EXTR_OVERWRITE);
-        eval('?>' . $this->compile($tpl, $isTpl));
+        eval('?>'.$this->compile($tpl, $isTpl));
         
         if ($return) {
             $content = ob_get_contents();
@@ -105,7 +105,7 @@ class Template
     public function compile($tpl, $isTpl = true)
     {
         if ($isTpl) {
-            $tplFile = $this->config['TPL_PATH'] . $tpl . $this->config['TPL_SUFFIX'];
+            $tplFile = $this->config['TPL_PATH'].$tpl.$this->config['TPL_SUFFIX'];
             if (!file_exists($tplFile)) {
                 throw new \Exception("Template file '{$tplFile}' not found", 500);
             }
@@ -115,7 +115,7 @@ class Template
         }
 
         $ret = unserialize($this->cache->get($tplKey));
-        if (empty($ret['template']) || ($isTpl&&filemtime($tplFile)>($ret['compile_time']))) {
+        if (empty($ret['template']) || ($isTpl && filemtime($tplFile)>($ret['compile_time']))) {
             $template = $isTpl ? file_get_contents($tplFile) : $tpl;
             if (false === Hook::listen('templateParse', array($template), $template)) {
                 foreach ($this->label as $key => $value) {
@@ -123,7 +123,7 @@ class Template
                 }
             }
             $ret = array('template'=>$template, 'compile_time'=>time());
-            $this->cache->set($tplKey, serialize($ret), 86400*365);
+            $this->cache->set($tplKey, serialize($ret), 86400 * 365);
         }
         return $ret['template'];
     }
