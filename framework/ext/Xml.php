@@ -28,7 +28,7 @@ class Xml
             array_push($child, $values[$i]['value']);
         }
         
-        while ($i++ < count($values)) {
+        while ($i++<count($values)) {
             switch ($values[$i]['type']) {
                 case 'cdata':
                     array_push($child, $values[$i]['value']);
@@ -37,7 +37,7 @@ class Xml
                 case 'complete':
                     $name = $values[$i]['tag'];
                     if (!empty($name)) {
-                        $child[$name]= ($values[$i]['value'])?($values[$i]['value']):'';
+                        $child[$name] = ($values[$i]['value']) ? ($values[$i]['value']) : '';
                         if (isset($values[$i]['attributes'])) {
                             $child[$name] = $values[$i]['attributes'];
                         }

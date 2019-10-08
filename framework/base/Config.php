@@ -5,13 +5,13 @@ class Config
 {
     protected static $config = array();
     
-    public static function init($basePath='')
+    public static function init($basePath = '')
     {
         self::$config = array(
             'ENV' => 'development',
             'DEBUG' => true,
             'LOG_ON' => false,
-            'LOG_PATH' => $basePath . 'data/log/',
+            'LOG_PATH' => $basePath.'data/log/',
             'TIMEZONE' => 'PRC',
             
             'REWRITE_ON' =>false,
@@ -47,14 +47,14 @@ class Config
             'CACHE'=>array(
                 'TPL_CACHE' => array(
                     'CACHE_TYPE' => 'FileCache',
-                    'CACHE_PATH' => $basePath . 'data/cache/',
+                    'CACHE_PATH' => $basePath.'data/cache/',
                     'GROUP' => 'tpl',
                     'HASH_DEEP' => 0,
                 ),
                 
                 'DB_CACHE' => array(
                     'CACHE_TYPE' => 'FileCache',
-                    'CACHE_PATH' => $basePath . 'data/cache/',
+                    'CACHE_PATH' => $basePath.'data/cache/',
                     'GROUP' => 'db',
                     'HASH_DEEP' => 2,
                 ),
@@ -86,7 +86,7 @@ class Config
         }
     }
     
-    public static function get($key=null)
+    public static function get($key = null)
     {
         if (empty($key)) {
             return self::$config;
@@ -94,18 +94,18 @@ class Config
         $arr = explode('.', $key);
         switch (count($arr)) {
             case 1:
-                if (isset(self::$config[ $arr[0] ])) {
-                    return self::$config[ $arr[0] ];
+                if (isset(self::$config[$arr[0]])) {
+                    return self::$config[$arr[0]];
                 }
                 break;
             case 2:
-                if (isset(self::$config[ $arr[0] ][ $arr[1] ])) {
-                    return self::$config[ $arr[0] ][ $arr[1] ];
+                if (isset(self::$config[$arr[0]][$arr[1]])) {
+                    return self::$config[$arr[0]][$arr[1]];
                 }
                 break;
             case 3:
-                if (isset(self::$config[ $arr[0] ][ $arr[1] ][ $arr[2] ])) {
-                    return self::$config[ $arr[0] ][ $arr[1] ][ $arr[2] ];
+                if (isset(self::$config[$arr[0]][$arr[1]][$arr[2]])) {
+                    return self::$config[$arr[0]][$arr[1]][$arr[2]];
                 }
                 break;
             default: break;
@@ -118,13 +118,13 @@ class Config
         $arr = explode('.', $key);
         switch (count($arr)) {
             case 1:
-                self::$config[ $arr[0] ] = $value;
+                self::$config[$arr[0]] = $value;
                 break;
             case 2:
-                self::$config[ $arr[0] ][ $arr[1] ] = $value;
+                self::$config[$arr[0]][$arr[1]] = $value;
                 break;
             case 3:
-                self::$config[ $arr[0] ][ $arr[1] ][ $arr[2] ] = $value;
+                self::$config[$arr[0]][$arr[1]][$arr[2]] = $value;
                 break;
             default: return false;
         }

@@ -5,24 +5,24 @@ namespace framework\ext;
 class UploadFile
 {
     public $maxSize = 10485760; // 上传文件的最大值，默认10M
-    public $allowExts = array();	//允许的文件后缀
+    public $allowExts = array(); //允许的文件后缀
     
-    public $savePath ='';	// 上传文件保存路径
+    public $savePath = ''; // 上传文件保存路径
     public $saveRule = 'md5_file'; //命名规则
-    public $autoSave = true;	//自动保存，设置为false，自定义存储方式
+    public $autoSave = true; //自动保存，设置为false，自定义存储方式
     public $domain = 'public';
     
     public $thumb = false; //是否开启缩略图
-    public $thumbMaxWidth = 100;	//缩略图最大宽度
-    public $thumbMaxHeight = 100;	//缩略图最大高度
+    public $thumbMaxWidth = 100; //缩略图最大宽度
+    public $thumbMaxHeight = 100; //缩略图最大高度
     public $thumbPrefix = 'thumb_'; //缩略图前缀
-    public $thumbPath = '';  //缩略图保存路径，为空则为上传文件保存路径savePath
+    public $thumbPath = ''; //缩略图保存路径，为空则为上传文件保存路径savePath
     
     protected $saeStorage = null;
     protected $uploadFileInfo = array(); //上传成功的文件信息
     protected $errorMsg = ''; //错误信息
     
-    public function __construct($savePath="public/uploads/", $allowExts = array('gif','jpg','jpeg','bmp','png'), $maxSize = 10485760)
+    public function __construct($savePath = "public/uploads/", $allowExts = array('gif', 'jpg', 'jpeg', 'bmp', 'png'), $maxSize = 10485760)
     {
         $this->savePath = $savePath;
         $this->allowExts = $allowExts;
@@ -32,7 +32,7 @@ class UploadFile
         }
     }
     
-    public function upload($key='')
+    public function upload($key = '')
     {
         if (empty($_FILES)) {
             $this->errorMsg = '没有文件上传！';
@@ -55,7 +55,7 @@ class UploadFile
             $file['key'] = $key;
             $file['extension'] = strtolower($pathinfo['extension']);
             $file['savepath'] = $this->savePath;
-            $file['savename'] = $saveRuleFunc($file['tmp_name']) . '.' . $file['extension'];
+            $file['savename'] = $saveRuleFunc($file['tmp_name']).'.'.$file['extension'];
             //检查文件类型大小和合法性
             if (!$this->check($file)) {
                 return false;
@@ -64,9 +64,9 @@ class UploadFile
             if ($this->autoSave) {
                 if (isset($this->saeStorage)) {
                     $file['savepath'] = str_replace(array('../', './'), '', $file['savepath']);
-                    $ret = $this->saeSave($file['tmp_name'], $file['savepath'] . $file['savename']);
+                    $ret = $this->saeSave($file['tmp_name'], $file['savepath'].$file['savename']);
                 } else {
-                    $ret = $this->localSave($file['tmp_name'], $file['savepath'] . $file['savename']);
+                    $ret = $this->localSave($file['tmp_name'], $file['savepath'].$file['savename']);
                 }
                 if (!$ret) {
                     return false;
@@ -85,7 +85,7 @@ class UploadFile
     {
         //文件上传失败
         if ($file['error'] !== 0) {
-            $this->errorMsg= '文件上传失败！';
+            $this->errorMsg = '文件上传失败！';
             return false;
         }
         //检查文件类型
@@ -95,7 +95,7 @@ class UploadFile
             return false;
         }
         //检查文件大小
-        if ($file['size'] > $this->maxSize) {
+        if ($file['size']>$this->maxSize) {
             $this->errorMsg = '上传文件大小超出限制！';
             return false;
         }
@@ -105,7 +105,7 @@ class UploadFile
             return false;
         }
         // 如果是图像文件 检测文件格式
-        if (in_array($file['extension'], array('gif','jpg','jpeg','bmp','png','swf')) && false === getimagesize($file['tmp_name'])) {
+        if (in_array($file['extension'], array('gif', 'jpg', 'jpeg', 'bmp', 'png', 'swf')) && false === getimagesize($file['tmp_name'])) {
             $this->errorMsg = '非法图像文件';
             return false;
         }
@@ -118,9 +118,9 @@ class UploadFile
     {
         if ($this->thumb && in_array($file['extension'], array('gif', 'jpg', 'jpeg', 'bmp', 'png'))) {
             $this->thumbPath = $this->thumbPath ? $this->thumbPath : $file['savepath'];
-            $thumbname = $this->thumbPath . $this->thumbPrefix . basename($file['savename']);
+            $thumbname = $this->thumbPath.$this->thumbPrefix.basename($file['savename']);
             require_once(dirname(__FILE__).'/Image.class.php');
-            $imagename =  isset($this->saeStorage) ? $file['tmp_name'] : $file['savepath'] . $file['savename'];
+            $imagename = isset($this->saeStorage) ? $file['tmp_name'] : $file['savepath'].$file['savename'];
             return Image::thumb($imagename, $thumbname, $this->domain, $this->thumbMaxWidth, $this->thumbMaxHeight); // 生成图像缩略图
         }
         return false;
@@ -129,7 +129,7 @@ class UploadFile
     //sae存储
     protected function saeSave($srcFileName, $destFileName)
     {
-        if (false!= $this->saeStorage->upload($this->domain, $destFileName, $srcFileName)) {
+        if (false != $this->saeStorage->upload($this->domain, $destFileName, $srcFileName)) {
             return true;
         } else {
             $this->errorMsg = $this->saeStorage->errmsg();
@@ -143,19 +143,19 @@ class UploadFile
         $dir = dirname($destFileName);
         if (!is_dir($dir)) {
             if (!mkdir($dir, 0777, true)) {
-                $this->errorMsg = '上传目录' . $dir . '不存在';
+                $this->errorMsg = '上传目录'.$dir.'不存在';
                 return false;
             }
         } else {
             if (!is_writeable($dir)) {
-                $this->errorMsg = '上传目录' . $dir . '不可写';
+                $this->errorMsg = '上传目录'.$dir.'不可写';
                 return false;
             }
         }
         if (move_uploaded_file($srcFileName, $destFileName)) {
             return true;
         }
-        $this->errorMsg= '文件上传保存错误！';
+        $this->errorMsg = '文件上传保存错误！';
         return false;
     }
     

@@ -3,7 +3,7 @@ namespace framework\base;
 
 class Storage
 {
-    protected $config =array();
+    protected $config = array();
     protected $storage = 'default';
     protected static $objArr = array();
     
@@ -12,7 +12,7 @@ class Storage
         if ($storage) {
             $this->storage = $storage;
         }
-        $this->config = Config::get('STORAGE.' . $this->storage);
+        $this->config = Config::get('STORAGE.'.$this->storage);
         if (empty($this->config) || !isset($this->config['STORAGE_TYPE'])) {
             throw new \Exception($this->storage.' storage config error', 500);
         }
@@ -21,7 +21,7 @@ class Storage
     public function __call($method, $args)
     {
         if (!isset(self::$objArr[$this->storage])) {
-            $storageDriver = __NAMESPACE__.'\storage\\' . ucfirst($this->config['STORAGE_TYPE']).'Driver';
+            $storageDriver = __NAMESPACE__.'\storage\\'.ucfirst($this->config['STORAGE_TYPE']).'Driver';
             if (!class_exists($storageDriver)) {
                 throw new \Exception("Storage Driver '{$storageDriver}' not found'", 500);
             }

@@ -5,10 +5,10 @@ class Hook
 {
     public static $tags = array();
     
-    public static function init($basePath='')
+    public static function init($basePath = '')
     {
         $dir = str_replace('/', DIRECTORY_SEPARATOR, $basePath.'app/base/hook/');
-        foreach (glob($dir . '*.php') as $file) {
+        foreach (glob($dir.'*.php') as $file) {
             $pos = strrpos($file, DIRECTORY_SEPARATOR);
             if (false === $pos) {
                 continue;
@@ -24,7 +24,7 @@ class Hook
         }
     }
     
-    public static function listen($tag, $params=array(), &$result=null)
+    public static function listen($tag, $params = array(), &$result = null)
     {
         if (!isset(self::$tags[$tag])) {
             return false;
@@ -42,7 +42,7 @@ class Hook
     {
         static $objArr = array();
         if (!isset($objArr[$class])) {
-            $objArr[$class]= new $class();
+            $objArr[$class] = new $class();
         }
         return call_user_func_array(array($objArr[$class], $method), (array)$params);
     }

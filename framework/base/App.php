@@ -4,15 +4,15 @@ namespace framework\base;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 
-require BASE_PATH . '/vendor/autoload.php';
+require BASE_PATH.'/vendor/autoload.php';
 
 class App
 {
     protected static function init()
     {
         Config::init(BASE_PATH);
-        Config::loadConfig(CONFIG_PATH . 'global.php');
-        Config::loadConfig(CONFIG_PATH . Config::get('ENV') . '.php');
+        Config::loadConfig(CONFIG_PATH.'global.php');
+        Config::loadConfig(CONFIG_PATH.Config::get('ENV').'.php');
         
         date_default_timezone_set(Config::get('TIMEZONE'));
         
@@ -39,7 +39,7 @@ class App
             Hook::init(BASE_PATH);
             Hook::listen('appBegin');
 
-            Hook::listen('routeParseUrl', array( Config::get('REWRITE_RULE'), Config::get('REWRITE_ON')));
+            Hook::listen('routeParseUrl', array(Config::get('REWRITE_RULE'), Config::get('REWRITE_ON')));
             
 
             //default route
@@ -51,7 +51,7 @@ class App
                 $controller = '\\app\\api\\controller\\IndexController';
                 $action = 'index';
             } else {
-                $controller = '\app\\'. APP_NAME .'\controller\\'. CONTROLLER_NAME .'Controller';
+                $controller = '\app\\'.APP_NAME.'\controller\\'.CONTROLLER_NAME.'Controller';
                 $action = ACTION_NAME;
             }
             //execute action

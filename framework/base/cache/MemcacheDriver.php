@@ -53,6 +53,6 @@ class MemcacheDriver implements CacheInterface
     
     public function clear()
     {
-        return  $this->mmc->set($this->group.'_ver', $this->ver+1);
+        return  $this->mmc->set($this->group.'_ver', $this->ver + 1);
     }
 }

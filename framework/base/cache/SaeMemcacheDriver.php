@@ -17,7 +17,7 @@ class SaeMemcacheDriver implements CacheInterface
     public function get($key)
     {
         $expire = memcache_get($this->mmc, $this->group.'_'.$this->ver.'_time_'.$key);
-        if (intval($expire) > time()) {
+        if (intval($expire)>time()) {
             return memcache_get($this->mmc, $this->group.'_'.$this->ver.'_'.$key);
         } else {
             return false;
@@ -26,7 +26,7 @@ class SaeMemcacheDriver implements CacheInterface
     
     public function set($key, $value, $expire = 1800)
     {
-        $expire = ($expire == -1)? time()+365*24*3600 : time() + $expire;
+        $expire = ($expire == -1) ? time() + 365 * 24 * 3600 : time() + $expire;
         memcache_set($this->mmc, $this->group.'_'.$this->ver.'_time_'.$key, $expire);
         return memcache_set($this->mmc, $this->group.'_'.$this->ver.'_'.$key, $value);
     }
@@ -48,6 +48,6 @@ class SaeMemcacheDriver implements CacheInterface
     
     public function clear()
     {
-        return  memcache_set($this->mmc, $this->group.'_ver', $this->ver+1);
+        return  memcache_set($this->mmc, $this->group.'_ver', $this->ver + 1);
     }
 }
