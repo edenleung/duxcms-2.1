@@ -10,25 +10,25 @@ class CategoryModel extends BaseModel
 {
     //完成
     protected $_auto = array(
-        array('show','intval',3,'function'),
-        array('sequence','intval',3,'function'),
-        array('name','htmlspecialchars',3,'function'),
-        array('urlname','getUrlName',3,'callback'),
-        array('class_id','intval',2,'function'),
+        array('show', 'intval', 3, 'function'),
+        array('sequence', 'intval', 3, 'function'),
+        array('name', 'htmlspecialchars', 3, 'function'),
+        array('urlname', 'getUrlName', 3, 'callback'),
+        array('class_id', 'intval', 2, 'function'),
         );
     //验证
     protected $_validate = array(
-        array('name','1,200', '栏目名称只能为1~200个字符', 1 ,'length'),
-        array('class_tpl','1,200', '栏目模板未选择', 1 ,'length'),
-        array('class_id','require', '栏目ID获取不正确', 1 ,'regex',2),
-        array('parent_id','parentCheck', '上级栏目关系选择错误', 1 ,'callback',2),
+        array('name', '1,200', '栏目名称只能为1~200个字符', 1, 'length'),
+        array('class_tpl', '1,200', '栏目模板未选择', 1, 'length'),
+        array('class_id', 'require', '栏目ID获取不正确', 1, 'regex', 2),
+        array('parent_id', 'parentCheck', '上级栏目关系选择错误', 1, 'callback', 2),
     );
 
     /**
      * 获取列表
      * @return array 列表
      */
-    public function loadList($where = array(), $classId=0)
+    public function loadList($where = array(), $classId = 0)
     {
         $data = $this->loadData($where);
         $cat = new \framework\ext\Category(array('class_id', 'parent_id', 'name', 'cname'));

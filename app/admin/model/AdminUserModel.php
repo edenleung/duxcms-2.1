@@ -11,22 +11,22 @@ class AdminUserModel extends BaseModel
 
     //完成
     protected $_auto = array(
-        array('username','htmlspecialchars',3,'function'),  //用户名
-        array('nicename','htmlspecialchars',3,'function'),  //昵称
-        array('email','htmlspecialchars',3,'function'),  //邮箱
-        array('password','md5',1,'function'),  //新增时密码
-        array('password','',2,'ignore'),  //编辑时密码
-        array('status','intval',3,'function'),  //状态
-        array('reg_time','time',1,'function'),  //注册时间
+        array('username', 'htmlspecialchars', 3, 'function'), //用户名
+        array('nicename', 'htmlspecialchars', 3, 'function'), //昵称
+        array('email', 'htmlspecialchars', 3, 'function'), //邮箱
+        array('password', 'md5', 1, 'function'), //新增时密码
+        array('password', '', 2, 'ignore'), //编辑时密码
+        array('status', 'intval', 3, 'function'), //状态
+        array('reg_time', 'time', 1, 'function'), //注册时间
         );
     //验证
     protected $_validate = array(
-        array('group_id','number', '用户组未选择', 1 ,'regex',3),
-        array('username','1,20', '用户名称只能为1~20个字符', 1 ,'length',3),
-        array('username', '', '已存在相同的用户名', 1, 'unique',3),
-        array('email','email', '邮箱地址输入不正确', 1 ,'regex',3),
-        array('email','', '已存在相同的邮箱', 1 ,'unique',3),
-        array('password', '4,250', '请输入最少4位密码', 1, 'length',1),
+        array('group_id', 'number', '用户组未选择', 1, 'regex', 3),
+        array('username', '1,20', '用户名称只能为1~20个字符', 1, 'length', 3),
+        array('username', '', '已存在相同的用户名', 1, 'unique', 3),
+        array('email', 'email', '邮箱地址输入不正确', 1, 'regex', 3),
+        array('email', '', '已存在相同的邮箱', 1, 'unique', 3),
+        array('password', '4,250', '请输入最少4位密码', 1, 'length', 1),
     );
 
     /**

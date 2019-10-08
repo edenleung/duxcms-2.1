@@ -173,7 +173,7 @@ class ImageImagick
         }
 
         //设置保存尺寸
-        empty($width) && $width  = $w;
+        empty($width) && $width = $w;
         empty($height) && $height = $h;
 
         //裁剪图片

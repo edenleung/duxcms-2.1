@@ -151,10 +151,10 @@ class BaseModel extends \framework\base\Model
                         break;
                     case 'length':
                         //验证长度
-                        $length  =  mb_strlen($value, 'utf-8');
+                        $length = mb_strlen($value, 'utf-8');
                         if (strpos($rule, ',')) {
-                            list($min, $max)   =  explode(',', $rule);
-                            if ($length >= $min && $length <= $max) {
+                            list($min, $max) = explode(',', $rule);
+                            if ($length>=$min && $length<=$max) {
                                 $error = true;
                             }
                         } else {

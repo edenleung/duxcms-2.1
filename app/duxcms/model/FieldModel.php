@@ -12,21 +12,21 @@ class FieldModel extends BaseModel
     //验证
     protected $_validate = array(
         array('fieldset_id', 'require', '无法获取字段集ID', 1),
-        array('name','require', '字段名称未填写', 1),
+        array('name', 'require', '字段名称未填写', 1),
         array('field', 'validateField', '已存在相同的字段', 1, 'callback'),
-        array('type','require', '字段类型未选择', 1),
-        array('verify_type','require', '验证类型未选择', 1),
+        array('type', 'require', '字段类型未选择', 1),
+        array('verify_type', 'require', '验证类型未选择', 1),
     );
     //完成
     protected $_auto = array(
         //全部
-        array('fieldset_id','intval',3,'function'), //字段集ID
-        array('name','htmlspecialchars',3,'function'), //字段名
-        array('sequence','intval',3,'function'), //顺序
-        array('verify_data','base64_encode',3,'function'), //验证规则
-        array('verify_data_js','base64_encode',3,'function'), //JS验证规则
+        array('fieldset_id', 'intval', 3, 'function'), //字段集ID
+        array('name', 'htmlspecialchars', 3, 'function'), //字段名
+        array('sequence', 'intval', 3, 'function'), //顺序
+        array('verify_data', 'base64_encode', 3, 'function'), //验证规则
+        array('verify_data_js', 'base64_encode', 3, 'function'), //JS验证规则
         //编辑
-        array('field_id','intval',2,'function'), //字段ID
+        array('field_id', 'intval', 2, 'function'), //字段ID
         );
 
     /**

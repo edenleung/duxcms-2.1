@@ -10,14 +10,14 @@ class FragmentModel extends BaseModel
 {
     //完成
     protected $_auto = array(
-            array('content','html_in',3,'function'),
+            array('content', 'html_in', 3, 'function'),
         );
     //验证
     protected $_validate = array(
-        array('name','require', '碎片名称不能为空', 1),
-        array('label','require', '碎片标识不能为空', 1),
-        array('label','', '碎片标识不能重复', 1,'unique'),
-        array('content','require', '碎片内容不能为空', 1),
+        array('name', 'require', '碎片名称不能为空', 1),
+        array('label', 'require', '碎片标识不能为空', 1),
+        array('label', '', '碎片标识不能重复', 1, 'unique'),
+        array('content', 'require', '碎片内容不能为空', 1),
     );
 
     /**

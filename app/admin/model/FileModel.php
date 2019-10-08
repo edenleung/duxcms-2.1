@@ -10,7 +10,7 @@ class FileModel extends BaseModel
 {
     //完成
     protected $_auto = array(
-        array('time','time',3,'function'),
+        array('time', 'time', 3, 'function'),
         );
 
     /**

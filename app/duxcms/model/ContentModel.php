@@ -11,28 +11,28 @@ class ContentModel extends BaseModel
     //完成
     protected $_auto = array(
         //全部
-        array('class_id','intval',3,'function'), //栏目ID
-        array('urltitle','getUrlTitle',3,'callback'), //URL
-        array('description','getDescription',3,'callback'), //描述
-        array('image','getImage',3,'callback'), //形象图
-        array('time','strtotime',3,'function'), //时间
-        array('status','intval',3,'function'), //状态
-        array('sequence','intval',3,'function'), //顺序
-        array('views','intval',3,'function'), //访问量
-        array('taglink','intval',3,'function'), //TAG链接
-        array('font_bold','intval',3,'function'), //加粗
-        array('font_em','intval',3,'function'), //倾斜
-        array('position','formatPosition',3,'callback'), //推荐
+        array('class_id', 'intval', 3, 'function'), //栏目ID
+        array('urltitle', 'getUrlTitle', 3, 'callback'), //URL
+        array('description', 'getDescription', 3, 'callback'), //描述
+        array('image', 'getImage', 3, 'callback'), //形象图
+        array('time', 'strtotime', 3, 'function'), //时间
+        array('status', 'intval', 3, 'function'), //状态
+        array('sequence', 'intval', 3, 'function'), //顺序
+        array('views', 'intval', 3, 'function'), //访问量
+        array('taglink', 'intval', 3, 'function'), //TAG链接
+        array('font_bold', 'intval', 3, 'function'), //加粗
+        array('font_em', 'intval', 3, 'function'), //倾斜
+        array('position', 'formatPosition', 3, 'callback'), //推荐
         //编辑
-        array('content_id','intval',2,'function'), //内容ID
+        array('content_id', 'intval', 2, 'function'), //内容ID
         );
     //验证
     protected $_validate = array(
         //全部验证
-        array('title','1,255', '标题只能为1~250个字符', 1 , 'length'),
-        array('class_id','is_empty', '请选择栏目', 1 ,'function'),
+        array('title', '1,255', '标题只能为1~250个字符', 1, 'length'),
+        array('class_id', 'is_empty', '请选择栏目', 1, 'function'),
         //编辑验证
-        array('content_id','is_empty', '内容ID获取不正确', 1 ,'function',2),
+        array('content_id', 'is_empty', '内容ID获取不正确', 1, 'function', 2),
     );
 
     /**
