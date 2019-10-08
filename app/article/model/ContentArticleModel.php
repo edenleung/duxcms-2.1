@@ -11,7 +11,7 @@ class ContentArticleModel extends BaseModel
 {
     //验证
     protected $_validate = array(
-        array('content','require', '请填写文章内容', 1 ,'regex',3),
+        array('content', 'require', '请填写文章内容', 1, 'regex', 3),
     );
 
     /**
@@ -23,7 +23,7 @@ class ContentArticleModel extends BaseModel
         //基础条件
         $where['C.app'] = 'article';
 
-        $model =  $this->table("content as A")
+        $model = $this->table("content as A")
                     ->join('{pre}content_article as B ON A.content_id = B.content_id')
                     ->join('{pre}category as C ON A.class_id = C.class_id');
         $field = 'A.*,B.*,C.name as class_name,C.app,C.urlname as class_urlname,C.image as class_image,C.parent_id';
@@ -48,13 +48,13 @@ class ContentArticleModel extends BaseModel
                     ->select();
 
         //处理数据结果
-        $list=array();
+        $list = array();
         if (!empty($pageList)) {
             $i = 0;
             foreach ($pageList as $key=>$value) {
                 //处理基础
-                $list[$key]=$value;
-                $list[$key]['app']=strtolower($value['app']);
+                $list[$key] = $value;
+                $list[$key]['app'] = strtolower($value['app']);
                 $list[$key]['aurl'] = target('duxcms/Content')->getUrl($value);
                 $list[$key]['curl'] = target('duxcms/Category')->getUrl($value);
                 $list[$key]['i'] = $i++;
@@ -199,16 +199,16 @@ class ContentArticleModel extends BaseModel
      */
     public function copyData($contentId, $classId)
     {
-        $contentInfo=$this->getInfo($contentId);
+        $contentInfo = $this->getInfo($contentId);
         $modelCategory = target('CategoryArticle');
-        $categoryInfo=$modelCategory->getInfo($contentInfo['class_id']);
+        $categoryInfo = $modelCategory->getInfo($contentInfo['class_id']);
 
         $format = ['class_id', 'font_bold', 'font_em', 'time', 'sequence', 'status', 'views', 'taglink'];
         $model = new ContentModel();
 
         $data = [
             'class_id'=> $classId,
-            'title'=> $contentInfo['title'] . '-未命名（复制）',
+            'title'=> $contentInfo['title'].'-未命名（复制）',
             'font_color' => $contentInfo['font_color'],
             'font_bold' => $contentInfo['font_bold'],
             'font_em' => $contentInfo['font_em'],
@@ -241,7 +241,7 @@ class ContentArticleModel extends BaseModel
 
             if ($oldFieldsetInfo['fieldset_id'] !== $newFieldsetInfo['fieldset_id']) {
                 $this->rollBack();
-                return ['error' => 1, 'msg' => '编号:' . $contentInfo['content_id'] . ', 当前文章的扩展模型与目标不一致'];
+                return ['error' => 1, 'msg' => '编号:'.$contentInfo['content_id'].', 当前文章的扩展模型与目标不一致'];
             }
 
             $extInfo = target('duxcms/FieldsetExpand')->getDataInfo($oldFieldsetInfo['fieldset_id'], $contentId);
@@ -258,7 +258,7 @@ class ContentArticleModel extends BaseModel
             $expandModel->setTable('ext_'.$newFieldsetInfo['table']);
             if (!$expandModel->add($extInfo)) {
                 $this->rollBack();
-                return ['error' => 1, 'msg' => '编号:' . $contentInfo['content_id'] . ', 保存扩展模型数据时出错'];
+                return ['error' => 1, 'msg' => '编号:'.$contentInfo['content_id'].', 保存扩展模型数据时出错'];
             }
 
             $this->commit();

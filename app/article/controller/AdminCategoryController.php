@@ -24,7 +24,7 @@ class AdminCategoryController extends AdminController
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('栏目列表'=>url('duxcms/AdminCategory/index'),'文章栏目添加'=>url());
+            $breadCrumb = array('栏目列表'=>url('duxcms/AdminCategory/index'), '文章栏目添加'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
 
@@ -70,7 +70,7 @@ class AdminCategoryController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('栏目列表'=>url('duxcms/AdminCategory/index'),'文章栏目修改'=>url());
+            $breadCrumb = array('栏目列表'=>url('duxcms/AdminCategory/index'), '文章栏目修改'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('categoryList', target('duxcms/Category')->loadList());

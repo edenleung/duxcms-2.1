@@ -18,7 +18,7 @@ class SearchController extends SiteController
         //解析关键词
         $keyword = len($keyword, 0, 20);
         $keywords = preg_replace('/\s+/', ' ', $keyword);
-        $keywords=explode(" ", $keywords);
+        $keywords = explode(" ", $keywords);
         if (empty($keywords[0])) {
             $this->error('没有输入关键词！');
         }
@@ -30,7 +30,7 @@ class SearchController extends SiteController
             $where[] = 'C.class_id in ('.$classId.')';
         }
         //获取搜索类型
-        $model=request('request.model', 0, 'intval');
+        $model = request('request.model', 0, 'intval');
         //URL参数
         $pageMaps = array();
         $pageMaps['keyword'] = $keyword;
@@ -58,18 +58,18 @@ class SearchController extends SiteController
         }
         $pageList = target('ContentArticle')->page($listRows)->loadList($where, $limit);
         $this->pager = target('ContentArticle')->pager;
-        $list=array();
+        $list = array();
         if (!empty($pageList)) {
             foreach ($pageList as $key=>$value) {
-                $list[$key]=$value;
-                $list[$key]['curl']=target('duxcms/Category')->getUrl($value);
-                $list[$key]['aurl']=target('duxcms/Content')->getUrl($value);
+                $list[$key] = $value;
+                $list[$key]['curl'] = target('duxcms/Category')->getUrl($value);
+                $list[$key]['aurl'] = target('duxcms/Content')->getUrl($value);
             }
         }
         //获取分页
         $page = $this->getPageShow($pageMaps);
         //位置导航
-        $crumb = array(array('name'=>'文章搜索 - ' . $keyword,'url'=>url('index', $pageMaps)));
+        $crumb = array(array('name'=>'文章搜索 - '.$keyword, 'url'=>url('index', $pageMaps)));
         //MEDIA信息
         $media = $this->getMedia('文章搜索 - '.$keyword);
         //模板赋值

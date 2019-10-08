@@ -14,7 +14,7 @@ function check_env()
     );
 
     //PHP环境检测
-    if ($items['php'][3] < $items['php'][1]) {
+    if ($items['php'][3]<$items['php'][1]) {
         $items['php'][4] = 'error';
     }
 
@@ -42,8 +42,8 @@ function check_env()
 function check_dirfile()
 {
     $items = array(
-        array('dir',  '可写', 'success', ROOT_PATH.'upload'),
-        array('dir',  '可写', 'success', ROOT_PATH.'data'),
+        array('dir', '可写', 'success', ROOT_PATH.'upload'),
+        array('dir', '可写', 'success', ROOT_PATH.'data'),
     );
     foreach ($items as &$val) {
         if ('dir' == $val[0]) {
@@ -84,12 +84,12 @@ function check_dirfile()
 function check_func()
 {
     $items = array(
-        array('mysqli',     '支持', 'success'),
-        array('mysqlpdo',     '支持', 'success'),
+        array('mysqli', '支持', 'success'),
+        array('mysqlpdo', '支持', 'success'),
         array('file_get_contents', '支持', 'success'),
-        array('mb_strlen',		   '支持', 'success'),
-        array('eval',		   '支持', 'success'),
-        array('pathinfo',		   '支持', 'success'),
+        array('mb_strlen', '支持', 'success'),
+        array('eval', '支持', 'success'),
+        array('pathinfo', '支持', 'success'),
     );
 
     foreach ($items as &$val) {

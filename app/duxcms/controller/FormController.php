@@ -56,11 +56,11 @@ class FormController extends SiteController
         $data = array();
         if (!empty($list)) {
             foreach ($list as $key => $value) {
-                $data[$key]=$value;
+                $data[$key] = $value;
                 foreach ($fieldList as $v) {
                     $data[$key][$v['field']] = target('duxcms/FieldData')->revertField($value[$v['field']], $v['type'], $v['config']);
                 }
-                $data[$key]['furl'] = url('DuxCms/Form/info', array('name'=>$name,'id'=>$value['data_id']));
+                $data[$key]['furl'] = url('DuxCms/Form/info', array('name'=>$name, 'id'=>$value['data_id']));
             }
         }
         //URL参数
@@ -69,7 +69,7 @@ class FormController extends SiteController
         //获取分页
         $page = $this->getPageShow($pageMaps);
         //位置导航
-        $crumb = array(array('name'=>$formInfo['name'],'url'=>url('duxcms/Form/index', $pageMaps)));
+        $crumb = array(array('name'=>$formInfo['name'], 'url'=>url('duxcms/Form/index', $pageMaps)));
         //MEDIA信息
         $media = $this->getMedia($formInfo['name']);
         $this->assign('crumb', $crumb);
@@ -88,7 +88,7 @@ class FormController extends SiteController
         $name = urldecode(request('get.name'));
         $table = len($name, 0, 20);
         $id = request('get.id');
-        if (empty($table)||empty($id)) {
+        if (empty($table) || empty($id)) {
             $this->error404();
         }
         //获取表单信息
@@ -118,11 +118,11 @@ class FormController extends SiteController
         }
         //位置导航
         $crumb = array(
-            array('name'=>$formInfo['name'],'url'=>url('duxcms/Form/index', array('name'=>$name))),
-            array('name'=>'详情','url'=>url('duxcms/Form/info', array('name'=>$name,'id'=>$id))),
+            array('name'=>$formInfo['name'], 'url'=>url('duxcms/Form/index', array('name'=>$name))),
+            array('name'=>'详情', 'url'=>url('duxcms/Form/info', array('name'=>$name, 'id'=>$id))),
             );
         //MEDIA信息
-        $media = $this->getMedia($formInfo['name'] . '- 详情 ');
+        $media = $this->getMedia($formInfo['name'].'- 详情 ');
         $this->assign('crumb', $crumb);
         $this->assign('media', $media);
         $this->assign('formInfo', $formInfo);
@@ -141,7 +141,7 @@ class FormController extends SiteController
         $table = request('post.table');
         $token = request('post.token');
         $token = trim($token);
-        if (empty($table)||empty($token)) {
+        if (empty($table) || empty($token)) {
             $this->errorBlock();
         }
         //验证token
@@ -169,7 +169,7 @@ class FormController extends SiteController
         //增加信息
         if ($model->saveData('add', $formInfo)) {
             if (empty($formInfo['post_return_url'])) {
-                $url =  $_SERVER["HTTP_REFERER"];
+                $url = $_SERVER["HTTP_REFERER"];
             } else {
                 $url = $formInfo['post_return_url'];
             }

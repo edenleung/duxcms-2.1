@@ -11,16 +11,16 @@ class FieldsetFormModel extends BaseModel
 
     //完成
     protected $_auto = array(
-        array('show_list','intval',3,'function'),
-        array('show_info','intval',3,'function'),
-        array('list_page','intval',3,'function'),
-        array('post_status','intval',3,'function'),
+        array('show_list', 'intval', 3, 'function'),
+        array('show_info', 'intval', 3, 'function'),
+        array('list_page', 'intval', 3, 'function'),
+        array('post_status', 'intval', 3, 'function'),
     );
 
     //验证
     protected $_validate = array(
-        array('list_order','require', '请填写内容排序'),
-        array('post_msg','require', '请填写提交成功消息'),
+        array('list_order', 'require', '请填写内容排序'),
+        array('post_msg', 'require', '请填写提交成功消息'),
     );
 
     /**
@@ -156,7 +156,7 @@ class FieldsetFormModel extends BaseModel
             return false;
         }
         $formToken = trim($token);
-        if ($formToken<>$session_token) {
+        if ($formToken <> $session_token) {
             return false;
         }
         session('form_'.$table, null);

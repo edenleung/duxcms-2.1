@@ -56,21 +56,21 @@ class ConfigModel extends BaseModel
         $config = $this->getInfo();
         // 多语言
         if (defined('LANG_OPEN')) {
-            $tplDir = ROOT_PATH . THEME_NAME . '/' . $config['tpl_name'] .  '/' . APP_LANG;
+            $tplDir = ROOT_PATH.THEME_NAME.'/'.$config['tpl_name'].'/'.APP_LANG;
         } else {
-            $tplDir = ROOT_PATH . THEME_NAME . '/' . $config['tpl_name'];
+            $tplDir = ROOT_PATH.THEME_NAME.'/'.$config['tpl_name'];
         }
 
         if (!is_dir($tplDir)) {
             return false;
         }
-        $listFile=scandir($tplDir);
+        $listFile = scandir($tplDir);
         if (is_array($listFile)) {
-            $list=array();
+            $list = array();
             foreach ($listFile as $key => $value) {
-                if ($value != "." && $value != ".." && !is_dir($tplDir . DIRECTORY_SEPARATOR . $value)) {
-                    $list[$key]['file']=$value;
-                    $list[$key]['name']=substr($value, 0, -5);
+                if ($value != "." && $value != ".." && !is_dir($tplDir.DIRECTORY_SEPARATOR.$value)) {
+                    $list[$key]['file'] = $value;
+                    $list[$key]['name'] = substr($value, 0, -5);
                 }
             }
         }
@@ -83,17 +83,17 @@ class ConfigModel extends BaseModel
      */
     public function themesList()
     {
-        $tplDir = ROOT_PATH . THEME_NAME;
+        $tplDir = ROOT_PATH.THEME_NAME;
         if (!is_dir($tplDir)) {
             return false;
         }
-        $listFile=scandir($tplDir);
+        $listFile = scandir($tplDir);
         if (is_array($listFile)) {
-            $list=array();
+            $list = array();
             foreach ($listFile as $key => $value) {
-                if ($value != "." && $value != ".."&&!strpos($value, ".")) {
-                    $list[$key]['file']=$value;
-                    $list[$key]['name']=$value;
+                if ($value != "." && $value != ".." && !strpos($value, ".")) {
+                    $list[$key]['file'] = $value;
+                    $list[$key]['name'] = $value;
                 }
             }
         }

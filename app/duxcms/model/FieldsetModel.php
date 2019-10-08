@@ -11,7 +11,7 @@ class FieldsetModel extends BaseModel
 
     //验证
     protected $_validate = array(
-        array('name','1,200', '名称只能为1~200个字符', 1 ,'length'),
+        array('name', '1,200', '名称只能为1~200个字符', 1, 'length'),
         array('table', '', '已存在相同的数据表', 1, 'unique'),
     );
 
@@ -51,7 +51,7 @@ class FieldsetModel extends BaseModel
         }
         if ($type == 'add') {
             //创建数据表
-            $sql=" CREATE TABLE IF NOT EXISTS `{pre}ext_".$data['table']."` ( ";
+            $sql = " CREATE TABLE IF NOT EXISTS `{pre}ext_".$data['table']."` ( ";
             if ($autoKey) {
                 $sql .= '
                     `data_id` int(10) NOT NULL AUTO_INCREMENT ,
@@ -78,7 +78,7 @@ class FieldsetModel extends BaseModel
             //获取信息
             $info = $this->getInfo($data['fieldset_id']);
             //修改数据表
-            $sql="
+            $sql = "
             ALTER TABLE {pre}ext_".$info['table']." RENAME TO {pre}ext_".$data['table']."
             ";
             $statusSql = $this->execute($sql);
@@ -113,7 +113,7 @@ class FieldsetModel extends BaseModel
             return false;
         }
         //删除数据表
-        $sql="
+        $sql = "
             DROP TABLE `{pre}ext_".$info['table']."`
         ";
         $statusSql = $this->execute($sql);
@@ -132,13 +132,13 @@ class FieldsetModel extends BaseModel
     public function getInfoClassId($classId)
     {
         //获取栏目信息
-        $classInfo=target('duxcms/Category')->getInfo($classId);
+        $classInfo = target('duxcms/Category')->getInfo($classId);
         if (empty($classInfo)) {
             return false;
         }
         //获取完整栏目信息
-        $classInfo=target(strtolower($classInfo['app']).'/Category'.ucfirst($classInfo['app']))->getInfo($classId);
-        if (empty($classInfo)||!$classInfo['fieldset_id']) {
+        $classInfo = target(strtolower($classInfo['app']).'/Category'.ucfirst($classInfo['app']))->getInfo($classId);
+        if (empty($classInfo) || !$classInfo['fieldset_id']) {
             return false;
         }
         return $this->getInfo($classInfo['fieldset_id']);

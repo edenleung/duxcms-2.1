@@ -185,7 +185,7 @@ class ImageGd
         }
 
         //设置保存尺寸
-        empty($width)  && $width  = $w;
+        empty($width) && $width  = $w;
         empty($height) && $height = $h;
 
         do {
@@ -228,12 +228,12 @@ class ImageGd
             /* 等比例缩放 */
             case THINKIMAGE_THUMB_SCALE:
                 //原图尺寸小于缩略图尺寸则不进行缩略
-                if ($w < $width && $h < $height) {
+                if ($w<$width && $h<$height) {
                     return;
                 }
 
                 //计算缩放比例
-                $scale = min($width/$w, $height/$h);
+                $scale = min($width / $w, $height / $h);
                 
                 //设置缩略图的坐标及宽度和高度
                 $x = $y = 0;
@@ -244,34 +244,34 @@ class ImageGd
             /* 居中裁剪 */
             case THINKIMAGE_THUMB_CENTER:
                 //计算缩放比例
-                $scale = max($width/$w, $height/$h);
+                $scale = max($width / $w, $height / $h);
 
                 //设置缩略图的坐标及宽度和高度
-                $w = $width/$scale;
-                $h = $height/$scale;
-                $x = ($this->info['width'] - $w)/2;
-                $y = ($this->info['height'] - $h)/2;
+                $w = $width / $scale;
+                $h = $height / $scale;
+                $x = ($this->info['width'] - $w) / 2;
+                $y = ($this->info['height'] - $h) / 2;
                 break;
 
             /* 左上角裁剪 */
             case THINKIMAGE_THUMB_NORTHWEST:
                 //计算缩放比例
-                $scale = max($width/$w, $height/$h);
+                $scale = max($width / $w, $height / $h);
 
                 //设置缩略图的坐标及宽度和高度
                 $x = $y = 0;
-                $w = $width/$scale;
-                $h = $height/$scale;
+                $w = $width / $scale;
+                $h = $height / $scale;
                 break;
 
             /* 右下角裁剪 */
             case THINKIMAGE_THUMB_SOUTHEAST:
                 //计算缩放比例
-                $scale = max($width/$w, $height/$h);
+                $scale = max($width / $w, $height / $h);
 
                 //设置缩略图的坐标及宽度和高度
-                $w = $width/$scale;
-                $h = $height/$scale;
+                $w = $width / $scale;
+                $h = $height / $scale;
                 $x = $this->info['width'] - $w;
                 $y = $this->info['height'] - $h;
                 break;
@@ -279,17 +279,17 @@ class ImageGd
             /* 填充 */
             case THINKIMAGE_THUMB_FILLED:
                 //计算缩放比例
-                if ($w < $width && $h < $height) {
+                if ($w<$width && $h<$height) {
                     $scale = 1;
                 } else {
-                    $scale = min($width/$w, $height/$h);
+                    $scale = min($width / $w, $height / $h);
                 }
 
                 //设置缩略图的坐标及宽度和高度
                 $neww = $w * $scale;
                 $newh = $h * $scale;
-                $posx = ($width  - $w * $scale)/2;
-                $posy = ($height - $h * $scale)/2;
+                $posx = ($width - $w * $scale) / 2;
+                $posy = ($height - $h * $scale) / 2;
 
                 do {
                     //创建新图像
@@ -344,7 +344,7 @@ class ImageGd
         }
 
         //创建水印图像资源
-        $fun   = 'imagecreatefrom' . image_type_to_extension($info[2], false);
+        $fun   = 'imagecreatefrom'.image_type_to_extension($info[2], false);
         $water = $fun($source);
 
         //设定水印图像的混色模式
@@ -377,32 +377,32 @@ class ImageGd
 
             /* 居中水印 */
             case THINKIMAGE_WATER_CENTER:
-                $x = ($this->info['width'] - $info[0])/2;
-                $y = ($this->info['height'] - $info[1])/2;
+                $x = ($this->info['width'] - $info[0]) / 2;
+                $y = ($this->info['height'] - $info[1]) / 2;
                 break;
 
             /* 下居中水印 */
             case THINKIMAGE_WATER_SOUTH:
-                $x = ($this->info['width'] - $info[0])/2;
+                $x = ($this->info['width'] - $info[0]) / 2;
                 $y = $this->info['height'] - $info[1];
                 break;
 
             /* 右居中水印 */
             case THINKIMAGE_WATER_EAST:
                 $x = $this->info['width'] - $info[0];
-                $y = ($this->info['height'] - $info[1])/2;
+                $y = ($this->info['height'] - $info[1]) / 2;
                 break;
 
             /* 上居中水印 */
             case THINKIMAGE_WATER_NORTH:
-                $x = ($this->info['width'] - $info[0])/2;
+                $x = ($this->info['width'] - $info[0]) / 2;
                 $y = 0;
                 break;
 
             /* 左居中水印 */
             case THINKIMAGE_WATER_WEST:
                 $x = 0;
-                $y = ($this->info['height'] - $info[1])/2;
+                $y = ($this->info['height'] - $info[1]) / 2;
                 break;
 
             default:
@@ -477,7 +477,7 @@ class ImageGd
         switch ($locate) {
             /* 右下角文字 */
             case THINKIMAGE_WATER_SOUTHEAST:
-                $x += $this->info['width']  - $w;
+                $x += $this->info['width'] - $w;
                 $y += $this->info['height'] - $h;
                 break;
 
@@ -498,30 +498,30 @@ class ImageGd
 
             /* 居中文字 */
             case THINKIMAGE_WATER_CENTER:
-                $x += ($this->info['width']  - $w)/2;
-                $y += ($this->info['height'] - $h)/2;
+                $x += ($this->info['width'] - $w) / 2;
+                $y += ($this->info['height'] - $h) / 2;
                 break;
 
             /* 下居中文字 */
             case THINKIMAGE_WATER_SOUTH:
-                $x += ($this->info['width'] - $w)/2;
+                $x += ($this->info['width'] - $w) / 2;
                 $y += $this->info['height'] - $h;
                 break;
 
             /* 右居中文字 */
             case THINKIMAGE_WATER_EAST:
                 $x += $this->info['width'] - $w;
-                $y += ($this->info['height'] - $h)/2;
+                $y += ($this->info['height'] - $h) / 2;
                 break;
 
             /* 上居中文字 */
             case THINKIMAGE_WATER_NORTH:
-                $x += ($this->info['width'] - $w)/2;
+                $x += ($this->info['width'] - $w) / 2;
                 break;
 
             /* 左居中文字 */
             case THINKIMAGE_WATER_WEST:
-                $y += ($this->info['height'] - $h)/2;
+                $y += ($this->info['height'] - $h) / 2;
                 break;
 
             default:
@@ -548,7 +548,7 @@ class ImageGd
         if (is_string($color) && 0 === strpos($color, '#')) {
             $color = str_split(substr($color, 1), 2);
             $color = array_map('hexdec', $color);
-            if (empty($color[3]) || $color[3] > 127) {
+            if (empty($color[3]) || $color[3]>127) {
                 $color[3] = 0;
             }
         } elseif (!is_array($color)) {

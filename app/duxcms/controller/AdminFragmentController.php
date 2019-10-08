@@ -51,7 +51,7 @@ class AdminFragmentController extends AdminController
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('碎片列表'=>url('index'),'添加'=>url());
+            $breadCrumb = array('碎片列表'=>url('index'), '添加'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->adminDisplay('info');
@@ -86,7 +86,7 @@ class AdminFragmentController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('碎片列表'=>url('index'),'修改'=>url('', array('fragment_id'=>$fragmentId)));
+            $breadCrumb = array('碎片列表'=>url('index'), '修改'=>url('', array('fragment_id'=>$fragmentId)));
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);

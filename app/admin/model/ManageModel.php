@@ -14,7 +14,7 @@ class ManageModel
     public function getCacheList($key = '')
     {
         $list = array(
-                'tpl' => array('id'=>'tpl','name'=>'模板缓存', 'dir'=>DATA_PATH.'cache', 'size'=>(dir_size(DATA_PATH.'cache')%1024).'KB'),
+                'tpl' => array('id'=>'tpl', 'name'=>'模板缓存', 'dir'=>DATA_PATH.'cache', 'size'=>(dir_size(DATA_PATH.'cache') % 1024).'KB'),
                 );
         if ($key) {
             return $list[$key];

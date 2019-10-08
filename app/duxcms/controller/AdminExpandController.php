@@ -143,17 +143,17 @@ class AdminExpandController extends AdminController
         //获取字段列表
         $where = array();
         $where['A.fieldset_id'] = $fieldsetInfo['fieldset_id'];
-        $fieldList=target('duxcms/FieldExpand')->loadList($where);
-        if (empty($fieldList)||!is_array($fieldList)) {
+        $fieldList = target('duxcms/FieldExpand')->loadList($where);
+        if (empty($fieldList) || !is_array($fieldList)) {
             return;
         }
         //获取扩展内容信息
         if (!empty($contentId)) {
             $model = target('duxcms/FieldData');
             $model->setTable('ext_'.$fieldsetInfo['table']);
-            $contentInfo=$model->getInfo($contentId);
+            $contentInfo = $model->getInfo($contentId);
         }
-        $html='';
+        $html = '';
         $fieldModel = target('duxcms/Field');
         foreach ($fieldList as $value) {
             $html .= $fieldModel->htmlFieldFull($value, $contentInfo[$value['field']]);

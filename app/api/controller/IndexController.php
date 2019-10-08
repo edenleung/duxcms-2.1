@@ -40,7 +40,7 @@ class IndexController extends Response
             $service = new LabelService;
             $result = call_user_func(array($service, $this->label), $this->data);
             return $this->success($result);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
         

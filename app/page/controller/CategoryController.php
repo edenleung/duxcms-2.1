@@ -16,17 +16,17 @@ class CategoryController extends SiteController
     {
         $classId = request('get.class_id', 0, 'intval');
         $urlName = request('get.urlname');
-        if (empty($classId)&&empty($urlName)) {
+        if (empty($classId) && empty($urlName)) {
             $this->error404();
         }
         //获取栏目信息
         $model = target('Page/CategoryPage');
         if (!empty($classId)) {
-            $categoryInfo=$model->getInfo($classId);
+            $categoryInfo = $model->getInfo($classId);
         } elseif (!empty($urlName)) {
             $map = array();
             $map['urlname'] = $urlName;
-            $categoryInfo=$model->getWhereInfo($map);
+            $categoryInfo = $model->getWhereInfo($map);
         } else {
             $this->error404();
         }
@@ -36,7 +36,7 @@ class CategoryController extends SiteController
         if (!is_array($categoryInfo)) {
             $this->error404();
         }
-        if ($categoryInfo['app']<>APP_NAME) {
+        if ($categoryInfo['app'] <> APP_NAME) {
             $this->error404();
         }
         //位置导航

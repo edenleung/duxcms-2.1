@@ -28,7 +28,7 @@ class SafeModel
             }
         }
         //后台入口检测
-        if (!is_file(__ROOT__ . '/admin.php')) {
+        if (!is_file(__ROOT__.'/admin.php')) {
             $safeArray['login'] = true;
         }
         //上传设置检测
@@ -41,7 +41,7 @@ class SafeModel
             }
         }
         //安装模块检测
-        if (!is_dir(APP_PATH . 'install')) {
+        if (!is_dir(APP_PATH.'install')) {
             $safeArray['install'] = true;
         }
         return $safeArray;

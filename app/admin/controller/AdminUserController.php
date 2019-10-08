@@ -74,7 +74,7 @@ class AdminUserController extends AdminController
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('用户列表'=>url('index'),'添加'=>url());
+            $breadCrumb = array('用户列表'=>url('index'), '添加'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->assign('groupList', target('AdminGroup')->loadList());
@@ -109,7 +109,7 @@ class AdminUserController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('用户列表'=>url('index'),'修改'=>url('', array('user_id'=>$userId)));
+            $breadCrumb = array('用户列表'=>url('index'), '修改'=>url('', array('user_id'=>$userId)));
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('groupList', target('AdminGroup')->loadList());

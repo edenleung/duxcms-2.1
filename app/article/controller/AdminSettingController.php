@@ -24,7 +24,7 @@ class AdminSettingController extends AdminController
     public function index()
     {
         if (!IS_POST) {
-            $breadCrumb = array('应用列表'=>url('admin/Functions/index'),'文章模块设置'=>url());
+            $breadCrumb = array('应用列表'=>url('admin/Functions/index'), '文章模块设置'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('info', current_config());
             $this->adminDisplay();

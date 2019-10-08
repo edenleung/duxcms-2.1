@@ -12,7 +12,7 @@ class TagsHasModel extends BaseModel
     protected $_auto = array(
         array('content_id','intval',3,'function'),
         array('tag_id','intval',3,'function'),
-     );
+        );
 
     /**
      * 获取统计
@@ -55,7 +55,7 @@ class TagsHasModel extends BaseModel
      */
     public function loadContentList($where, $limit)
     {
-        $data   = $this->field('distinct C.*,D.name as class_name,D.app,D.urlname as class_urlname')
+        $data = $this->field('distinct C.*,D.name as class_name,D.app,D.urlname as class_urlname')
                     ->table("tags_has as A")
                     ->join('{pre}tags as B ON B.tag_id = A.tag_id')
                     ->join('{pre}content as C ON C.content_id = A.content_id')
@@ -73,7 +73,7 @@ class TagsHasModel extends BaseModel
      */
     public function countContentList($where)
     {
-        $data   = $this->field(' distinct ')
+        $data = $this->field(' distinct ')
                     ->table("tags_has as A")
                     ->join('{pre}tags as B ON B.tag_id = A.tag_id')
                     ->join('{pre}content as C ON C.content_id = A.content_id')

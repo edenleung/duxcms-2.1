@@ -137,20 +137,20 @@ class FieldsetExpandModel extends BaseModel
         //获取模型信息
         $fieldsetInfo = target('duxcms/FieldsetExpand')->getInfo($fieldsetId);
         if (empty($fieldsetInfo)) {
-            return ;
+            return;
         }
         //获取字段内容
         target('duxcms/FieldData')->setTable('ext_'.$fieldsetInfo['table']);
         $extInfo = target('duxcms/FieldData')->getInfo($dataId);
         if (empty($extInfo)) {
-            return ;
+            return;
         }
         //获取字段列表
         $where = array();
         $where['A.fieldset_id'] = $fieldsetId;
         $fieldList = target('duxcms/FieldExpand')->loadList($where);
         if (empty($fieldList)) {
-            return ;
+            return;
         }
         $extArray = array();
         foreach ($fieldList as $value) {

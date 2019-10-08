@@ -17,7 +17,7 @@ class CategoryController extends SiteController
     {
         $classId = request('get.class_id', 0, 'intval');
         $urlName = request('get.urlname');
-        if (empty($classId)&&empty($urlName)) {
+        if (empty($classId) && empty($urlName)) {
             $this->error404();
         }
 
@@ -31,10 +31,10 @@ class CategoryController extends SiteController
         $model = target('CategoryArticle');
         if (!empty($classId)) {
             $map['A.class_id'] = $classId;
-            $categoryInfo=$model->getWhereInfo($map);
+            $categoryInfo = $model->getWhereInfo($map);
         } elseif (!empty($urlName)) {
             $map['A.urlname'] = $urlName;
-            $categoryInfo=$model->getWhereInfo($map);
+            $categoryInfo = $model->getWhereInfo($map);
         } else {
             $this->error404();
         }
@@ -44,13 +44,13 @@ class CategoryController extends SiteController
             $this->error404();
         }
 
-        if (strtolower($categoryInfo['app'])<>APP_NAME) {
+        if (strtolower($categoryInfo['app']) <> APP_NAME) {
             $this->error404();
         }
         //位置导航
         $crumb = target('duxcms/Category')->loadCrumb($classId);
         //设置查询条件
-        $where=[];
+        $where = [];
         if ($categoryInfo['type'] == 0) {
             $classIds = target('duxcms/Category')->getSubClassId($classId);
         }
@@ -67,8 +67,8 @@ class CategoryController extends SiteController
             $fieldsetInfo = target('duxcms/Fieldset')->getInfoClassId($categoryInfo['class_id']);
             $map = array();
             $map['A.fieldset_id'] = $fieldsetInfo['fieldset_id'];
-            $fieldList=target('duxcms/FieldExpand')->loadList($map);
-            if (empty($fieldList)||!is_array($fieldList)) {
+            $fieldList = target('duxcms/FieldExpand')->loadList($map);
+            if (empty($fieldList) || !is_array($fieldList)) {
                 return;
             }
 
@@ -76,15 +76,15 @@ class CategoryController extends SiteController
             $fields = array_column($fieldList, 'field');
 
             foreach ($fields as $field) {
-                $param = request('get.' . $field, 0, 'intval');
+                $param = request('get.'.$field, 0, 'intval');
                 if ($param) {
-                    $where['D.' . $field] = $param;
+                    $where['D.'.$field] = $param;
                     $mustParams[$field] = $param;
                 }
             }
 
             foreach ($fieldList as $key=>$item) {
-                $params = request('get.' . $item['field'], 0, 'intval');
+                $params = request('get.'.$item['field'], 0, 'intval');
                 $field = $item['field'];
                 $data = ['name' => $item['name'], 'field' => $field];
                 $child = explode(',', $item['config']);

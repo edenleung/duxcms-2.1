@@ -35,10 +35,10 @@ class FunctionsModel
     {
         $info = load_config($app.'/config');
         if (empty($info)) {
-            return ;
+            return;
         }
         $info['APP'] = $app;
-        $info['APP_DIR'] =  $app;
+        $info['APP_DIR'] = $app;
         if ($info['APP_SYSTEM']) {
             $info['APP_STATE'] = 1;
             $info['APP_INSTALL'] = 1;

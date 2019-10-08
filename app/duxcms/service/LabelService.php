@@ -11,7 +11,7 @@ class LabelService
      */
     public function categoryList($data)
     {
-        $where=[];
+        $where = [];
         //上级栏目
         if (isset($data['parent_id'])) {
             $where['parent_id'] = $data['parent_id'];
@@ -51,13 +51,13 @@ class LabelService
      */
     public function contentList($data)
     {
-        $where=array();
+        $where = array();
         //指定栏目内容
         if (!empty($data['class_id'])) {
             $classWhere = 'A.class_id in ('.$data['class_id'].')';
         }
         //指定栏目下子栏目内容
-        if (isset($data['sub']) && $data['sub'] &&!empty($data['class_id'])) {
+        if (isset($data['sub']) && $data['sub'] && !empty($data['class_id'])) {
             $classIds = target('duxcms/Category')->getSubClassId($data['class_id']);
             if (!empty($classIds)) {
                 $classWhere = "A.class_id in ({$classIds})";
@@ -106,7 +106,7 @@ class LabelService
         }
         //内容排序
         if (empty($data['order'])) {
-            $data['order']='A.time DESC,A.content_id DESC';
+            $data['order'] = 'A.time DESC,A.content_id DESC';
         }
         //其他属性
         $where['status'] = 1;
@@ -126,14 +126,14 @@ class LabelService
      */
     public function fragment($data)
     {
-        $where=array();
+        $where = array();
         if (empty($data['mark'])) {
-            return ;
+            return;
         }
         $where['label'] = $data['mark'];
         $info = target('duxcms/Fragment')->getWhereInfo($where);
         if (empty($info)) {
-            return ;
+            return;
         }
         return htmlspecialchars_decode(html_out($info['content']));
     }
@@ -143,15 +143,15 @@ class LabelService
      */
     public function formToken($data)
     {
-        $where=array();
+        $where = array();
         if (empty($data['table'])) {
-            return ;
+            return;
         }
         $where = array();
         $where['table'] = $data['table'];
         $formInfo = target('duxcms/FieldsetForm')->getWhereInfo($where);
         if (empty($formInfo)) {
-            return ;
+            return;
         }
         return target('duxcms/FieldsetForm')->setToken($data['table']);
     }
@@ -162,13 +162,13 @@ class LabelService
     public function aurl($data)
     {
         if (empty($data['content_id'])) {
-            return ;
+            return;
         }
-        $where=array();
+        $where = array();
         $where['content_id'] = $data['content_id'];
         $info = target('duxcms/Content')->getWhereInfo($where);
         if (empty($info)) {
-            return ;
+            return;
         }
         return target('duxcms/Content')->getUrl($info);
     }
@@ -179,13 +179,13 @@ class LabelService
     public function curl($data)
     {
         if (empty($data['class_id'])) {
-            return ;
+            return;
         }
-        $where=array();
+        $where = array();
         $where['class_id'] = $data['class_id'];
         $info = target('duxcms/Category')->getWhereInfo($where);
         if (empty($info)) {
-            return ;
+            return;
         }
         return target('duxcms/Category')->getUrl($info);
     }
@@ -264,11 +264,11 @@ class LabelService
 
         if (!empty($list)) {
             foreach ($list as $key => $value) {
-                $data[$key]=$value;
+                $data[$key] = $value;
                 foreach ($fieldList as $v) {
                     $data[$key][$v['field']] = target('duxcms/FieldData')->revertField($value[$v['field']], $v['type'], $v['config']);
                 }
-                $data[$key]['furl'] = url('DuxCms/Form/info', array('name'=>$name,'id'=>$value['data_id']));
+                $data[$key]['furl'] = url('DuxCms/Form/info', array('name'=>$name, 'id'=>$value['data_id']));
             }
         }
         return $data;

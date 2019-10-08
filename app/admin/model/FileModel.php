@@ -11,7 +11,7 @@ class FileModel extends BaseModel
     //完成
     protected $_auto = array(
         array('time','time',3,'function'),
-     );
+        );
 
     /**
      * 上传数据

@@ -10,7 +10,7 @@ class CategoryPageModel extends BaseModel
 {
     //验证
     protected $_validate = array(
-        array('content','require', '请填写页面内容', 1 ,'regex',3),
+        array('content', 'require', '请填写页面内容', 1, 'regex', 3),
     );
 
     /**

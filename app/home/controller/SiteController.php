@@ -31,13 +31,13 @@ class SiteController extends BaseController
      * @param bool $type 模板输出
      * @return void
      */
-    protected function siteDisplay($name='', $type = true)
+    protected function siteDisplay($name = '', $type = true)
     {
         // 多语言
         if (defined('LANG_OPEN')) {
-            $tpl = THEME_NAME . '/' . TPL_NAME . '/' . APP_LANG . '/' . $name;
+            $tpl = THEME_NAME.'/'.TPL_NAME.'/'.APP_LANG.'/'.$name;
         } else {
-            $tpl = THEME_NAME . '/' . TPL_NAME . '/' . $name;
+            $tpl = THEME_NAME.'/'.TPL_NAME.'/'.$name;
         }
           
         if ($type) {
@@ -51,18 +51,18 @@ class SiteController extends BaseController
      * 页面Meda信息组合
      * @return array 页面信息
      */
-    protected function getMedia($title='', $keywords='', $description='')
+    protected function getMedia($title = '', $keywords = '', $description = '')
     {
         if (empty($title)) {
-            $title=config('site_title').' - '.config('site_subtitle');
+            $title = config('site_title').' - '.config('site_subtitle');
         } else {
-            $title=$title.' - '.config('site_title').' - '.config('site_subtitle');
+            $title = $title.' - '.config('site_title').' - '.config('site_subtitle');
         }
         if (empty($keywords)) {
-            $keywords=config('site_keywords');
+            $keywords = config('site_keywords');
         }
         if (empty($description)) {
-            $description=config('site_description');
+            $description = config('site_description');
         }
         return array(
             'title'=>$title,

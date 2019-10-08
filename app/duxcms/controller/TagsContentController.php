@@ -37,17 +37,17 @@ class TagsContentController extends SiteController
         $list = target('TagsHas')->page(20)->loadContentList($where, $limit);
         $this->pager = target('TagsHas')->pager;
         if (!empty($list)) {
-            $data=array();
+            $data = array();
             foreach ($list as $key => $value) {
-                $data[$key]=$value;
-                $data[$key]['curl']=target('duxcms/Category')->getUrl($value);
-                $data[$key]['aurl']=target('duxcms/Content')->getUrl($value);
+                $data[$key] = $value;
+                $data[$key]['curl'] = target('duxcms/Category')->getUrl($value);
+                $data[$key]['aurl'] = target('duxcms/Content')->getUrl($value);
             }
         }
         //位置导航
         $crumb = array(
-            array('name'=>'标签列表','url'=>url('duxcms/Tags/index')),
-            array('name'=>$tagInfo['name'],'url'=>url('duxcms/TagsContent/index', array('name'=>$tagInfo['name']))),
+            array('name'=>'标签列表', 'url'=>url('duxcms/Tags/index')),
+            array('name'=>$tagInfo['name'], 'url'=>url('duxcms/TagsContent/index', array('name'=>$tagInfo['name']))),
             );
         //URL参数
         $pageMaps = array();

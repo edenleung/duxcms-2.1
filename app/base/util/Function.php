@@ -21,7 +21,7 @@ function hasSub($cid)
 function pushBaidu()
 {
     $script = '(function(){var bp=document.createElement("script");var curProtocol=window.location.protocol.split(":")[0];if(curProtocol==="https"){bp.src="https://zz.bdstatic.com/linksubmit/push.js"}else{bp.src="http://push.zhanzhang.baidu.com/push.js"}var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(bp,s)})();';
-    echo '<script>' . $script . '</script>';
+    echo '<script>'.$script.'</script>';
 }
 
 /**
@@ -35,7 +35,7 @@ function pushBaidu()
 function articleSumByCid($cid, $positionId = '', $isShow = true)
 {
     $model = target('article/CategoryArticle');
-    $categoryInfo=$model->getInfo($cid);
+    $categoryInfo = $model->getInfo($cid);
 
     // 频道页(统计频道页下所有分类)
     $classIds = '';
@@ -94,7 +94,7 @@ function is_https()
  */
 function push($urls)
 {
-    $file = CONFIG_PATH . 'push.php';
+    $file = CONFIG_PATH.'push.php';
     $config = load_config($file);
 
     $token = $config['push_token'];
@@ -106,7 +106,7 @@ function push($urls)
     }
 
     $ch = curl_init();
-    $options =  array(
+    $options = array(
         CURLOPT_URL => $url,
         CURLOPT_POST => true,
         CURLOPT_RETURNTRANSFER => true,
@@ -179,7 +179,7 @@ function request($str, $default = null, $function = null)
  */
 function filter_string($data)
 {
-    if ($data===null) {
+    if ($data === null) {
         return false;
     }
     if (is_array($data)) {
@@ -208,7 +208,7 @@ function showArticleProgress($container, $parent, $child, $class)
     $script = str_replace('{CHILD}', $child, $script);
     $script = str_replace('{CLASS}', $class, $script);
 
-    return '<script>' . $script . '</script>';
+    return '<script>'.$script.'</script>';
 }
 
 /**
@@ -218,7 +218,7 @@ function showArticleProgress($container, $parent, $child, $class)
  */
 function tongji()
 {
-    $file = CONFIG_PATH . 'statistics.php';
+    $file = CONFIG_PATH.'statistics.php';
     $file = load_config($file);
     if (!$file['tongji_open']) {
         return;
@@ -255,9 +255,9 @@ function buildScreenUri($flag, $fields, $field, $classId, $id = '')
     $params = [];
     foreach ($fields as $item) {
         if ($field != $item) {
-            $value = request('get.' . $item, 0, 'intval');
+            $value = request('get.'.$item, 0, 'intval');
             if ($value) {
-                $params[$item] =$value;
+                $params[$item] = $value;
             }
         }
     }
@@ -328,12 +328,12 @@ function save_config($file, $config)
     $conf = file_get_contents($file);
     //替换配置项
     foreach ($config as $key => $value) {
-        if (is_string($value) && !in_array($value, array('true','false'))) {
+        if (is_string($value) && !in_array($value, array('true', 'false'))) {
             if (!is_numeric($value)) {
-                $value = "'" . $value . "'"; //如果是字符串，加上单引号
+                $value = "'".$value."'"; //如果是字符串，加上单引号
             }
         }
-        $conf = preg_replace("/'" . $key . "'\s*=\>\s*(.*?),/iU", "'".$key."'=>".$value.",", $conf);
+        $conf = preg_replace("/'".$key."'\s*=\>\s*(.*?),/iU", "'".$key."'=>".$value.",", $conf);
     }
     //写入应用配置文件
     // if (!IS_WRITE) {
@@ -411,10 +411,10 @@ function get_config_file($file)
                 break;
         }
         $app = strtolower($app);
-        if (empty($app)&&empty($file)) {
+        if (empty($app) && empty($file)) {
             throw new \Exception("Config '{$file}' not found'", 500);
         }
-        $file = APP_PATH . "{$app}/conf/{$name}.php";
+        $file = APP_PATH."{$app}/conf/{$name}.php";
         if (!file_exists($file)) {
             throw new \Exception("Config '{$file}' not found", 500);
         }
@@ -467,7 +467,7 @@ function match_url($str, $params = array(), $mustParams = array())
  */
 function target($str, $layer = 'model')
 {
-    static $_target  =   array();
+    static $_target = array();
     $str = explode('/', $str);
     $strCount = count($str);
     switch ($strCount) {
@@ -490,7 +490,7 @@ function target($str, $layer = 'model')
         throw new \Exception("Class '{$class}' not found'", 500);
     }
     $target = new $class();
-    $_target[$name]  =  $target;
+    $_target[$name] = $target;
     return $target;
 }
 
@@ -499,7 +499,7 @@ function target($str, $layer = 'model')
  * @param string $name 指定service名
  * @return array
  */
-function get_all_service($name, $method, $vars=array())
+function get_all_service($name, $method, $vars = array())
 {
     if (empty($name)) {
         return null;
@@ -517,8 +517,8 @@ function get_all_service($name, $method, $vars=array())
         $path = str_replace('\\', '/', $path);
         $appName = explode('/', $path);
         $appName = $appName[0];
-        $config = load_config($appName .'/config');
-        if (!$config['APP_SYSTEM'] &&(!$config['APP_STATE'] || !$config['APP_INSTALL'])) {
+        $config = load_config($appName.'/config');
+        if (!$config['APP_SYSTEM'] && (!$config['APP_STATE'] || !$config['APP_INSTALL'])) {
             continue;
         }
         $class = target($appName.'/'.$name, 'service');
@@ -534,10 +534,10 @@ function get_all_service($name, $method, $vars=array())
  * @param string $name 指定service名
  * @return Service
  */
-function service($appName, $name, $method, $vars=array())
+function service($appName, $name, $method, $vars = array())
 {
-    $config = load_config($appName .'/config');
-    if (!$config['APP_SYSTEM'] &&(!$config['APP_STATE'] || !$config['APP_INSTALL'])) {
+    $config = load_config($appName.'/config');
+    if (!$config['APP_SYSTEM'] && (!$config['APP_STATE'] || !$config['APP_INSTALL'])) {
         return;
     }
     $class = target($appName.'/'.$name, 'service');
@@ -553,10 +553,10 @@ function service($appName, $name, $method, $vars=array())
  * @param string $name  指定api名
  * @return Api
  */
-function api($appName, $name, $method, $vars=array())
+function api($appName, $name, $method, $vars = array())
 {
-    $config = load_config($appName .'/config');
-    if (!$config['APP_SYSTEM'] &&(!$config['APP_STATE'] || !$config['APP_INSTALL'])) {
+    $config = load_config($appName.'/config');
+    if (!$config['APP_SYSTEM'] && (!$config['APP_STATE'] || !$config['APP_INSTALL'])) {
         return;
     }
     $class = target($appName.'/'.$name, 'api');
@@ -604,7 +604,7 @@ function array_order($array, $key, $type = 'asc', $reset = false)
  * @param string $value
  * @return  string
  */
-function session($name='', $value = '')
+function session($name = '', $value = '')
 {
     if (empty($name)) {
         return $_SESSION;
@@ -618,11 +618,11 @@ function session($name='', $value = '')
     }
     $pre = config('COOKIE_PREFIX');
     if ($value === '') {
-        $session = $_SESSION[$pre . $name];
+        $session = $_SESSION[$pre.$name];
     } else if (is_null($value)) {
-        unset($_SESSION[$pre . $name]);
+        unset($_SESSION[$pre.$name]);
     } else {
-        $session = $_SESSION[$pre . $name] = $value;
+        $session = $_SESSION[$pre.$name] = $value;
     }
     return $session;
 }
@@ -634,16 +634,16 @@ function session($name='', $value = '')
  * @param int $time 小时时间
  * @return  string
  */
-function cookie($name='', $value='', $time = 1)
+function cookie($name = '', $value = '', $time = 1)
 {
     if (empty($name)) {
         return $_COOKIE;
     }
     $pre = config('COOKIE_PREFIX');
     if ($value === '') {
-        $cookie = $_COOKIE[$pre . $name];
+        $cookie = $_COOKIE[$pre.$name];
     } else {
-        $cookie = setcookie($pre . $name, $value, time()+3600*$time, '/');
+        $cookie = setcookie($pre.$name, $value, time() + 3600 * $time, '/');
     }
     return $cookie;
 }
@@ -666,7 +666,7 @@ function default_data($data, $var)
 //图片裁剪
 function cut_image($img, $width, $height, $type = 3)
 {
-    if (empty($width)&&empty($height)) {
+    if (empty($width) && empty($height)) {
         return $img;
     }
     $imgDir = realpath(ROOT_PATH.$img);
@@ -694,7 +694,7 @@ function dir_size($directoty)
     $dir_size = 0;
     if ($dir_handle = @opendir($directoty)) {
         while ($filename = readdir($dir_handle)) {
-            $subFile = $directoty . DIRECTORY_SEPARATOR . $filename;
+            $subFile = $directoty.DIRECTORY_SEPARATOR.$filename;
             if ($filename == '.' || $filename == '..') {
                 continue;
             } elseif (is_dir($subFile)) {
@@ -758,7 +758,7 @@ function del_dir($dir)
  */
 function html_in($str)
 {
-    $str=htmlspecialchars($str);
+    $str = htmlspecialchars($str);
     if (!get_magic_quotes_gpc()) {
         $str = addslashes($str);
     }
@@ -771,9 +771,9 @@ function html_in($str)
 function html_out($str)
 {
     if (function_exists('htmlspecialchars_decode')) {
-        $str=htmlspecialchars_decode($str);
+        $str = htmlspecialchars_decode($str);
     } else {
-        $str=html_entity_decode($str);
+        $str = html_entity_decode($str);
     }
     $str = stripslashes($str);
     return $str;
@@ -782,7 +782,7 @@ function html_out($str)
 /**
  * 字符串截取
  */
-function len($str, $len=0)
+function len($str, $len = 0)
 {
     if (!empty($len)) {
         return \framework\ext\Util::msubstr($str, 0, $len);
@@ -812,8 +812,8 @@ function unique_number()
  */
 function random_str()
 {
-    $year_code = array('A','B','C','D','E','F','G','H','I','J');
-    $order_sn = $year_code[intval(date('Y'))-2010].
+    $year_code = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+    $order_sn = $year_code[intval(date('Y')) - 2010].
     strtoupper(dechex(date('m'))).date('d').
     substr(time(), -5).substr(microtime(), 2, 5).sprintf('d', rand(0, 99));
     return $order_sn;
@@ -852,16 +852,16 @@ function is_empty($str)
 /**
  * 截取摘要
  */
-function get_text_make($data, $cut=0, $str="...")
+function get_text_make($data, $cut = 0, $str = "...")
 {
-    $data=strip_tags($data);
+    $data = strip_tags($data);
     $pattern = "/&[a-zA-Z]+;/";
-    $data=preg_replace($pattern, '', $data);
+    $data = preg_replace($pattern, '', $data);
     if (!is_numeric($cut)) {
         return $data;
     }
     if ($cut>0) {
-        $data=mb_strimwidth($data, 0, $cut, $str);
+        $data = mb_strimwidth($data, 0, $cut, $str);
     }
     return $data;
 }

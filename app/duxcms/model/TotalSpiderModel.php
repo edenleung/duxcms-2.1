@@ -32,7 +32,7 @@ class TotalSpiderModel extends BaseModel
      */
     public function curNum()
     {
-        $date =  strtotime(date('Y-m-d 0:0:0'));
+        $date = strtotime(date('Y-m-d 0:0:0'));
         $where = array();
         $where['time'] = $date;
         $info = $this->where($where)->find();
@@ -59,7 +59,7 @@ class TotalSpiderModel extends BaseModel
             $boot = 'soso';
         }
         if (empty($boot)) {
-            return ;
+            return;
         }
         //当天时间
         $time = strtotime(date('Y-m-d'));
@@ -95,7 +95,7 @@ class TotalSpiderModel extends BaseModel
         $datasets[3] = target('TotalVisitor')->getChart('orange');
         $datasets[3]['label'] = '搜搜';
         $timeArray = array();
-        for ($i=0; $i < $num; $i++) {
+        for ($i = 0; $i<$num; $i++) {
             $timeNow = strtotime("-".$i." ".$type, strtotime(date('Y-m-d 0:0:0')));
             $jsonArray['labels'][] = date($date, $timeNow);
             $where = array();

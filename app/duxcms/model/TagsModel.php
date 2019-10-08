@@ -12,7 +12,7 @@ class TagsModel extends BaseModel
     protected $_auto = array(
         array('click','intval',3,'function'),
         array('quote','intval',3,'function'),
-     );
+        );
 
     /**
      * 获取列表
@@ -26,7 +26,7 @@ class TagsModel extends BaseModel
         if (!empty($pageList)) {
             $i = 0;
             foreach ($pageList as $key=>$value) {
-                $list[$key]=$value;
+                $list[$key] = $value;
                 $params = [
                     'name' => $value['name']
                 ];

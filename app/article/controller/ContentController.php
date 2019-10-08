@@ -17,17 +17,17 @@ class ContentController extends SiteController
     {
         $contentId = request('get.content_id', 0, 'intval');
         $urlTitle = request('get.urltitle');
-        if (empty($contentId)&&empty($urlTitle)) {
+        if (empty($contentId) && empty($urlTitle)) {
             $this->error404();
         }
         $model = target('ContentArticle');
         //获取内容信息
         if (!empty($contentId)) {
-            $contentInfo=$model->getInfo($contentId);
+            $contentInfo = $model->getInfo($contentId);
         } elseif (!empty($urlTitle)) {
             $where = array();
             $where['urltitle'] = $urlTitle;
-            $contentInfo=$model->getWhereInfo($where);
+            $contentInfo = $model->getWhereInfo($where);
         } else {
             $this->error404();
         }
@@ -41,7 +41,7 @@ class ContentController extends SiteController
         }
         //获取栏目信息
         $modelCategory = target('CategoryArticle');
-        $categoryInfo=$modelCategory->getInfo($contentInfo['class_id']);
+        $categoryInfo = $modelCategory->getInfo($contentInfo['class_id']);
         if (!is_array($categoryInfo)) {
             $this->error404();
         }
@@ -51,7 +51,7 @@ class ContentController extends SiteController
             changeLang($categoryInfo['lang'], $_REQUEST['s']);
         }
 
-        if ($categoryInfo['app']<>APP_NAME) {
+        if ($categoryInfo['app'] <> APP_NAME) {
             $this->error404();
         };
         //判断跳转
@@ -81,20 +81,20 @@ class ContentController extends SiteController
         $prevWhere['A.status'] = 1;
         $prevWhere[] = 'A.time < '.$contentInfo['time'];
         $prevWhere['C.class_id'] = $categoryInfo['class_id'];
-        $prevInfo=$model->getWhereInfo($prevWhere, ' A.time DESC,A.content_id DESC');
+        $prevInfo = $model->getWhereInfo($prevWhere, ' A.time DESC,A.content_id DESC');
         if (!empty($prevInfo)) {
-            $prevInfo['aurl']=target('duxcms/Content')->getUrl($prevInfo, $appConfig);
-            $prevInfo['curl']=target('duxcms/Category')->getUrl($prevInfo, $appConfig);
+            $prevInfo['aurl'] = target('duxcms/Content')->getUrl($prevInfo, $appConfig);
+            $prevInfo['curl'] = target('duxcms/Category')->getUrl($prevInfo, $appConfig);
         }
         //下一篇
         $nextWhere = array();
         $nextWhere['A.status'] = 1;
         $nextWhere[] = 'A.time > '.$contentInfo['time'];
         $nextWhere['C.class_id'] = $categoryInfo['class_id'];
-        $nextInfo=$model->getWhereInfo($nextWhere, ' A.time ASC,A.content_id ASC');
+        $nextInfo = $model->getWhereInfo($nextWhere, ' A.time ASC,A.content_id ASC');
         if (!empty($nextInfo)) {
-            $nextInfo['aurl']=target('duxcms/Content')->getUrl($nextInfo, $appConfig);
-            $nextInfo['curl']=target('duxcms/Category')->getUrl($nextInfo, $appConfig);
+            $nextInfo['aurl'] = target('duxcms/Content')->getUrl($nextInfo, $appConfig);
+            $nextInfo['curl'] = target('duxcms/Category')->getUrl($nextInfo, $appConfig);
         }
         //MEDIA信息
         $media = $this->getMedia($contentInfo['title'], $contentInfo['keywords'], $contentInfo['description']);

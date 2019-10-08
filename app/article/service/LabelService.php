@@ -11,7 +11,7 @@ class LabelService
      */
     public function categoryList($data)
     {
-        $where=[];
+        $where = [];
         //上级栏目
         if (isset($data['parent_id'])) {
             $where['A.parent_id'] = $data['parent_id'];
@@ -51,7 +51,7 @@ class LabelService
      */
     public function contentList($data)
     {
-        $where=array();
+        $where = array();
         //指定栏目内容
         if (!empty($data['class_id'])) {
             $classWhere = 'A.class_id in ('.$data['class_id'].')';
@@ -98,7 +98,7 @@ class LabelService
         }
         //内容排序
         if (empty($data['order'])) {
-            $data['order']='A.time DESC,A.content_id DESC';
+            $data['order'] = 'A.time DESC,A.content_id DESC';
         }
         //其他属性
         $where['status'] = 1;

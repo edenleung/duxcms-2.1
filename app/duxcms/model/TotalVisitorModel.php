@@ -54,7 +54,7 @@ class TotalVisitorModel extends BaseModel
      */
     public function curNum()
     {
-        $date =  strtotime(date('Y-m-d 0:0:0'));
+        $date = strtotime(date('Y-m-d 0:0:0'));
         $where = array();
         $where['time'] = $date;
         $info = $this->where($where)->find();
@@ -74,7 +74,7 @@ class TotalVisitorModel extends BaseModel
         $datasets = $this->getChart();
         $datasets['label'] = '近期访问量';
         $timeArray = array();
-        for ($i=0; $i < $num; $i++) {
+        for ($i = 0; $i<$num; $i++) {
             $timeNow = strtotime("-".$i." ".$type, strtotime(date('Y-m-d 0:0:0')));
             $jsonArray['labels'][] = date($date, $timeNow);
             $where = array();

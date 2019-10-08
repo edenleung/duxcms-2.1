@@ -10,8 +10,8 @@ class FragmentModel extends BaseModel
 {
     //完成
     protected $_auto = array(
-         array('content','html_in',3,'function'),
-     );
+            array('content','html_in',3,'function'),
+        );
     //验证
     protected $_validate = array(
         array('name','require', '碎片名称不能为空', 1),

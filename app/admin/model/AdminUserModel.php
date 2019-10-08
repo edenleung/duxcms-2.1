@@ -18,7 +18,7 @@ class AdminUserModel extends BaseModel
         array('password','',2,'ignore'),  //编辑时密码
         array('status','intval',3,'function'),  //状态
         array('reg_time','time',1,'function'),  //注册时间
-     );
+        );
     //验证
     protected $_validate = array(
         array('group_id','number', '用户组未选择', 1 ,'regex',3),

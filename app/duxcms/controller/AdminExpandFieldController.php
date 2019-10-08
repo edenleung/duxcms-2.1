@@ -119,7 +119,7 @@ class AdminExpandFieldController extends AdminController
                 $this->error($model->getError());
             }
             $fieldsetInfo = target('FieldsetExpand')->getInfo($info['fieldset_id']);
-            $breadCrumb = array('模型列表' => url('AdminExpand/index'), '字段列表' => url('index', array('fieldset_id' => $fieldsetInfo['fieldset_id'])), '字段修改' => url('edit', array('field_id'=>$fieldId,'fieldset_id'=>$fieldsetInfo['fieldset_id'])));
+            $breadCrumb = array('模型列表' => url('AdminExpand/index'), '字段列表' => url('index', array('fieldset_id' => $fieldsetInfo['fieldset_id'])), '字段修改' => url('edit', array('field_id'=>$fieldId, 'fieldset_id'=>$fieldsetInfo['fieldset_id'])));
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);

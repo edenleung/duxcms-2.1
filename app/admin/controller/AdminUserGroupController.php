@@ -52,7 +52,7 @@ class AdminUserGroupController extends AdminController
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('用户组列表'=>url('index'),'添加'=>url());
+            $breadCrumb = array('用户组列表'=>url('index'), '添加'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->adminDisplay('info');
@@ -81,7 +81,7 @@ class AdminUserGroupController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('用户组列表'=>url('index'),'修改'=>url('', array('group_id'=>$groupId)));
+            $breadCrumb = array('用户组列表'=>url('index'), '修改'=>url('', array('group_id'=>$groupId)));
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);
@@ -113,7 +113,7 @@ class AdminUserGroupController extends AdminController
             }
             $AdminPurvewArray = unserialize($info['base_purview']);
             $AdminMenuArray = unserialize($info['menu_purview']);
-            $breadCrumb = array('用户组列表'=>url('index'),'权限设置('.$info['name'].')'=>url('', array('group_id'=>$groupId)));
+            $breadCrumb = array('用户组列表'=>url('index'), '权限设置('.$info['name'].')'=>url('', array('group_id'=>$groupId)));
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('AdminPurvew', target('Menu')->getPurview());
             $this->assign('AdminMenu', target('Menu')->getMenu());

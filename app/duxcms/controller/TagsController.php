@@ -22,7 +22,7 @@ class TagsController extends SiteController
         $list = target('Tags')->page(20)->loadList($where, $limit);
         $this->pager = target('Tags')->pager;
         //位置导航
-        $crumb = array(array('name'=>'标签列表','url'=>url('duxcms/Tags/index')));
+        $crumb = array(array('name'=>'标签列表', 'url'=>url('duxcms/Tags/index')));
         //MEDIA信息
         $media = $this->getMedia($formInfo['name']);
         $this->assign('crumb', $crumb);

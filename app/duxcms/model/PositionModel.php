@@ -12,7 +12,7 @@ class PositionModel extends BaseModel
     protected $_auto = array(
         array('sequence','intval',3,'function'),
         array('position_id','intval',2,'function'),
-     );
+        );
     //验证
     protected $_validate = array(
         array('name','require', '推荐位名称不能为空', 1),

@@ -60,11 +60,11 @@ class LangHook
             $s = config('REWRITE_ON') ? request('get.s') : request('get.lang', $defaultLang);
             if (empty($s)) {
                 define('APP_LANG', $defaultLang);
-                $url = config('REWRITE_ON') ? '/' .$defaultLang : url('home/index/index');
-                header('location:' . $url, true, $code);
+                $url = config('REWRITE_ON') ? '/'.$defaultLang : url('home/index/index');
+                header('location:'.$url, true, $code);
                 exit();
             } else {
-                if (config('REWRITE_ON') ) {
+                if (config('REWRITE_ON')) {
                     list($temp, $lang) = explode('/', $s);
                 } else {
                     $lang = $s;

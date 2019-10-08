@@ -102,7 +102,7 @@ class AdminContentController extends AdminController
         $this->assign('pageMaps', $pageMaps);
 
         // 获取百度链接提交配置
-        $file = CONFIG_PATH . 'push.php';
+        $file = CONFIG_PATH.'push.php';
         $pushConfig = load_config($file);
         $this->assign('push_open', $pushConfig['push_open']);
 
@@ -133,7 +133,7 @@ class AdminContentController extends AdminController
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('文章列表'=>url('index'),'文章添加'=>url());
+            $breadCrumb = array('文章列表'=>url('index'), '文章添加'=>url());
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             // 多语言
@@ -177,7 +177,7 @@ class AdminContentController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('文章列表'=>url('index'),'文章修改'=>url('', array('content_id'=>$contentId)));
+            $breadCrumb = array('文章列表'=>url('index'), '文章修改'=>url('', array('content_id'=>$contentId)));
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);
@@ -289,7 +289,7 @@ class AdminContentController extends AdminController
             $this->error('参数异常');
         }
 
-        $file = CONFIG_PATH . 'performance.php';
+        $file = CONFIG_PATH.'performance.php';
         $config = load_config($file);
 
         // 伪静态
@@ -303,24 +303,24 @@ class AdminContentController extends AdminController
             $res = json_decode($res);
 
             if ($res->error) {
-                $this->error('推送失败：' . $res->message);
+                $this->error('推送失败：'.$res->message);
             }
 
             // 由于不是本站url而未处理的url列表
             $not_same_site = '';
             if ($res->not_same_site) {
                 $sites = implode(',', $res->not_same_site);
-                $not_same_site = '<br/>未处理(不是本站url)的url<br/>' . $sites;
+                $not_same_site = '<br/>未处理(不是本站url)的url<br/>'.$sites;
             }
 
             // 不合法的url列表
             $not_valid = '';
             if ($res->not_valid) {
                 $site = implode(',', $res->not_valid);
-                $not_valid = '<br/>不合法的url列表:<br/>' . $sites;
+                $not_valid = '<br/>不合法的url列表:<br/>'.$sites;
             }
 
-            $this->success("推送成功！<br/>成功: {$res->success}条，剩余: {$res->remain}条" . $not_same_site . $not_valid);
+            $this->success("推送成功！<br/>成功: {$res->success}条，剩余: {$res->remain}条".$not_same_site.$not_valid);
         } else {
             $this->error('检测发现，未开启伪静态模式！');
         }

@@ -8,25 +8,25 @@ class BaseController extends \framework\base\Controller
         //设置错误级别
         error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
         //定义常量
-        define('APP_PATH', ROOT_PATH . 'app' . DIRECTORY_SEPARATOR);
-        define('DATA_PATH', ROOT_PATH . 'data' . DIRECTORY_SEPARATOR);
+        define('APP_PATH', ROOT_PATH.'app'.DIRECTORY_SEPARATOR);
+        define('DATA_PATH', ROOT_PATH.'data'.DIRECTORY_SEPARATOR);
         define('UPLOAD_NAME', 'upload');
         define('THEME_NAME', 'themes');
         define('NOW_TIME', $_SERVER['REQUEST_TIME']);
         define('REQUEST_METHOD', $_SERVER['REQUEST_METHOD']);
-        define('IS_GET', REQUEST_METHOD =='GET' ? true : false);
-        define('IS_POST', REQUEST_METHOD =='POST' ? true : false);
+        define('IS_GET', REQUEST_METHOD == 'GET' ? true : false);
+        define('IS_POST', REQUEST_METHOD == 'POST' ? true : false);
         define('IS_AJAX', ((isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest')) ? true : false);
         define('__PUBLIC__', substr(PUBLIC_URL, 0, -1));
         define('__ROOT__', substr(ROOT_URL, 0, -1));
 
         //判断安装程序
-        $lock = ROOT_PATH . 'install.lock';
+        $lock = ROOT_PATH.'install.lock';
         if (!is_file($lock)) {
             $this->redirect(url('install/Index/index'));
         }
         //引入扩展函数
-        require_once(APP_PATH . 'base/util/Function.php');
+        require_once(APP_PATH.'base/util/Function.php');
         //引入当前模块配置
         $config = load_config('config');
         if (!empty($config)) {
@@ -61,11 +61,11 @@ class BaseController extends \framework\base\Controller
             // 赋值到模板
             
             $lang_list = unserialize(LANG_CONFIG)['LANG_LIST'];
-            foreach($lang_list as $key=>$item) {
+            foreach ($lang_list as $key=>$item) {
                 if (config('REWRITE_ON')) {
-                    $url = '/' . $key;
+                    $url = '/'.$key;
                 } else {
-                    $url = '?' . http_build_query([
+                    $url = '?'.http_build_query([
                         'lang' => $key
                     ]);
                 }
@@ -77,7 +77,7 @@ class BaseController extends \framework\base\Controller
 
             $this->assign('lang_list', $lang_list);
 
-            $site_lang_file = CONFIG_PATH . 'lang/' . APP_LANG . '.php';
+            $site_lang_file = CONFIG_PATH.'lang/'.APP_LANG.'.php';
             $lang_config = load_config($site_lang_file);
             $siteConfig = array_merge($siteConfig, $lang_config);
         }
@@ -93,12 +93,12 @@ class BaseController extends \framework\base\Controller
         if (config('mobile_status')) {
             //网站跳转
             if (!$detect->isMobile() && !$detect->isTablet()) {
-                if (config('site_url')&&$url<>config('site_url')) {
+                if (config('site_url') && $url <> config('site_url')) {
                     $this->redirect('http://'.config('site_url').$_SERVER["REQUEST_URI"]);
                 }
                 define('MOBILE', false);
             } else {
-                if (config('mobile_domain')&&$url<>config('mobile_domain')) {
+                if (config('mobile_domain') && $url <> config('mobile_domain')) {
                     $this->redirect('http://'.config('mobile_domain').$_SERVER["REQUEST_URI"]);
                 }
                 define('MOBILE', true);

@@ -35,13 +35,13 @@ class Response
 
     protected function send()
     {
-        header('Content-Type: ' . $this->contentType);
+        header('Content-Type: '.$this->contentType);
 
         echo json_encode(
             [
                 'code' => $this->code,
                 'message'  => $this->message,
-                'result' => !empty($this->result) ? $this->result :  null
+                'result' => !empty($this->result) ? $this->result : null
             ]
         );
     }
