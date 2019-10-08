@@ -10,8 +10,8 @@ class TagsModel extends BaseModel
 {
     //完成
     protected $_auto = array(
-        array('click','intval',3,'function'),
-        array('quote','intval',3,'function'),
+        array('click', 'intval', 3, 'function'),
+        array('quote', 'intval', 3, 'function'),
         );
 
     /**

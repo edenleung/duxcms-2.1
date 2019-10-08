@@ -10,10 +10,10 @@ class AdminLogModel extends BaseModel
 {
     //完成
     protected $_auto = array(
-        array('time','time',1,'function'),
-        array('ip','get_client_ip',1,'function'),
-        array('app',APP_NAME,1,'string'),
-        array('user_id','get_admin_id',1,'function'),
+        array('time', 'time', 1, 'function'),
+        array('ip', 'get_client_ip', 1, 'function'),
+        array('app', APP_NAME, 1, 'string'),
+        array('user_id', 'get_admin_id', 1, 'function'),
         );
 
     /**

@@ -10,8 +10,8 @@ class TagsHasModel extends BaseModel
 {
     //完成
     protected $_auto = array(
-        array('content_id','intval',3,'function'),
-        array('tag_id','intval',3,'function'),
+        array('content_id', 'intval', 3, 'function'),
+        array('tag_id', 'intval', 3, 'function'),
         );
 
     /**
