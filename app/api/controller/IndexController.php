@@ -2,7 +2,8 @@
 
 namespace app\api\controller;
 
-use app\article\service\LabelService;
+use app\article\service\LabelService as ArticleService;
+use app\duxcms\service\LabelService as DuxService;
 
 /**
  * Api调用
@@ -28,7 +29,6 @@ class IndexController extends Response
         if (!in_array($data['app'], self::APPS) || !in_array($data['label'], self::LABELS)) {
             return $this->error('无效参数');
         }
-
         $this->app = $data['app'];
         $this->label = $data['label'];
         $this->data = $data;
@@ -37,7 +37,12 @@ class IndexController extends Response
     public function index()
     {
         try {
-            $service = new LabelService;
+            if ($this->app == 'DuxCms') {
+                $service = new DuxService;
+            } else {
+                $service = new ArticleService;
+            }
+
             $result = call_user_func(array($service, $this->label), $this->data);
             return $this->success($result);
         } catch (\Exception $e) {
