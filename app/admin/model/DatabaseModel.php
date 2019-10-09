@@ -109,7 +109,6 @@ class DatabaseModel extends BaseModel
         if (!$this->check()) {
             return false;
         }
-        $list = $this->tableList;
         //生成备份文件信息
         $dir = ROOT_PATH.$this->backupDir;
         $path = $dir.date('Ymd-His', NOW_TIME).'/';

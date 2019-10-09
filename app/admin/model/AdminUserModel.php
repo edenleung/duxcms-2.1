@@ -120,7 +120,7 @@ class AdminUserModel extends BaseModel
     public function savePurviewData()
     {
         $this->_auto = array();
-        $data = $this->create();
+        $this->create();
         $this->menu_purview = serialize($this->menu_purview);
         $this->base_purview = serialize($this->base_purview);
         $status = $this->save();

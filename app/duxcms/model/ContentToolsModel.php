@@ -70,7 +70,9 @@ class ContentToolsModel
         set_time_limit(0);
         $milliSecond = date("dHis").'_';
         if (!is_dir($filePath)) {
-            @mkdir($filePath, 0777, true);
+            if (@mkdir($filePath, 0777, true) === false) {
+                throw new \RuntimeException('The directory '.$filePath.' could not be created.');
+            }
         }
         $http = new \framework\ext\Http;
         foreach ($imgArray as $key =>$value) {
