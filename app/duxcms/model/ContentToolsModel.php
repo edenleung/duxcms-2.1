@@ -33,7 +33,7 @@ class ContentToolsModel
     public function getKerword($title)
     {
         $word = urlencode($title);
-        $url = "http://api.pullword.com/get.php?source={$word}&param1=0&param2=1&json=1";
+        $url = "http://api.pullword.com/get.php?source={$word}&param1=0&param2=0&json=1";
 
         $data = \framework\ext\Http::doGet($url, 5);
         $list = json_decode($data, true);
@@ -41,10 +41,7 @@ class ContentToolsModel
             return;
         }
 
-        $keywords = array();
-        foreach ($list as $value) {
-            $keywords[] = $value['t'];
-        }
+        $keywords = array_column($list, 't')；
         return implode(',', $keywords);
     }
 
