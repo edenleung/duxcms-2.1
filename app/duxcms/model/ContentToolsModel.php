@@ -18,7 +18,7 @@ class ContentToolsModel
     public function getImage($content, $num = 1)
     {
         $content = html_out($content);
-        $output = preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"]/i', $content, $matches);
+        preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"]/i', $content, $matches);
         $num = $num - 1;
         $img = $matches[1][$num];
         return $img;
