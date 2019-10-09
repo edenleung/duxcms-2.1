@@ -41,7 +41,7 @@ class ContentToolsModel
             return;
         }
 
-        $keywords = array_column($list, 't')；
+        $keywords = array_column($list, 't');
         return implode(',', $keywords);
     }
 
