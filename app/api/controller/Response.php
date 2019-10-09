@@ -30,6 +30,7 @@ class Response
         $this->message = $message;
         $this->result = $result;
         $this->code = 200;
+        
         return $this->send();
     }
 
@@ -42,7 +43,12 @@ class Response
                 'code' => $this->code,
                 'message'  => $this->message,
                 'result' => !empty($this->result) ? $this->result : null
-            ]
+            ],
+            JSON_UNESCAPED_UNICODE
         );
+
+        if (function_exists('fastcgi_finish_request')) {
+            fastcgi_finish_request();
+        }
     }
 }
