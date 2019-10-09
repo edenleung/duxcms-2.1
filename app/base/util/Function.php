@@ -75,6 +75,7 @@ function articleSumByCid($cid, $positionId = '', $isShow = true)
  */
 function isOdd($index)
 {
+    $index++;
     if ($index % 2 == 0) {
         return false;
     }
