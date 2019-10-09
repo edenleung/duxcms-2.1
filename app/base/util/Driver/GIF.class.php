@@ -144,11 +144,9 @@ Class GIFEncoder {
         for ($i = 0; $i<count($GIF_src); $i++) {
             if (strToLower($GIF_mod) == "url") {
                 $this->BUF [] = fread(fopen($GIF_src [$i], "rb"), filesize($GIF_src [$i]));
-            }
-            else if (strToLower($GIF_mod) == "bin") {
+            } else if (strToLower($GIF_mod) == "bin") {
                 $this->BUF [] = $GIF_src [$i];
-            }
-            else {
+            } else {
                 printf("%s: %s ( %s )!", $this->VER, $this->ERR ['ERR02'], $GIF_mod);
                 exit	(0);
             }
@@ -244,8 +242,7 @@ Class GIFEncoder {
             if ($Global_len == $Locals_len) {
                 if (GIFEncoder::GIFBlockCompare($Global_rgb, $Locals_rgb, $Global_len)) {
                     $this->GIF .= ($Locals_ext.$Locals_img.$Locals_tmp);
-                }
-                else {
+                } else {
                     $byte  = ord($Locals_img { 9 } );
                     $byte |= 0x80;
                     $byte &= 0xF8;
@@ -253,8 +250,7 @@ Class GIFEncoder {
                     $Locals_img { 9 } = chr($byte);
                     $this->GIF .= ($Locals_ext.$Locals_img.$Locals_rgb.$Locals_tmp);
                 }
-            }
-            else {
+            } else {
                 $byte  = ord($Locals_img { 9 } );
                 $byte |= 0x80;
                 $byte &= 0xF8;
@@ -262,8 +258,7 @@ Class GIFEncoder {
                 $Locals_img { 9 } = chr($byte);
                 $this->GIF .= ($Locals_ext.$Locals_img.$Locals_rgb.$Locals_tmp);
             }
-        }
-        else {
+        } else {
             $this->GIF .= ($Locals_ext.$Locals_img.$Locals_tmp);
         }
         $this->IMG = 1;
@@ -457,8 +452,7 @@ Class GIFDecoder {
         if ($GIF_colorF) {
             $GIF_code = $this->GIF_buffer [8] & 0x07;
             $GIF_sort = $this->GIF_buffer [8] & 0x20 ? 1 : 0;
-        }
-        else {
+        } else {
             $GIF_code = $this->GIF_colorC;
             $GIF_sort = $this->GIF_sorted;
         }
@@ -474,8 +468,7 @@ Class GIFDecoder {
         if ($GIF_colorF == 1) {
             $this->GIFGetByte(3 * $GIF_size);
             $this->GIFPutByte($this->GIF_buffer);
-        }
-        else {
+        } else {
             $this->GIFPutByte($this->GIF_global);
         }
         $this->GIF_string .= chr(0x2C);
