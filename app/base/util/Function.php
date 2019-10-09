@@ -68,6 +68,21 @@ function articleSumByCid($cid, $positionId = '', $isShow = true)
 }
 
 /**
+ * 判断是否奇数
+ *
+ * @param number $index $list['i']
+ * @return boolean
+ */
+function isOdd($index)
+{
+    if ($index % 2 == 0) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
  * 判断当前协议是否为HTTPS
  *
  * @return boolean
