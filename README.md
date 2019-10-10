@@ -92,6 +92,7 @@ http://www.domain.com/zh-cn
 ## 助手函数
 * `hasSub($cid)` 是否有下级分类
 * `articleSumByCid(int $cid, $positionId = '', $isShow = true)` 获取分类文章统计
+* `isOdd($index)` 是否为奇数 例子 `<!--if{isOdd($list['i'])}-->单数 <!--{else}-->偶数<!--{/if}-->`
 
 ## 标签
 | 标签 | 说明| 参数 | 例子
