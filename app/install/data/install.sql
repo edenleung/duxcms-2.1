@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `dux_category` (
   `keywords` varchar(250) DEFAULT NULL,
   `description` varchar(250) DEFAULT NULL,
   `upload_config` int(10) DEFAULT '1',
-  `lang` varchar(250) DEFAULT NULL,
+  `lang` varchar(250) NOT NULL,
   PRIMARY KEY (`class_id`),
   UNIQUE KEY `urlname` (`urlname`) USING BTREE,
   KEY `pid` (`parent_id`),
