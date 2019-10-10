@@ -559,3 +559,4 @@ Class GIFDecoder {
     public function GIFGetDelays( ) {
         return ($this->GIF_delays);
     }
+}
