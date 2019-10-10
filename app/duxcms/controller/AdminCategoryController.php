@@ -49,7 +49,7 @@ class AdminCategoryController extends AdminController
         if (defined('LANG_OPEN')) {
             $where['lang'] = APP_LANG;
         } else {
-            $where[] = "lang  is null";
+            $where[] = "lang = ''";
         }
         $this->assign('list', target('Category')->loadList($where));
         $this->adminDisplay();

@@ -32,7 +32,7 @@ class AdminCategoryController extends AdminController
             if (defined('LANG_OPEN')) {
                 $map['lang'] = APP_LANG;
             } else {
-                $map[] = 'lang is null';
+                $map[] = "lang = ''";
             }
 
             $this->assign('categoryList', target('duxcms/Category')->loadList($map));

@@ -41,7 +41,7 @@ class LabelService
         if (defined('LANG_OPEN')) {
             $where['lang'] = APP_LANG;
         } else {
-            $where[] = "lang is null";
+            $where[] = "lang = ''";
         }
         return $model->loadData($where, $limit);
     }
@@ -115,7 +115,7 @@ class LabelService
         if (defined('LANG_OPEN')) {
             $where['B.lang'] = APP_LANG;
         } else {
-            $where[] = 'B.lang is null';
+            $where[] = "B.lang = ''";
         }
 
         return target('duxcms/Content')->loadList($where, $data['limit'], $data['order']);

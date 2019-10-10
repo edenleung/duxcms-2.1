@@ -40,7 +40,7 @@ class LabelService
         if (defined('LANG_OPEN')) {
             $where['A.lang'] = APP_LANG;
         } else {
-            $where[] = "A.lang is null";
+            $where[] = "A.lang = ''";
         }
 
         return $model->loadData($where, $data['limit']);
@@ -107,7 +107,7 @@ class LabelService
         if (defined('LANG_OPEN')) {
             $where['C.lang'] = APP_LANG;
         } else {
-            $where[] = "C.lang is null";
+            $where[] = "C.lang = ''";
         }
         
         return target('article/ContentArticle')->loadList($where, $data['limit'], $data['order'], $expand_id);
