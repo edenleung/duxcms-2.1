@@ -26,7 +26,7 @@
 * [提供多条件筛选](#多条件筛选)
 * [提供在线更新服务(增量更新)](#在线更新) 🚀
 * 提供网站地图生成
-* [提供api接口调用（暂时未添加token限制）](#api-调用)
+* [提供api接口调用](#api-调用)
 
 ## 安装
 * mysqli扩展必须安装
@@ -176,9 +176,25 @@ GET `/api.php`
 
 | 参数 | 说明(参数范围)| 是否必传 | 
 | ----|----|----|
+| signature |  签名 | 是 |
+| timestamp |  时间戳 | 是 |
+| nonce | 随机字符串| 是 |
 | app |  ['DuxCms', 'Article']| 是 |
 | label | ['contentList', 'categoryList', 'tagsList'] | 是 |
 | ... | 其它查询参数，与普通模板标签一样 | 否 |
+
+签名生成参考
+```
+$params = [
+  time(),   // timestamp 参数值
+  rand(1, 99999),   // nonce 参数值
+  'DuxCms', // app 参数值
+  'categoryList' // label 参数值
+];
+sort($params, SORT_STRING);
+$tmpStr = implode( $params );
+$sign = sha1( $tmpStr );
+```
 
 ## 在线更新
 为了不影响已有的文件，作了增量更新包。  
