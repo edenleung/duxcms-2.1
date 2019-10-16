@@ -1,29 +1,31 @@
 <?php
+
 namespace app\page\controller;
 
 use app\admin\controller\AdminController;
 
 /**
- * 页面管理
+ * 页面管理.
  */
 class AdminCategoryController extends AdminController
 {
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
         $menu = target('duxcms/AdminCategory', 'controller');
+
         return $menu->infoModule;
     }
 
     /**
-     * 增加
+     * 增加.
      */
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('页面列表'=>url('duxcms/AdminCategory/index'), '页面添加'=>url());
+            $breadCrumb = ['页面列表'=>url('duxcms/AdminCategory/index'), '页面添加'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->assign('categoryList', target('duxcms/Category')->loadList());
@@ -46,7 +48,7 @@ class AdminCategoryController extends AdminController
     }
 
     /**
-     * 修改
+     * 修改.
      */
     public function edit()
     {
@@ -60,7 +62,7 @@ class AdminCategoryController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('页面列表'=>url('duxcms/AdminCategory/index'), '页面修改'=>url());
+            $breadCrumb = ['页面列表'=>url('duxcms/AdminCategory/index'), '页面修改'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('categoryList', target('duxcms/Category')->loadList());
@@ -82,8 +84,9 @@ class AdminCategoryController extends AdminController
             }
         }
     }
+
     /**
-     * 删除
+     * 删除.
      */
     public function del()
     {
@@ -92,7 +95,7 @@ class AdminCategoryController extends AdminController
             $this->error('参数不能为空！');
         }
         //判断子页面
-        if (target('duxcms/Category')->loadList(array(), $classId)) {
+        if (target('duxcms/Category')->loadList([], $classId)) {
             $this->error('请先删除子页面！');
         }
         //删除页面操作

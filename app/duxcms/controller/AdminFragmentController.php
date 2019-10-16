@@ -1,57 +1,58 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
 
 /**
- * 碎片管理
+ * 碎片管理.
  */
-
 class AdminFragmentController extends AdminController
 {
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '碎片管理',
+        return [
+            'info'  => [
+                'name'        => '碎片管理',
                 'description' => '管理网站调用自定义变量',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '碎片列表',
-                        'url' => url('index'),
+                        'url'  => url('index'),
                         'icon' => 'list',
-                    ),
-                ),
-            'add' => array(
-                    array(
+                    ],
+                ],
+            'add' => [
+                    [
                         'name' => '添加碎片',
-                        'url' => url('add'),
-                    ),
-                )
-            );
+                        'url'  => url('add'),
+                    ],
+                ],
+            ];
     }
+
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
-        $breadCrumb = array('碎片列表'=>url());
+        $breadCrumb = ['碎片列表'=>url()];
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', target('Fragment')->loadList());
         $this->adminDisplay();
     }
 
     /**
-     * 增加
+     * 增加.
      */
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('碎片列表'=>url('index'), '添加'=>url());
+            $breadCrumb = ['碎片列表'=>url('index'), '添加'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->adminDisplay('info');
@@ -71,7 +72,7 @@ class AdminFragmentController extends AdminController
     }
 
     /**
-     * 修改
+     * 修改.
      */
     public function edit()
     {
@@ -86,7 +87,7 @@ class AdminFragmentController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('碎片列表'=>url('index'), '修改'=>url('', array('fragment_id'=>$fragmentId)));
+            $breadCrumb = ['碎片列表'=>url('index'), '修改'=>url('', ['fragment_id'=>$fragmentId])];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);
@@ -106,7 +107,7 @@ class AdminFragmentController extends AdminController
     }
 
     /**
-     * 删除
+     * 删除.
      */
     public function del()
     {
@@ -115,7 +116,7 @@ class AdminFragmentController extends AdminController
             $this->error('参数不能为空！');
         }
         //获取用户数量
-        $map = array();
+        $map = [];
         $map['fragment_id'] = $fragmentId;
         if (target('Fragment')->delData($fragmentId)) {
             $this->success('碎片删除成功！');

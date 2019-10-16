@@ -1,25 +1,27 @@
 <?php
+
 namespace app\duxcms\model;
 
 use app\base\model\BaseModel;
 
 /**
- * 推荐位表操作
+ * 推荐位表操作.
  */
 class PositionModel extends BaseModel
 {
     //完成
-    protected $_auto = array(
-        array('sequence', 'intval', 3, 'function'),
-        array('position_id', 'intval', 2, 'function'),
-        );
+    protected $_auto = [
+        ['sequence', 'intval', 3, 'function'],
+        ['position_id', 'intval', 2, 'function'],
+        ];
     //验证
-    protected $_validate = array(
-        array('name', 'require', '推荐位名称不能为空', 1),
-    );
+    protected $_validate = [
+        ['name', 'require', '推荐位名称不能为空', 1],
+    ];
 
     /**
-     * 获取列表
+     * 获取列表.
+     *
      * @return array 列表
      */
     public function loadList()
@@ -28,20 +30,25 @@ class PositionModel extends BaseModel
     }
 
     /**
-     * 获取信息
+     * 获取信息.
+     *
      * @param int $positionId ID
+     *
      * @return array 信息
      */
     public function getInfo($positionId = 1)
     {
-        $map = array();
+        $map = [];
         $map['position_id'] = $positionId;
+
         return $this->where($map)->find();
     }
 
     /**
-     * 更新信息
+     * 更新信息.
+     *
      * @param string $type 更新类型
+     *
      * @return bool 更新状态
      */
     public function saveData($type = 'add')
@@ -61,20 +68,25 @@ class PositionModel extends BaseModel
             if ($status === false) {
                 return false;
             }
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * 删除信息
+     * 删除信息.
+     *
      * @param int $positionId ID
+     *
      * @return bool 删除状态
      */
     public function delData($positionId)
     {
-        $map = array();
+        $map = [];
         $map['position_id'] = $positionId;
+
         return $this->where($map)->delete();
     }
 }

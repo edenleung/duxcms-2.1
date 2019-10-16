@@ -1,4 +1,5 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
@@ -7,9 +8,8 @@ use GuzzleHttp\Client;
 require BASE_PATH.'/vendor/autoload.php';
 
 /**
- * 更新管理
+ * 更新管理.
  */
-
 class AdminUpdateController extends AdminController
 {
     /**
@@ -20,29 +20,30 @@ class AdminUpdateController extends AdminController
     public $domain = 'https://raw.githubusercontent.com/xiaodit/duxcms-update/master';
 
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '更新管理',
+        return [
+            'info'  => [
+                'name'        => '更新管理',
                 'description' => '升级当前网站到最新版',
-                )
-            );
+                ],
+            ];
     }
+
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
-        $breadCrumb = array('更新管理'=>url());
+        $breadCrumb = ['更新管理'=>url()];
         $this->assign('breadCrumb', $breadCrumb);
         $this->adminDisplay();
     }
 
     /**
-     * 获取最新版本
+     * 获取最新版本.
      */
     public function getVer()
     {
@@ -71,7 +72,7 @@ class AdminUpdateController extends AdminController
     }
 
     /**
-     * 下载更新
+     * 下载更新.
      */
     public function dowload()
     {
@@ -91,24 +92,24 @@ class AdminUpdateController extends AdminController
         $fileName = $updateDir.$fileName;
 
         $client = new Client([
-            'timeout' => 0
+            'timeout' => 0,
         ]);
 
         $response = $client->get($url);
         if (!file_put_contents($fileName, $response->getBody())) {
             $this->error('无法保存更新文件请检查目录【'.$updateDir.'】是否有写入权限！');
-        };
+        }
 
         $flag = $this->backup();
         if (false === $flag) {
             $this->error('备份站点文件失败!');
-        };
+        }
 
         $this->success("备份整站成功({$flag})，文件下载成功，正在执行解压操作！");
     }
 
     /**
-     * 解压文件
+     * 解压文件.
      */
     public function unzip()
     {
@@ -124,19 +125,19 @@ class AdminUpdateController extends AdminController
         }
 
         $dir = $updateDir.'tmp_'.$version;
-        $zip = new \ZipArchive;
+        $zip = new \ZipArchive();
         $res = $zip->open($file);
         if ($res === true) {
             $zip->extractTo($dir);
             $zip->close();
-            $this->success("文件解压成功，等待更新操作！");
+            $this->success('文件解压成功，等待更新操作！');
         } else {
             $this->error('解压文件失败请检查目录【'.$dir.'】是否有写入权限！');
         }
     }
 
     /**
-     * 更新文件
+     * 更新文件.
      */
     public function upfile()
     {
@@ -156,7 +157,7 @@ class AdminUpdateController extends AdminController
             $dir.'/data/config/performance.php',
             $dir.'/data/config/push.php',
             $dir.'/data/config/tongji.php',
-            $dir.'/data/config/upload.php'
+            $dir.'/data/config/upload.php',
         ];
 
         if (!copy_dir($dir, ROOT_PATH, $diss)) {
@@ -180,7 +181,7 @@ class AdminUpdateController extends AdminController
     }
 
     /**
-     * 查询授权
+     * 查询授权.
      */
     public function Authorize()
     {
@@ -190,7 +191,7 @@ class AdminUpdateController extends AdminController
     }
 
     /**
-     * 备份整站
+     * 备份整站.
      *
      * @return void
      */
@@ -198,7 +199,7 @@ class AdminUpdateController extends AdminController
     {
         $zip = new \ZipArchive();
         $fileName = date('Ymd').'-'.time().'.zip';
-        
+
         if ($zip->open(ROOT_PATH.'data/backup/'.$fileName, \ZIPARCHIVE::CREATE) !== true) {
             return false;
         }
@@ -214,14 +215,14 @@ class AdminUpdateController extends AdminController
         $handler = opendir($path);
 
         while (($filename = readdir($handler)) !== false) {
-            if ($filename != "." && $filename != "..") {
+            if ($filename != '.' && $filename != '..') {
                 // 默认只备份以下三个文件夹
                 $save = [
                     'app',
                     'themes',
-                    'framework'
+                    'framework',
                 ];
-        
+
                 $t = explode('/', $path.'/'.$filename)[6];
                 if (in_array($t, $save)) {
                     if (is_dir($path.'/'.$filename)) {

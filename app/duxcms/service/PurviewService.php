@@ -1,106 +1,107 @@
 <?php
+
 namespace app\duxcms\service;
 
 /**
- * 权限接口
+ * 权限接口.
  */
 class PurviewService
 {
     /**
-     * 获取模块权限
+     * 获取模块权限.
      */
     public function getAdminPurview()
     {
-        return array(
-            'AdminExpand' => array(
+        return [
+            'AdminExpand' => [
                 'name' => '扩展模型',
-                'auth' => array(
+                'auth' => [
                     'index' => '列表',
-                    'add' => '添加',
-                    'edit' => '编辑',
-                    'del' => '删除',
-                )
-            ),
-            'AdminExpandField' => array(
+                    'add'   => '添加',
+                    'edit'  => '编辑',
+                    'del'   => '删除',
+                ],
+            ],
+            'AdminExpandField' => [
                 'name' => '扩展字段',
-                'auth' => array(
+                'auth' => [
                     'index' => '列表',
-                    'add' => '添加',
-                    'edit' => '编辑',
-                    'del' => '删除',
-                )
-            ),
-            'AdminForm' => array(
+                    'add'   => '添加',
+                    'edit'  => '编辑',
+                    'del'   => '删除',
+                ],
+            ],
+            'AdminForm' => [
                 'name' => '表单管理',
-                'auth' => array(
+                'auth' => [
                     'index' => '列表',
-                    'add' => '添加',
-                    'edit' => '编辑',
-                    'del' => '删除',
-                )
-            ),
-            'AdminFormField' => array(
+                    'add'   => '添加',
+                    'edit'  => '编辑',
+                    'del'   => '删除',
+                ],
+            ],
+            'AdminFormField' => [
                 'name' => '表单字段',
-                'auth' => array(
+                'auth' => [
                     'index' => '列表',
-                    'add' => '添加',
-                    'edit' => '编辑',
-                    'del' => '删除',
-                )
-            ),
-            'AdminFormData' => array(
+                    'add'   => '添加',
+                    'edit'  => '编辑',
+                    'del'   => '删除',
+                ],
+            ],
+            'AdminFormData' => [
                 'name' => '表单数据',
-                'auth' => array(
+                'auth' => [
                     'index' => '列表',
-                    'add' => '添加',
-                    'edit' => '编辑',
-                    'del' => '删除',
-                )
-            ),
-            'AdminFragment' => array(
+                    'add'   => '添加',
+                    'edit'  => '编辑',
+                    'del'   => '删除',
+                ],
+            ],
+            'AdminFragment' => [
                 'name' => '网站碎片',
-                'auth' => array(
+                'auth' => [
                     'index' => '列表',
-                    'add' => '添加',
-                    'edit' => '编辑',
-                    'del' => '删除',
-                )
-            ),
-            'AdminPosition' => array(
+                    'add'   => '添加',
+                    'edit'  => '编辑',
+                    'del'   => '删除',
+                ],
+            ],
+            'AdminPosition' => [
                 'name' => '推荐位管理',
-                'auth' => array(
+                'auth' => [
                     'index' => '列表',
-                    'add' => '添加',
-                    'edit' => '编辑',
-                    'del' => '删除',
-                )
-            ),
-            'AdminStatistics' => array(
+                    'add'   => '添加',
+                    'edit'  => '编辑',
+                    'del'   => '删除',
+                ],
+            ],
+            'AdminStatistics' => [
                 'name' => '站点统计',
-                'auth' => array(
-                    'index' => '访客统计',
+                'auth' => [
+                    'index'  => '访客统计',
                     'spider' => '蜘蛛统计',
-                )
-            ),
-            'AdminSafe' => array(
+                ],
+            ],
+            'AdminSafe' => [
                 'name' => '安全检测',
-                'auth' => array(
+                'auth' => [
                     'index' => '访客统计',
-                )
-            ),
-            'AdminTags' => array(
+                ],
+            ],
+            'AdminTags' => [
                 'name' => 'TAG管理',
-                'auth' => array(
-                    'index' => '列表',
+                'auth' => [
+                    'index'       => '列表',
                     'batchAction' => '删除',
-                )
-            ),
-            'AdminTags' => array(
+                ],
+            ],
+            'AdminTags' => [
                 'name' => '系统更新',
-                'auth' => array(
+                'auth' => [
                     'index' => '更新管理',
-                )
-            ),
-        );
+                ],
+            ],
+        ];
     }
 }

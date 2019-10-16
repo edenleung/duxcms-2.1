@@ -1,23 +1,23 @@
 <?php
+
 namespace app\base\model;
 
-use app\base\model\BaseModel;
-
 /**
- * 上传模块
+ * 上传模块.
  */
 class UploadModel extends BaseModel
 {
-
     /**
-     * 上传数据
+     * 上传数据.
+     *
      * @param array $config 上传配置信息可选
+     *
      * @return array 文件信息
      */
-    public function upload($config = array())
+    public function upload($config = [])
     {
         $baseConfig = load_config(CONFIG_PATH.'upload.php');
-        $config = array_merge((array)$baseConfig, (array)$config);
+        $config = array_merge((array) $baseConfig, (array) $config);
         if (empty($config['DIR_NAME'])) {
             $config['DIR_NAME'] = date('Y-m-d');
         }
@@ -30,6 +30,7 @@ class UploadModel extends BaseModel
         $upload->saveRule = 'md5_file';
         if (!$upload->upload()) {
             $this->error = $upload->getErrorMsg();
+
             return false;
         }
         //上传信息
@@ -50,7 +51,7 @@ class UploadModel extends BaseModel
             $saveName = $info['savename'];
         }
         //处理图片数据
-        $imgType = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+        $imgType = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
         if (in_array(strtolower($fileExt), $imgType)) {
             //设置图片驱动
             $image = new \app\base\util\ThinkImage();
@@ -74,13 +75,14 @@ class UploadModel extends BaseModel
             }
         }
         //录入文件信息
-        $data = array();
+        $data = [];
         $data['url'] = ROOT_URL.$file;
         $data['original'] = $fileUrl;
         $data['title'] = $fileTitle;
         $data['ext'] = $fileExt;
         $data['size'] = $info['size'];
         $data['time'] = time();
+
         return $data;
     }
 }

@@ -1,8 +1,9 @@
 <?php
+
 namespace app\base\hook;
 
-use framework\base\Hook;
 use framework\base\Config;
+use framework\base\Hook;
 
 class AppHook
 {
@@ -29,7 +30,7 @@ class AppHook
                 foreach (config('LANG.LANG_LIST') as $key => $item) {
                     $rewrite[$key] = 'home/index/index';
                 }
-    
+
                 config('REWRITE_RULE', $rewrite);
             }
 
@@ -43,7 +44,7 @@ class AppHook
 
         $this->startTime = microtime(true);
     }
-    
+
     public function appEnd()
     {
         //echo microtime(true) - $this->startTime ;
@@ -58,7 +59,7 @@ class AppHook
         }
         obj('app\base\controller\ErrorController')->$action($e);
     }
-    
+
     public function routeParseUrl($rewriteRule, $rewriteOn)
     {
     }

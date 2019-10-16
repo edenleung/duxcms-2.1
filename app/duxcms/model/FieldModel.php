@@ -1,58 +1,64 @@
 <?php
+
 namespace app\duxcms\model;
 
 use app\base\model\BaseModel;
 
 /**
- * 字段操作
+ * 字段操作.
  */
 class FieldModel extends BaseModel
 {
-
     //验证
-    protected $_validate = array(
-        array('fieldset_id', 'require', '无法获取字段集ID', 1),
-        array('name', 'require', '字段名称未填写', 1),
-        array('field', 'validateField', '已存在相同的字段', 1, 'callback'),
-        array('type', 'require', '字段类型未选择', 1),
-        array('verify_type', 'require', '验证类型未选择', 1),
-    );
+    protected $_validate = [
+        ['fieldset_id', 'require', '无法获取字段集ID', 1],
+        ['name', 'require', '字段名称未填写', 1],
+        ['field', 'validateField', '已存在相同的字段', 1, 'callback'],
+        ['type', 'require', '字段类型未选择', 1],
+        ['verify_type', 'require', '验证类型未选择', 1],
+    ];
     //完成
-    protected $_auto = array(
+    protected $_auto = [
         //全部
-        array('fieldset_id', 'intval', 3, 'function'), //字段集ID
-        array('name', 'htmlspecialchars', 3, 'function'), //字段名
-        array('sequence', 'intval', 3, 'function'), //顺序
-        array('verify_data', 'base64_encode', 3, 'function'), //验证规则
-        array('verify_data_js', 'base64_encode', 3, 'function'), //JS验证规则
+        ['fieldset_id', 'intval', 3, 'function'], //字段集ID
+        ['name', 'htmlspecialchars', 3, 'function'], //字段名
+        ['sequence', 'intval', 3, 'function'], //顺序
+        ['verify_data', 'base64_encode', 3, 'function'], //验证规则
+        ['verify_data_js', 'base64_encode', 3, 'function'], //JS验证规则
         //编辑
-        array('field_id', 'intval', 2, 'function'), //字段ID
-        );
+        ['field_id', 'intval', 2, 'function'], //字段ID
+        ];
 
     /**
-     * 获取列表
+     * 获取列表.
+     *
      * @return array 列表
      */
-    public function loadList($where = array())
+    public function loadList($where = [])
     {
         return $this->where($where)->order('sequence asc')->select();
     }
 
     /**
-     * 获取信息
+     * 获取信息.
+     *
      * @param int $fieldId ID
+     *
      * @return array 信息
      */
     public function getInfo($fieldId)
     {
-        $map = array();
+        $map = [];
         $map['field_id'] = $fieldId;
+
         return $this->getWhereInfo($map);
     }
 
     /**
-     * 获取信息
+     * 获取信息.
+     *
      * @param array $where 条件
+     *
      * @return array 信息
      */
     public function getWhereInfo($where)
@@ -61,8 +67,10 @@ class FieldModel extends BaseModel
     }
 
     /**
-     * 更新信息
+     * 更新信息.
+     *
      * @param string $type 更新类型
+     *
      * @return bool 更新状态
      */
     public function saveData($type = 'add')
@@ -103,7 +111,7 @@ class FieldModel extends BaseModel
             //获取信息
             $info = $this->getInfo($data['field_id']);
             //修改字段
-            if ($info['type'] <> $data['type'] || $info['field'] <> $data['field']) {
+            if ($info['type'] != $data['type'] || $info['field'] != $data['field']) {
                 $sql = "
                 ALTER TABLE {pre}ext_{$fieldsetInfo['table']} CHANGE {$info['field']} {$data['field']} {$property['name']}({$property['maxlen']}{$property['decimal']})
                 ";
@@ -113,25 +121,29 @@ class FieldModel extends BaseModel
                 }
             }
             //修改数据
-            $where = array();
+            $where = [];
             $where['field_id'] = $data['field_id'];
             $status = $this->where($where)->data($data)->save();
             if ($status === false) {
                 return false;
             }
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * 删除信息
+     * 删除信息.
+     *
      * @param int $fieldId ID
+     *
      * @return bool 删除状态
      */
     public function delData($fieldId)
     {
-        $map = array();
+        $map = [];
         $map['field_id'] = $fieldId;
         //获取信息
         $info = $this->getWhereInfo($map);
@@ -152,8 +164,10 @@ class FieldModel extends BaseModel
     }
 
     /**
-     * 验证字段是否重复
+     * 验证字段是否重复.
+     *
      * @param int $field 字段名
+     *
      * @return bool 状态
      */
     public function validateField($field)
@@ -163,7 +177,7 @@ class FieldModel extends BaseModel
         }
         $fieldsetId = request('post.fieldset_id', 0);
         $fieldId = request('post.field_id', 0);
-        $map = array();
+        $map = [];
         $map['fieldset_id'] = $fieldsetId;
         if ($fieldId) {
             $map[] = 'field_id <> '.$fieldId;
@@ -178,199 +192,213 @@ class FieldModel extends BaseModel
     }
 
     /**
-     * 字段类型
+     * 字段类型.
+     *
      * @param int $fieldsetId ID
+     *
      * @return bool 删除状态
      */
     public function typeField()
     {
-        $list = array(
-            1=> array(
-                'name'=>'文本框',
-                'property'=>1,
-                'html'=>'text',
-                ),
-            2=> array(
-                'name'=>'多行文本',
-                'property'=>3,
-                'html'=>'textarea',
-                ),
-            3=> array(
-                'name'=>'编辑器',
-                'property'=>3,
-                'html'=>'editor',
-                ),
-            4=> array(
-                'name'=>'文件上传',
-                'property'=>1,
-                'html'=>'fileUpload',
-                ),
-            5=> array(
-                'name'=>'单图片上传',
-                'property'=>1,
-                'html'=>'imgUpload',
-                ),
-            6=> array(
-                'name'=>'多图上传',
-                'property'=>3,
-                'html'=>'imagesUpload',
-                ),
-            7=> array(
-                'name'=>'下拉菜单',
-                'property'=>3,
-                'html'=>'select',
-                ),
-            8=> array(
-                'name'=>'单选',
-                'property'=>3,
-                'html'=>'radio',
-                ),
-            9=> array(
-                'name'=>'多选',
-                'property'=>3,
-                'html'=>'checkbox',
-                ),
-            10=> array(
-                'name'=>'日期和时间',
-                'property'=>2,
-                'html'=>'textTime',
-                ),
-            11=> array(
-                'name'=>'货币',
-                'property'=>4,
-                'html'=>'currency',
-                ),
-            
-        );
+        $list = [
+            1=> [
+                'name'    => '文本框',
+                'property'=> 1,
+                'html'    => 'text',
+                ],
+            2=> [
+                'name'    => '多行文本',
+                'property'=> 3,
+                'html'    => 'textarea',
+                ],
+            3=> [
+                'name'    => '编辑器',
+                'property'=> 3,
+                'html'    => 'editor',
+                ],
+            4=> [
+                'name'    => '文件上传',
+                'property'=> 1,
+                'html'    => 'fileUpload',
+                ],
+            5=> [
+                'name'    => '单图片上传',
+                'property'=> 1,
+                'html'    => 'imgUpload',
+                ],
+            6=> [
+                'name'    => '多图上传',
+                'property'=> 3,
+                'html'    => 'imagesUpload',
+                ],
+            7=> [
+                'name'    => '下拉菜单',
+                'property'=> 3,
+                'html'    => 'select',
+                ],
+            8=> [
+                'name'    => '单选',
+                'property'=> 3,
+                'html'    => 'radio',
+                ],
+            9=> [
+                'name'    => '多选',
+                'property'=> 3,
+                'html'    => 'checkbox',
+                ],
+            10=> [
+                'name'    => '日期和时间',
+                'property'=> 2,
+                'html'    => 'textTime',
+                ],
+            11=> [
+                'name'    => '货币',
+                'property'=> 4,
+                'html'    => 'currency',
+                ],
+
+        ];
+
         return $list;
     }
 
     /**
-     * 字段SQL属性
+     * 字段SQL属性.
+     *
      * @param int $type 字段类型
+     *
      * @return array 字段类型列表
      */
     public function propertyField()
     {
-        $list = array(
-            1=> array(
-                'name'=>'varchar',
-                'maxlen'=>250,
-                'decimal'=>0,
-                ),
-            2=> array(
-                'name'=>'int',
-                'maxlen'=>10,
-                'decimal'=>0,
-                ),
-            3=> array(
-                'name'=>'text',
-                'maxlen'=>0,
-                'decimal'=>0,
-                ),
-            4=> array(
-                'name'=>'decimal',
-                'maxlen'=>10,
-                'decimal'=>2,
-                ),
-        );
+        $list = [
+            1=> [
+                'name'   => 'varchar',
+                'maxlen' => 250,
+                'decimal'=> 0,
+                ],
+            2=> [
+                'name'   => 'int',
+                'maxlen' => 10,
+                'decimal'=> 0,
+                ],
+            3=> [
+                'name'   => 'text',
+                'maxlen' => 0,
+                'decimal'=> 0,
+                ],
+            4=> [
+                'name'   => 'decimal',
+                'maxlen' => 10,
+                'decimal'=> 2,
+                ],
+        ];
+
         return $list;
     }
 
     /**
-     * 字段验证属性
+     * 字段验证属性.
+     *
      * @param int $type 字段类型
+     *
      * @return array 字段类型列表
      */
     public function typeVerify()
     {
-        return array(
-            1 => array(
+        return [
+            1 => [
                 'name' => '正则验证(可用内置)',
                 'data' => 'regex',
-                ),
-            2 => array(
+                ],
+            2 => [
                 'name' => '验证长度(1,2)',
                 'data' => 'length',
-                ),
-            );
+                ],
+            ];
     }
 
     /**
-     * 字段验证规则
+     * 字段验证规则.
+     *
      * @param int $type 字段类型
+     *
      * @return array 字段类型列表
      */
     public function ruleVerify()
     {
-        return array(
-            0 => array(
+        return [
+            0 => [
                 'name' => '必填',
                 'data' => 'require',
-                ),
-            1 => array(
+                ],
+            1 => [
                 'name' => '邮箱',
                 'data' => 'email',
-                ),
-            2 => array(
+                ],
+            2 => [
                 'name' => '网址',
                 'data' => 'url',
-                ),
-            3 => array(
+                ],
+            3 => [
                 'name' => '货币',
                 'data' => 'currency',
-                ),
-            4 => array(
+                ],
+            4 => [
                 'name' => '数字',
                 'data' => 'number',
-                ),
-            );
+                ],
+            ];
     }
 
     /**
-     * JS字段验证规则
+     * JS字段验证规则.
+     *
      * @param int $type 字段类型
+     *
      * @return array 字段类型列表
      */
     public function ruleVerifyJs()
     {
-        return array(
-            0 => array(
+        return [
+            0 => [
                 'name' => '必填',
                 'data' => '*',
-                ),
-            1 => array(
+                ],
+            1 => [
                 'name' => '数字',
                 'data' => 'n',
-                ),
-            2 => array(
+                ],
+            2 => [
                 'name' => '字符串',
                 'data' => 's',
-                ),
-            3 => array(
+                ],
+            3 => [
                 'name' => '邮政编码',
                 'data' => 'p',
-                ),
-            4 => array(
+                ],
+            4 => [
                 'name' => '手机号码',
                 'data' => 'm',
-                ),
-            5 => array(
+                ],
+            5 => [
                 'name' => '邮箱',
                 'data' => 'e',
-                ),
-            6 => array(
+                ],
+            6 => [
                 'name' => 'url',
                 'data' => '网址',
-                ),
-            );
+                ],
+            ];
     }
 
     /**
-     * 完整信息HTML
-     * @param array $value 字段信息
-     * @param string $data 字段值
+     * 完整信息HTML.
+     *
+     * @param array  $value 字段信息
+     * @param string $data  字段值
      * @param string $model 其他模块
+     *
      * @return string HTML信息
      */
     public function htmlFieldFull($value, $data = null, $model = 'duxcms/Field')
@@ -378,7 +406,7 @@ class FieldModel extends BaseModel
         //获取字段属性
         $typeField = $this->typeField();
         //生成新配置
-        $config = array();
+        $config = [];
         $config['type'] = $typeField[$value['type']]['html'];
         $config['title'] = $value['name'];
         $config['name'] = 'Fieldset_'.$value['field'];
@@ -396,8 +424,10 @@ class FieldModel extends BaseModel
     }
 
     /**
-     * 字段HTML
+     * 字段HTML.
+     *
      * @param array $config 字段配置
+     *
      * @return string HTML信息
      */
     public function htmlField($config)
@@ -527,6 +557,7 @@ class FieldModel extends BaseModel
         }
         $html .= '<div class="input-note">'.$config['tip'].'</div>';
         $html .= '</div></div>';
+
         return $html;
     }
 }

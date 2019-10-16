@@ -1,17 +1,14 @@
 <?php
+
 namespace app\home\controller;
 
-use app\home\controller\SiteController;
-
 /**
- * 站点首页
+ * 站点首页.
  */
-
 class IndexController extends SiteController
 {
-
     /**
-     * 主页
+     * 主页.
      */
     public function index()
     {
@@ -22,7 +19,7 @@ class IndexController extends SiteController
     }
 
     /**
-     * 页面不存在
+     * 页面不存在.
      */
     public function error404()
     {

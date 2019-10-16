@@ -1,12 +1,12 @@
 <?php
+
 namespace app\install\controller;
 
 use framework\base\Controller;
 
 /**
- * 安装模块
+ * 安装模块.
  */
-
 class IndexController extends Controller
 {
     public function __construct()
@@ -24,7 +24,7 @@ class IndexController extends Controller
     }
 
     /**
-     * 主页
+     * 主页.
      */
     public function index()
     {
@@ -32,7 +32,7 @@ class IndexController extends Controller
     }
 
     /**
-     * 安装环境检测
+     * 安装环境检测.
      */
     public function setup1()
     {
@@ -43,7 +43,7 @@ class IndexController extends Controller
     }
 
     /**
-     * 安装程序
+     * 安装程序.
      */
     public function setup2()
     {
@@ -53,7 +53,7 @@ class IndexController extends Controller
     }
 
     /**
-     * 开始安装
+     * 开始安装.
      */
     public function setup3()
     {
@@ -87,14 +87,14 @@ class IndexController extends Controller
             show_msg('数据库连接失败，请检查连接信息是否正确！', false);
         }
         $mysqlInfo = mysqli_get_server_info($link);
-        if ($mysqlInfo<'5.1.0') {
+        if ($mysqlInfo < '5.1.0') {
             show_msg('mysql版本低于5.1，无法继续安装！', false);
         }
 
         $status = @mysqli_select_db($link, $data['DB_NAME']);
         if (!$status) {
             //尝试创建数据库
-            $sql = "CREATE DATABASE IF NOT EXISTS `".$data['DB_NAME']."` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
+            $sql = 'CREATE DATABASE IF NOT EXISTS `'.$data['DB_NAME'].'` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;';
             if (!mysqli_query($link, $sql)) {
                 show_msg('数据库'.$data['DB_NAME'].'自动创建失败，请手动建立数据库！', false);
             }
@@ -113,7 +113,7 @@ class IndexController extends Controller
         //安装数据库
         $file = ROOT_PATH.'app/install/data/install.sql';
         $sqlData = \framework\ext\Install::mysql($file, 'dux_', $data['DB_PREFIX']);
-        mysqli_query($link, "SET NAMES utf8");
+        mysqli_query($link, 'SET NAMES utf8');
         foreach ($sqlData as $sql) {
             $rst = mysqli_query($link, $sql);
             if ($rst === false) {
@@ -136,9 +136,8 @@ class IndexController extends Controller
         echo "<script type=\"text/javascript\">insok(\"{$homeUrl}\",\"{$adminUrl}\")</script>";
     }
 
-
     /**
-     * 生成code
+     * 生成code.
      */
     public function getCode($length = 5)
     {
@@ -147,11 +146,12 @@ class IndexController extends Controller
         $l = strlen($str) - 1;
         $num = 0;
 
-        for ($i = 0; $i<$length; $i++) {
+        for ($i = 0; $i < $length; $i++) {
             $num = rand(0, $l);
             $a = $str[$num];
             $result = $result.$a;
         }
+
         return $result;
     }
 }

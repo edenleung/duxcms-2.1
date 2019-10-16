@@ -1,27 +1,29 @@
 <?php
+
 namespace app\duxcms\model;
 
 use app\base\model\BaseModel;
 
 /**
- * 碎片表操作
+ * 碎片表操作.
  */
 class FragmentModel extends BaseModel
 {
     //完成
-    protected $_auto = array(
-            array('content', 'html_in', 3, 'function'),
-        );
+    protected $_auto = [
+            ['content', 'html_in', 3, 'function'],
+        ];
     //验证
-    protected $_validate = array(
-        array('name', 'require', '碎片名称不能为空', 1),
-        array('label', 'require', '碎片标识不能为空', 1),
-        array('label', '', '碎片标识不能重复', 1, 'unique'),
-        array('content', 'require', '碎片内容不能为空', 1),
-    );
+    protected $_validate = [
+        ['name', 'require', '碎片名称不能为空', 1],
+        ['label', 'require', '碎片标识不能为空', 1],
+        ['label', '', '碎片标识不能重复', 1, 'unique'],
+        ['content', 'require', '碎片内容不能为空', 1],
+    ];
 
     /**
-     * 获取列表
+     * 获取列表.
+     *
      * @return array 列表
      */
     public function loadList()
@@ -31,6 +33,7 @@ class FragmentModel extends BaseModel
 
     /**
      * 获取统计
+     *
      * @return int 数量
      */
     public function countList()
@@ -39,20 +42,25 @@ class FragmentModel extends BaseModel
     }
 
     /**
-     * 获取信息
+     * 获取信息.
+     *
      * @param int $fragmentId ID
+     *
      * @return array 信息
      */
     public function getInfo($fragmentId)
     {
-        $map = array();
+        $map = [];
         $map['fragment_id'] = $fragmentId;
+
         return $this->getWhereInfo($map);
     }
 
     /**
-     * 获取信息
+     * 获取信息.
+     *
      * @param array $where 条件
+     *
      * @return array 信息
      */
     public function getWhereInfo($where)
@@ -61,8 +69,10 @@ class FragmentModel extends BaseModel
     }
 
     /**
-     * 更新信息
+     * 更新信息.
+     *
      * @param string $type 更新类型
+     *
      * @return bool 更新状态
      */
     public function saveData($type = 'add')
@@ -82,20 +92,25 @@ class FragmentModel extends BaseModel
             if ($status === false) {
                 return false;
             }
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * 删除信息
+     * 删除信息.
+     *
      * @param int $fragmentId ID
+     *
      * @return bool 删除状态
      */
     public function delData($fragmentId)
     {
-        $map = array();
+        $map = [];
         $map['fragment_id'] = $fragmentId;
+
         return $this->where($map)->delete();
     }
 }

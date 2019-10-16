@@ -1,82 +1,86 @@
 <?php
+
 namespace framework\base\db;
 
 use framework\base\Hook;
 
 class MysqliDriver implements DbInterface
 {
-    protected $config = array();
+    protected $config = [];
     protected $writeLink = null;
     protected $readLink = null;
-    protected $sqlMeta = array('sql'=>'', 'params'=>array(), 'link'=>null);
-    
-    public function __construct($config = array())
+    protected $sqlMeta = ['sql'=>'', 'params'=>[], 'link'=>null];
+
+    public function __construct($config = [])
     {
         $this->config = $config;
     }
 
-    public function select($table, array $condition = array(), $field = '*', $order = null, $limit = null)
+    public function select($table, array $condition = [], $field = '*', $order = null, $limit = null)
     {
         $field = !empty($field) ? $field : '*';
         $order = !empty($order) ? ' ORDER BY '.$order : '';
         $limit = !empty($limit) ? ' LIMIT '.$limit : '';
         $table = $this->_table($table);
         $condition = $this->_where($condition);
+
         return $this->query("SELECT {$field} FROM {$table} {$condition['_where']} {$order} {$limit}", $condition['_bindParams']);
     }
-    
-    public function query($sql, array $params = array())
+
+    public function query($sql, array $params = [])
     {
         $con = $this->_getReadLink();
         $this->_bindParams($sql, $params, $con);
-        
-        Hook::listen('dbQueryBegin', array($sql, $params));
+
+        Hook::listen('dbQueryBegin', [$sql, $params]);
         $s = $this->getSql();
         $query = mysqli_query($con, $this->getSql());
         if ($query) {
-            $data = array();
+            $data = [];
             while ($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                 $data[] = $row;
             }
-            Hook::listen('dbQueryEnd', array($this->getSql(), $data));
-
+            Hook::listen('dbQueryEnd', [$this->getSql(), $data]);
 
             return $data;
         }
 
         $err = mysqli_error($con);
-        Hook::listen('dbException', array($this->getSql(), $err));
+        Hook::listen('dbException', [$this->getSql(), $err]);
+
         throw new \Exception('Database SQL: "'.$this->getSql().'". ErrorInfo: '.$err, 500);
     }
-    
-    public function execute($sql, array $params = array())
+
+    public function execute($sql, array $params = [])
     {
         $con = $this->_getWriteLink();
         $this->_bindParams($sql, $params, $con);
-        
-        Hook::listen('dbExecuteBegin', array($sql, $params));
+
+        Hook::listen('dbExecuteBegin', [$sql, $params]);
         $query = mysqli_query($con, $this->getSql());
         if ($query) {
             $affectedRows = mysqli_affected_rows($con);
-            Hook::listen('dbExecuteEnd', array($this->getSql(), $affectedRows));
+            Hook::listen('dbExecuteEnd', [$this->getSql(), $affectedRows]);
+
             return $affectedRows;
         }
-        
+
         $err = mysqli_error($con);
-        Hook::listen('dbException', array($this->getSql(), $err));
+        Hook::listen('dbException', [$this->getSql(), $err]);
+
         throw new \Exception('Database SQL: "'.$this->getSql().'". ErrorInfo: '.$err, 500);
     }
-    
+
     public function insert($table, array $data)
     {
-        $values = array();
+        $values = [];
         foreach ($data as $k=>$v) {
             $keys[] = "`{$k}`";
             $values[":{$k}"] = $v;
             $marks[] = ":{$k}";
         }
         $table = $this->_table($table);
-        $status = $this->execute("INSERT INTO {$table} (".implode(', ', $keys).") VALUES (".implode(', ', $marks).")", $values);
+        $status = $this->execute("INSERT INTO {$table} (".implode(', ', $keys).') VALUES ('.implode(', ', $marks).')', $values);
         $id = mysqli_insert_id($this->_getWriteLink());
         if ($id) {
             return $id;
@@ -84,90 +88,95 @@ class MysqliDriver implements DbInterface
             return $status;
         }
     }
-    
-    public function update($table, array $condition = array(), array $data = array())
+
+    public function update($table, array $condition = [], array $data = [])
     {
         if (empty($condition)) {
             return false;
         }
-        $values = array();
+        $values = [];
         foreach ($data as $k=>$v) {
             $keys[] = "`{$k}`=:__{$k}";
             $values[":__{$k}"] = $v;
         }
         $table = $this->_table($table);
         $condition = $this->_where($condition);
+
         return $this->execute("UPDATE {$table} SET ".implode(', ', $keys).$condition['_where'], $condition['_bindParams'] + $values);
     }
-    
-    public function delete($table, array $condition = array())
+
+    public function delete($table, array $condition = [])
     {
         if (empty($condition)) {
             return false;
         }
         $table = $this->_table($table);
         $condition = $this->_where($condition);
+
         return $this->execute("DELETE FROM {$table} {$condition['_where']}", $condition['_bindParams']);
     }
 
-    public function count($table, array $condition = array())
+    public function count($table, array $condition = [])
     {
         $table = $this->_table($table);
         $condition = $this->_where($condition);
         $count = $this->query("SELECT COUNT(*) AS __total FROM {$table} ".$condition['_where'], $condition['_bindParams']);
+
         return isset($count[0]['__total']) && $count[0]['__total'] ? $count[0]['__total'] : 0;
     }
-    
+
     public function getFields($table)
     {
         $table = $this->_table($table);
+
         return  $this->query("SHOW FULL FIELDS FROM {$table}");
     }
-    
+
     public function getSql()
     {
         $sql = $this->sqlMeta['sql'];
         $arr = $this->sqlMeta['params'];
-        uksort($arr, function($a, $b) {
+        uksort($arr, function ($a, $b) {
             return strlen($b) - strlen($a);
         });
         foreach ($arr as $k=>$v) {
             $sql = str_replace($k, "'".mysqli_real_escape_string($this->_getReadLink(), $v)."'", $sql);
         }
+
         return $sql;
     }
-    
+
     public function beginTransaction()
     {
         return $this->execute('SET AUTOCOMMIT=0');
     }
-    
+
     public function commit()
     {
         return $this->execute('COMMIT');
     }
-    
+
     public function rollBack()
     {
         return $this->execute('ROLLBACK');
     }
-    
+
     protected function _bindParams($sql, array $params, $link = null)
     {
-        $this->sqlMeta = array('sql'=>$sql, 'params'=>$params, 'link'=>$link);
+        $this->sqlMeta = ['sql'=>$sql, 'params'=>$params, 'link'=>$link];
     }
 
     protected function _table($table)
     {
         return (false === strpos($table, ' ')) ? "`{$table}`" : $table;
     }
-    
+
     protected function _where(array $condition)
     {
-        $result = array('_where' => '', '_bindParams' => array());
+        $result = ['_where' => '', '_bindParams' => []];
         $sql = null;
-        $sqlArr = array();
-        $params = array();
+        $sqlArr = [];
+        $params = [];
         foreach ($condition as $k => $v) {
             if (!is_numeric($k)) {
                 if (false === strpos($k, ':')) {
@@ -188,16 +197,17 @@ class MysqliDriver implements DbInterface
         }
 
         if ($sql) {
-            $result['_where'] = " WHERE ".$sql;
+            $result['_where'] = ' WHERE '.$sql;
         }
-        
+
         $result['_bindParams'] = $params;
+
         return $result;
     }
-                    
+
     protected function _connect($isMaster = true)
     {
-        $dbArr = array();
+        $dbArr = [];
         if (false == $isMaster && !empty($this->config['DB_SLAVE'])) {
             $master = $this->config;
             unset($master['DB_SLAVE']);
@@ -208,26 +218,27 @@ class MysqliDriver implements DbInterface
         } else {
             $dbArr[] = $this->config;
         }
-        
+
         $link = null;
         foreach ($dbArr as $db) {
             if ($link = @mysqli_connect($db['DB_HOST'].':'.$db['DB_PORT'], $db['DB_USER'], $db['DB_PWD'])) {
                 break;
             }
         }
-        
+
         if (!$link) {
             throw new \Exception('connect database error :'.mysqli_error($link), 500);
         }
 
         $version = mysqli_get_server_info($link);
-        if ($version>'4.1') {
-            mysqli_query($link, "SET character_set_connection = ".$db['DB_CHARSET'].", character_set_results = ".$db['DB_CHARSET'].", character_set_client = binary");
-            if ($version>'5.0.1') {
+        if ($version > '4.1') {
+            mysqli_query($link, 'SET character_set_connection = '.$db['DB_CHARSET'].', character_set_results = '.$db['DB_CHARSET'].', character_set_client = binary');
+            if ($version > '5.0.1') {
                 mysqli_query($link, "SET sql_mode = ''");
             }
         }
         mysqli_select_db($link, $db['DB_NAME']);
+
         return $link;
     }
 
@@ -240,17 +251,19 @@ class MysqliDriver implements DbInterface
                 $this->readLink = $this->_getWriteLink();
             }
         }
+
         return $this->readLink;
     }
-    
+
     protected function _getWriteLink()
     {
         if (!isset($this->writeLink)) {
             $this->writeLink = $this->_connect(true);
         }
+
         return $this->writeLink;
     }
-    
+
     public function __destruct()
     {
         if ($this->writeLink) {

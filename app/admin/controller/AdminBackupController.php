@@ -1,49 +1,47 @@
 <?php
-namespace app\admin\controller;
 
-use app\admin\controller\AdminController;
+namespace app\admin\controller;
 
 /**
  * 备份还原
  */
 class AdminBackupController extends AdminController
 {
-
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '备份还原',
+        return [
+            'info'  => [
+                'name'        => '备份还原',
                 'description' => '备份还原整站数据库',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '备份列表',
-                        'url' => url('index'),
+                        'url'  => url('index'),
                         'icon' => 'list',
-                    ),
-                ),
-            'add' => array(
-                    array(
+                    ],
+                ],
+            'add' => [
+                    [
                         'name' => '新建备份',
-                        'url' => url('add'),
-                    ),
-                ),
-            );
+                        'url'  => url('add'),
+                    ],
+                ],
+            ];
     }
 
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
         //查询数据
         $list = target('Database')->backupList();
         //位置导航
-        $breadCrumb = array('备份列表'=>url());
+        $breadCrumb = ['备份列表'=>url()];
         //模板传值
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', $list);
@@ -51,12 +49,12 @@ class AdminBackupController extends AdminController
     }
 
     /**
-     * 增加
+     * 增加.
      */
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('备份列表'=>url('index'), '新建'=>url());
+            $breadCrumb = ['备份列表'=>url('index'), '新建'=>url()];
             //查询数据
             $list = target('Database')->loadTableList();
             $this->assign('breadCrumb', $breadCrumb);
@@ -90,7 +88,7 @@ class AdminBackupController extends AdminController
     }
 
     /**
-     * 导入
+     * 导入.
      */
     public function import()
     {
@@ -112,7 +110,7 @@ class AdminBackupController extends AdminController
     }
 
     /**
-     * 删除
+     * 删除.
      */
     public function del()
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace app\base\hook;
 
 class LangHook
@@ -8,7 +9,7 @@ class LangHook
     /**
      * 保存cookie日期
      *
-     * @var integer
+     * @var int
      */
     protected $save_day = 24;
 
@@ -18,7 +19,7 @@ class LangHook
     }
 
     /**
-     * 后台
+     * 后台.
      *
      * @return void
      */
@@ -46,7 +47,7 @@ class LangHook
     }
 
     /**
-     * 前台
+     * 前台.
      *
      * @return void
      */
@@ -75,7 +76,8 @@ class LangHook
             if ($lang && !in_array($lang, $langs)) {
                 define('APP_NAME', 'home');
                 define('APP_LANG', $defaultLang);
-                throw new \Exception("404页面不存在！", 404);
+
+                throw new \Exception('404页面不存在！', 404);
             }
             define('APP_LANG', $lang);
             $this->setCookie($lang);
@@ -83,9 +85,10 @@ class LangHook
     }
 
     /**
-     * 保存cookie
+     * 保存cookie.
      *
      * @param [type] $lang
+     *
      * @return void
      */
     public function setCookie($lang)
@@ -104,6 +107,7 @@ class LangHook
             // 自动侦测语言
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 preg_match('/^([a-z\d\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
+
                 return strtolower($matches[1]);
             }
         }

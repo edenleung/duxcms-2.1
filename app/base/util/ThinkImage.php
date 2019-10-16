@@ -1,4 +1,5 @@
 <?php
+
 namespace app\base\util;
 
 // +----------------------------------------------------------------------
@@ -38,19 +39,22 @@ define('THINKIMAGE_WATER_SOUTHEAST', 9); //常量，标识右下角水印
 
 /**
  * 图片处理驱动类，可配置图片处理库
- * 目前支持GD库和imagick
+ * 目前支持GD库和imagick.
+ *
  * @author 麦当苗儿 <zuojiazi.cn@gmail.com>
  */
 class ThinkImage
 {
     /**
-     * 图片资源
+     * 图片资源.
+     *
      * @var resource
      */
     private $img;
 
     /**
      * 构造方法，用于实例化一个图片处理对象
+     *
      * @param string $type 要使用的类库，默认使用GD库
      */
     public function __construct($type = THINKIMAGE_GD, $imgname = null)
@@ -73,8 +77,9 @@ class ThinkImage
     }
 
     /**
-     * 返回图像宽度
-     * @return integer 图像宽度
+     * 返回图像宽度.
+     *
+     * @return int 图像宽度
      */
     public function width()
     {
@@ -82,8 +87,9 @@ class ThinkImage
     }
 
     /**
-     * 返回图像高度
-     * @return integer 图像高度
+     * 返回图像高度.
+     *
+     * @return int 图像高度
      */
     public function height()
     {
@@ -91,7 +97,8 @@ class ThinkImage
     }
 
     /**
-     * 返回图像类型
+     * 返回图像类型.
+     *
      * @return string 图像类型
      */
     public function type()
@@ -100,7 +107,8 @@ class ThinkImage
     }
 
     /**
-     * 返回图像MIME类型
+     * 返回图像MIME类型.
+     *
      * @return string 图像MIME类型
      */
     public function mime()
@@ -109,7 +117,8 @@ class ThinkImage
     }
 
     /**
-     * 返回图像尺寸数组 0 - 图像宽度，1 - 图像高度
+     * 返回图像尺寸数组 0 - 图像宽度，1 - 图像高度.
+     *
      * @return array 图像尺寸
      */
     public function size()
@@ -118,14 +127,17 @@ class ThinkImage
     }
 
     /**
-     * 魔术方法，用于调用驱动方法
-     * @param  string $method 方法名称
-     * @param  array  $args   参数列表
-     * @return object         当前图片处理对象
+     * 魔术方法，用于调用驱动方法.
+     *
+     * @param string $method 方法名称
+     * @param array  $args   参数列表
+     *
+     * @return object 当前图片处理对象
      */
     public function __call($method, $args)
     {
-        call_user_func_array(array($this->img, $method), $args);
+        call_user_func_array([$this->img, $method], $args);
+
         return $this;
     }
 }

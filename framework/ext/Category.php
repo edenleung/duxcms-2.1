@@ -1,4 +1,5 @@
 <?php
+
 namespace framework\ext;
 
 /*
@@ -35,14 +36,14 @@ namespace framework\ext;
 class Category
 {
     //原始的分类数据
-    private $rawList = array();
+    private $rawList = [];
     //格式化后的分类
-    private $formatList = array();
+    private $formatList = [];
     //格式化的字符
-    private $icon = array('│', '├', '└');
+    private $icon = ['│', '├', '└'];
     //字段映射，分类id，上级分类pid,分类名称title,格式化后分类名称fulltitle
-    private $field = array();
-        
+    private $field = [];
+
     /*
     功能：构造函数；
     属性：public;
@@ -54,7 +55,7 @@ class Category
     创建时间：2010-6-16;
     最后修改时间：
     */
-    public function __construct($field = array())
+    public function __construct($field = [])
     {
         $this->field['id'] = isset($field['0']) ? $field['0'] : 'id';
         $this->field['pid'] = isset($field['1']) ? $field['1'] : 'pid';
@@ -72,9 +73,9 @@ class Category
     最后修改时间：
     备注:
     */
-    public function getChild($pid, $data = array())
+    public function getChild($pid, $data = [])
     {
-        $childs = array();
+        $childs = [];
         if (empty($data)) {
             $data = $this->rawList;
         }
@@ -83,9 +84,10 @@ class Category
                 $childs[] = $Category;
             }
         }
+
         return $childs;
     }
-    
+
     /*
     功能：得到递归格式化分类；
     属性：public;
@@ -102,13 +104,15 @@ class Category
         if (empty($data)) {
             return false;
         }
-            
-        $this->rawList = array();
-        $this->formatList = array();
+
+        $this->rawList = [];
+        $this->formatList = [];
         $this->rawList = $data;
         $this->_searchList($id);
+
         return $this->formatList;
     }
+
     //获取当前分类的路径
     public function getPath($data, $id)
     {
@@ -119,8 +123,10 @@ class Category
                 break;
             }
         }
+
         return array_reverse($this->formatList);
     }
+
     /*
     功能：无限分类核心部分，递归格式化分类前的字符；
     属性：private;
@@ -131,7 +137,7 @@ class Category
     最后修改时间：
     备注:
     */
-    private function _searchList($id = 0, $space = "")
+    private function _searchList($id = 0, $space = '')
     {
         //下级分类的数组
         $childs = $this->getChild($id);
@@ -141,32 +147,34 @@ class Category
         }
         $cnt = 1;
         //循环所有的下级分类
-        for ($i = 0; $i<$n; $i++) {
-            $pre = "";
-            $pad = "";
+        for ($i = 0; $i < $n; $i++) {
+            $pre = '';
+            $pad = '';
             if ($n == $cnt) {
                 $pre = $this->icon[2];
             } else {
                 $pre = $this->icon[1];
-                $pad = $space ? $this->icon[0] : "";
+                $pad = $space ? $this->icon[0] : '';
             }
-            $childs[$i][$this->field['fulltitle']] = ($space ? $space.$pre : "").$childs[$i][$this->field['title']];
+            $childs[$i][$this->field['fulltitle']] = ($space ? $space.$pre : '').$childs[$i][$this->field['title']];
             $this->formatList[] = $childs[$i];
             //递归下一级分类
-            $this->_searchList($childs[$i][$this->field['id']], $space.$pad."&nbsp;&nbsp;");
+            $this->_searchList($childs[$i][$this->field['id']], $space.$pad.'&nbsp;&nbsp;');
             $cnt++;
         }
     }
-    
+
     //通过当前id获取pid
     private function _getPid($id)
     {
         foreach ($this->rawList as $key=>$value) {
             if ($this->rawList[$key][$this->field['id']] == $id) {
                 $this->formatList[] = $this->rawList[$key];
+
                 return $this->rawList[$key][$this->field['pid']];
             }
         }
+
         return 0;
     }
 }

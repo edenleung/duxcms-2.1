@@ -1,17 +1,16 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\home\controller\SiteController;
 
 /**
- * TAG内容列表
+ * TAG内容列表.
  */
-
 class TagsContentController extends SiteController
 {
-
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
@@ -21,23 +20,23 @@ class TagsContentController extends SiteController
             $this->error404();
         }
         //获取TAG信息
-        $where = array();
+        $where = [];
         $where['name'] = $tag;
         $tagInfo = target('Tags')->getWhereInfo($where);
         if (empty($tagInfo)) {
             $this->error404();
         }
         //更新点击量
-        target('Tags')->where(array('tag_id' => $tagInfo['tag_id']))->setInc('click', 1);
+        target('Tags')->where(['tag_id' => $tagInfo['tag_id']])->setInc('click', 1);
         //URL参数
-        $pageMaps = array();
+        $pageMaps = [];
         //查询数据
-        $where = array();
+        $where = [];
         $where['B.tag_id'] = $tagInfo['tag_id'];
         $list = target('TagsHas')->page(20)->loadContentList($where, $limit);
         $this->pager = target('TagsHas')->pager;
         if (!empty($list)) {
-            $data = array();
+            $data = [];
             foreach ($list as $key => $value) {
                 $data[$key] = $value;
                 $data[$key]['curl'] = target('duxcms/Category')->getUrl($value);
@@ -45,12 +44,12 @@ class TagsContentController extends SiteController
             }
         }
         //位置导航
-        $crumb = array(
-            array('name'=>'标签列表', 'url'=>url('duxcms/Tags/index')),
-            array('name'=>$tagInfo['name'], 'url'=>url('duxcms/TagsContent/index', array('name'=>$tagInfo['name']))),
-            );
+        $crumb = [
+            ['name'=>'标签列表', 'url'=>url('duxcms/Tags/index')],
+            ['name'=> $tagInfo['name'], 'url'=>url('duxcms/TagsContent/index', ['name'=>$tagInfo['name']])],
+            ];
         //URL参数
-        $pageMaps = array();
+        $pageMaps = [];
         $pageMaps['name'] = $tag;
         //MEDIA信息
         $media = $this->getMedia($formInfo['name']);

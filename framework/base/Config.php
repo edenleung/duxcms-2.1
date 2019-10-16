@@ -1,91 +1,92 @@
 <?php
+
 namespace framework\base;
 
 class Config
 {
-    protected static $config = array();
-    
+    protected static $config = [];
+
     public static function init($basePath = '')
     {
-        self::$config = array(
-            'ENV' => 'development',
-            'DEBUG' => true,
-            'LOG_ON' => false,
+        self::$config = [
+            'ENV'      => 'development',
+            'DEBUG'    => true,
+            'LOG_ON'   => false,
             'LOG_PATH' => $basePath.'data/log/',
             'TIMEZONE' => 'PRC',
-            
-            'REWRITE_ON' =>false,
-            'REWRITE_RULE' =>array(
-            ),
-            
-            'DEFAULT_APP' => 'main',
-            'DEFAULT_CONTROLLER' => 'Default',
-            'DEFAULT_ACTION' => 'index',
-            
-            'DB'=>array(
-                'default'=>array(
-                        'DB_TYPE' => 'MysqlPdo',
-                        'DB_HOST' => 'localhost',
-                        'DB_USER' => 'root',
-                        'DB_PWD' => '',
-                        'DB_PORT' => 3306,
-                        'DB_NAME' => 'cp',
-                        'DB_CHARSET' => 'utf8',
-                        'DB_PREFIX' => '',
-                        'DB_CACHE' => 'DB_CACHE',
-                        'DB_SLAVE' => array(),
-                    ),
-            ),
-            
-            'TPL'=>array(
-                'TPL_PATH' => $basePath,
-                'TPL_SUFFIX' => '.html',
-                'TPL_CACHE' => 'TPL_CACHE',
-                'TPL_DEPR' => '_',
-            ),
-            
-            'CACHE'=>array(
-                'TPL_CACHE' => array(
-                    'CACHE_TYPE' => 'FileCache',
-                    'CACHE_PATH' => $basePath.'data/cache/',
-                    'GROUP' => 'tpl',
-                    'HASH_DEEP' => 0,
-                ),
-                
-                'DB_CACHE' => array(
-                    'CACHE_TYPE' => 'FileCache',
-                    'CACHE_PATH' => $basePath.'data/cache/',
-                    'GROUP' => 'db',
-                    'HASH_DEEP' => 2,
-                ),
-            ),
-            
-            'STORAGE'=>array(
-                'default'=>array('STORAGE_TYPE'=>'File'),
-            ),
 
-            'LANG' => []
-        );
+            'REWRITE_ON'   => false,
+            'REWRITE_RULE' => [
+            ],
+
+            'DEFAULT_APP'        => 'main',
+            'DEFAULT_CONTROLLER' => 'Default',
+            'DEFAULT_ACTION'     => 'index',
+
+            'DB'=> [
+                'default'=> [
+                        'DB_TYPE'    => 'MysqlPdo',
+                        'DB_HOST'    => 'localhost',
+                        'DB_USER'    => 'root',
+                        'DB_PWD'     => '',
+                        'DB_PORT'    => 3306,
+                        'DB_NAME'    => 'cp',
+                        'DB_CHARSET' => 'utf8',
+                        'DB_PREFIX'  => '',
+                        'DB_CACHE'   => 'DB_CACHE',
+                        'DB_SLAVE'   => [],
+                    ],
+            ],
+
+            'TPL'=> [
+                'TPL_PATH'   => $basePath,
+                'TPL_SUFFIX' => '.html',
+                'TPL_CACHE'  => 'TPL_CACHE',
+                'TPL_DEPR'   => '_',
+            ],
+
+            'CACHE'=> [
+                'TPL_CACHE' => [
+                    'CACHE_TYPE' => 'FileCache',
+                    'CACHE_PATH' => $basePath.'data/cache/',
+                    'GROUP'      => 'tpl',
+                    'HASH_DEEP'  => 0,
+                ],
+
+                'DB_CACHE' => [
+                    'CACHE_TYPE' => 'FileCache',
+                    'CACHE_PATH' => $basePath.'data/cache/',
+                    'GROUP'      => 'db',
+                    'HASH_DEEP'  => 2,
+                ],
+            ],
+
+            'STORAGE'=> [
+                'default'=> ['STORAGE_TYPE'=>'File'],
+            ],
+
+            'LANG' => [],
+        ];
     }
-        
+
     public static function loadConfig($file)
     {
         if (!file_exists($file)) {
             throw new \Exception("Config file '{$file}' not found", 500);
         }
-        $config = require($file);
+        $config = require $file;
         foreach ($config as $k=>$v) {
             if (is_array($v)) {
                 if (!isset(self::$config[$k])) {
-                    self::$config[$k] = array();
+                    self::$config[$k] = [];
                 }
-                self::$config[$k] = array_merge((array)self::$config[$k], $config[$k]);
+                self::$config[$k] = array_merge((array) self::$config[$k], $config[$k]);
             } else {
                 self::$config[$k] = $v;
             }
         }
     }
-    
+
     public static function get($key = null)
     {
         if (empty($key)) {
@@ -110,9 +111,8 @@ class Config
                 break;
             default: break;
         }
-        return null;
     }
-    
+
     public static function set($key, $value)
     {
         $arr = explode('.', $key);
@@ -128,6 +128,7 @@ class Config
                 break;
             default: return false;
         }
+
         return true;
     }
 }

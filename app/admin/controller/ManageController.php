@@ -1,41 +1,39 @@
 <?php
+
 namespace app\admin\controller;
 
-use app\admin\controller\AdminController;
-
 /**
- * 网站管理
+ * 网站管理.
  */
-
 class ManageController extends AdminController
 {
-
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '网站管理',
+        return [
+            'info'  => [
+                'name'        => '网站管理',
                 'description' => '管理网站基本功能',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '缓存管理',
-                        'url' => url('cache'),
+                        'url'  => url('cache'),
                         'icon' => 'exclamation-circle',
-                    ),
-                )
-            );
+                    ],
+                ],
+            ];
     }
+
     /**
-     * 站点设置
+     * 站点设置.
      */
     public function cache()
     {
         if (!IS_POST) {
-            $breadCrumb = array('缓存管理'=>url());
+            $breadCrumb = ['缓存管理'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('list', target('Manage')->getCacheList());
             $this->adminDisplay();

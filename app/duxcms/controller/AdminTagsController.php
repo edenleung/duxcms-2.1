@@ -1,46 +1,47 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
 
 /**
- * 标签管理
+ * 标签管理.
  */
-
 class AdminTagsController extends AdminController
 {
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '标签管理',
+        return [
+            'info'  => [
+                'name'        => '标签管理',
                 'description' => '管理网站内容标签',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '标签列表',
-                        'url' => url('index'),
+                        'url'  => url('index'),
                         'icon' => 'list',
-                    ),
-                )
-            );
+                    ],
+                ],
+            ];
     }
+
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
         //URL参数
-        $pageMaps = array();
+        $pageMaps = [];
         $pageMaps['keyword'] = $keyword;
-        $where = array();
+        $where = [];
         //查询数据
         $list = target('Tags')->page(20)->loadList($where, $limit);
         $this->pager = target('Tags')->pager;
-        $breadCrumb = array('标签列表'=>url());
+        $breadCrumb = ['标签列表'=>url()];
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', $list);
         $this->assign('page', $this->getPageShow($pageMaps));
@@ -48,7 +49,7 @@ class AdminTagsController extends AdminController
     }
 
     /**
-     * 批量操作
+     * 批量操作.
      */
     public function batchAction()
     {

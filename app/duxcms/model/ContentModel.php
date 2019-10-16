@@ -1,47 +1,49 @@
 <?php
+
 namespace app\duxcms\model;
 
 use app\base\model\BaseModel;
 
 /**
- * 内容操作
+ * 内容操作.
  */
 class ContentModel extends BaseModel
 {
     //完成
-    protected $_auto = array(
+    protected $_auto = [
         //全部
-        array('class_id', 'intval', 3, 'function'), //栏目ID
-        array('urltitle', 'getUrlTitle', 3, 'callback'), //URL
-        array('description', 'getDescription', 3, 'callback'), //描述
-        array('image', 'getImage', 3, 'callback'), //形象图
-        array('time', 'strtotime', 3, 'function'), //时间
-        array('status', 'intval', 3, 'function'), //状态
-        array('sequence', 'intval', 3, 'function'), //顺序
-        array('views', 'intval', 3, 'function'), //访问量
-        array('taglink', 'intval', 3, 'function'), //TAG链接
-        array('font_bold', 'intval', 3, 'function'), //加粗
-        array('font_em', 'intval', 3, 'function'), //倾斜
-        array('position', 'formatPosition', 3, 'callback'), //推荐
+        ['class_id', 'intval', 3, 'function'], //栏目ID
+        ['urltitle', 'getUrlTitle', 3, 'callback'], //URL
+        ['description', 'getDescription', 3, 'callback'], //描述
+        ['image', 'getImage', 3, 'callback'], //形象图
+        ['time', 'strtotime', 3, 'function'], //时间
+        ['status', 'intval', 3, 'function'], //状态
+        ['sequence', 'intval', 3, 'function'], //顺序
+        ['views', 'intval', 3, 'function'], //访问量
+        ['taglink', 'intval', 3, 'function'], //TAG链接
+        ['font_bold', 'intval', 3, 'function'], //加粗
+        ['font_em', 'intval', 3, 'function'], //倾斜
+        ['position', 'formatPosition', 3, 'callback'], //推荐
         //编辑
-        array('content_id', 'intval', 2, 'function'), //内容ID
-        );
+        ['content_id', 'intval', 2, 'function'], //内容ID
+        ];
     //验证
-    protected $_validate = array(
+    protected $_validate = [
         //全部验证
-        array('title', '1,255', '标题只能为1~250个字符', 1, 'length'),
-        array('class_id', 'is_empty', '请选择栏目', 1, 'function'),
+        ['title', '1,255', '标题只能为1~250个字符', 1, 'length'],
+        ['class_id', 'is_empty', '请选择栏目', 1, 'function'],
         //编辑验证
-        array('content_id', 'is_empty', '内容ID获取不正确', 1, 'function', 2),
-    );
+        ['content_id', 'is_empty', '内容ID获取不正确', 1, 'function', 2],
+    ];
 
     /**
-     * 获取列表
+     * 获取列表.
+     *
      * @return array 列表
      */
-    public function loadList($where = array(), $limit = 50, $order = 'A.time desc,A.content_id desc')
+    public function loadList($where = [], $limit = 50, $order = 'A.time desc,A.content_id desc')
     {
-        $pageList = $this->table("content as A")
+        $pageList = $this->table('content as A')
                     ->join('{pre}category as B ON A.class_id = B.class_id')
                     ->field('A.*,B.name as class_name,B.app,B.urlname as class_urlname,B.image as class_image,B.parent_id')
                     ->where($where)
@@ -49,7 +51,7 @@ class ContentModel extends BaseModel
                     ->order($order)
                     ->select();
         //处理数据类型
-        $list = array();
+        $list = [];
         if (!empty($pageList)) {
             $i = 0;
             foreach ($pageList as $key=>$value) {
@@ -60,29 +62,33 @@ class ContentModel extends BaseModel
                 $list[$key]['i'] = $i++;
             }
         }
+
         return $list;
     }
 
     /**
-     * 获取数量
+     * 获取数量.
+     *
      * @return int 数量
      */
-    public function countList($where = array())
+    public function countList($where = [])
     {
-        return $this->table("content as A")
+        return $this->table('content as A')
                     ->join('{pre}category as B ON A.class_id = B.class_id')
                     ->where($where)
                     ->count();
     }
-    
+
     /**
-     * 获取信息
+     * 获取信息.
+     *
      * @param array $where 条件
+     *
      * @return array 信息
      */
     public function getWhereInfo($where)
     {
-        $info = $this->table("content as A")
+        $info = $this->table('content as A')
                     ->join('{pre}category as B ON A.class_id = B.class_id')
                     ->field('A.*,B.name as class_name,B.app,B.urlname as class_urlname,B.image as class_image,B.parent_id')
                     ->where($where)
@@ -90,12 +96,15 @@ class ContentModel extends BaseModel
         if (!empty($info)) {
             $info['app'] = strtolower($info['app']);
         }
+
         return $info;
     }
 
     /**
-     * 更新信息
+     * 更新信息.
+     *
      * @param string $type 更新类型
+     *
      * @return bool 更新状态
      */
     public function saveData($type = 'add')
@@ -117,6 +126,7 @@ class ContentModel extends BaseModel
             }
             //保存TAG
             $this->hasTags($data['keywords'], $data['content_id']);
+
             return $contentId;
         }
         if ($type == 'edit') {
@@ -133,31 +143,38 @@ class ContentModel extends BaseModel
             }
             //保存TAG
             $this->hasTags($data['keywords'], $data['content_id']);
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * 修改信息
+     * 修改信息.
+     *
      * @param string $type 更新类型
+     *
      * @return bool 更新状态
      */
     public function editData($data)
     {
-        $map = array();
+        $map = [];
         $map['content_id'] = $data['content_id'];
+
         return $this->where($map)->data($data)->save();
     }
 
     /**
-     * 删除信息
+     * 删除信息.
+     *
      * @param int $contentId ID
+     *
      * @return bool 删除状态
      */
     public function delData($contentId)
     {
-        $map = array();
+        $map = [];
         $map['content_id'] = $contentId;
         $status = $this->where($map)->delete();
         if (!$status) {
@@ -173,18 +190,22 @@ class ContentModel extends BaseModel
             if ($expandModel->getInfo($contentId)) {
                 if (!$expandModel->delData($contentId)) {
                     $this->error = $expandModel->getError();
+
                     return false;
                 }
             }
         }
         //删除TAG关联
         target('duxcms/TagsHas')->delData($map);
+
         return $status;
     }
 
     /**
-     * 更新扩展信息
+     * 更新扩展信息.
+     *
      * @param string $type 更新类型
+     *
      * @return bool 更新状态
      */
     public function saveExtData($data)
@@ -204,19 +225,23 @@ class ContentModel extends BaseModel
             } else {
                 $type = 'add';
             }
-            
+
             if (!$expandModel->saveData($type, $fieldsetInfo)) {
                 $this->error = $expandModel->getError();
+
                 return false;
             }
         }
+
         return true;
     }
 
     /**
-     * 关联TAG
-     * @param string $keywords 关键词
+     * 关联TAG.
+     *
+     * @param string $keywords  关键词
      * @param string $contentId 内容ID
+     *
      * @return bool 状态
      */
     public function hasTags($keywords, $contentId)
@@ -227,55 +252,57 @@ class ContentModel extends BaseModel
         $str = $keywords;
         $str = str_replace('，', ',', $str);
         $str = str_replace(' ', ',', $str);
-        $strArray = explode(",", $str);
+        $strArray = explode(',', $str);
         //设置模型
         $TagsHasModel = target('duxcms/TagsHas');
         $TagsModel = target('duxcms/Tags');
         //删除关联
-        $where = array();
+        $where = [];
         $where['content_id'] = $contentId;
         $TagsHasModel->delData($where);
         //关联TAG
         foreach ($strArray as $name) {
-            $where = array();
+            $where = [];
             $where['name'] = $name;
             $info = $TagsModel->getWhereInfo($where);
             if (empty($info)) {
                 //添加TAG
-                $data = array();
+                $data = [];
                 $data['name'] = $name;
                 $data['quote'] = 1;
                 $tagId = $TagsModel->saveData('add', $data);
                 //添加关联
-                $hasData = array();
+                $hasData = [];
                 $hasData['content_id'] = $contentId;
                 $hasData['tag_id'] = $tagId;
                 $TagsHasModel->addData($hasData);
             } else {
                 //增加引用次数
-                $data = array();
+                $data = [];
                 $data['quote'] = $info['quote'] + 1;
                 $data['tag_id'] = $info['tag_id'];
                 $TagsModel->saveData('edit', $data);
                 //查找关联
-                $where = array();
+                $where = [];
                 $where['content_id'] = $contentId;
                 $where['tag_id'] = $info['tag_id'];
                 $infoHas = $TagsHasModel->countList($where);
                 //添加关联
                 if (!$infoHas) {
-                    $hasData = array();
+                    $hasData = [];
                     $hasData['content_id'] = $contentId;
                     $hasData['tag_id'] = $info['tag_id'];
                     $TagsHasModel->addData($hasData);
                 }
             }
         }
+
         return true;
     }
 
     /**
-     * 内容拼音转换
+     * 内容拼音转换.
+     *
      * @return string 内容拼音
      */
     public function getUrlTitle()
@@ -294,7 +321,7 @@ class ContentModel extends BaseModel
             $urlTitle = trim($urlTitle, '-');
         }
         //返回数据
-        $where = array();
+        $where = [];
         if (!empty($contentId)) {
             $where[] = 'A.content_id <> '.$contentId;
         }
@@ -308,7 +335,8 @@ class ContentModel extends BaseModel
     }
 
     /**
-     * 提取描述
+     * 提取描述.
+     *
      * @return string 内容描述
      */
     public function getDescription()
@@ -323,13 +351,15 @@ class ContentModel extends BaseModel
         }
         $description = html_out($content);
         $description = strip_tags($description);
-        $description = str_replace(array("\r\n", "\t", '&ldquo;', '&rdquo;', '&nbsp;'), '', $description);
+        $description = str_replace(["\r\n", "\t", '&ldquo;', '&rdquo;', '&nbsp;'], '', $description);
         $description = substr($description, 0, 250);
+
         return $description;
     }
 
     /**
-     * 提取形象图
+     * 提取形象图.
+     *
      * @return string 内容形象图
      */
     public function getImage()
@@ -343,11 +373,13 @@ class ContentModel extends BaseModel
         if (!$getImageStatus || !empty($image) || !$content || !$getImageNum) {
             return $image;
         }
+
         return target('duxcms/ContentTools')->getImage($content, $getImageNum);
     }
 
     /**
-     * 格式化推荐位
+     * 格式化推荐位.
+     *
      * @return string 推荐ID
      */
     public function formatPosition()
@@ -361,23 +393,25 @@ class ContentModel extends BaseModel
     }
 
     /**
-     * 获取内容URL
+     * 获取内容URL.
+     *
      * @param int $info 栏目信息
+     *
      * @return bool 删除状态
      */
     public function getUrl($info)
     {
         $params = [
-            'content_id'=>$info['content_id'],
-            'urltitle'=>$info['urltitle'],
-            'class_urlname'=>$info['class_urlname']
+            'content_id'   => $info['content_id'],
+            'urltitle'     => $info['urltitle'],
+            'class_urlname'=> $info['class_urlname'],
         ];
 
         if (defined('LANG_OPEN')) {
             $category = target('duxcms/Category')->getInfo($info['class_id']);
             $params['lang'] = $category['lang'];
         }
-        
+
         return match_url(strtolower($info['app']).'/Content/index', $params);
     }
 }
