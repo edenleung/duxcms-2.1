@@ -1,0 +1,70 @@
+<form method="post" class="form-x dux-form form-auto" id="form" action="{url('api')}">
+    <div class="panel dux-box  active">
+        <div class="panel-head">
+            <strong>API 设置</strong>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="label">
+                    <label>开启API调用</label>
+                </div>
+                <div class="field">
+                        <div class="button-group button-group-small radio">
+                            <!--if{$info['OPEN']}-->
+                            <label class="button active"><input name="OPEN" value="1" checked="checked" type="radio">
+                            <!--{else}-->
+                            <label class="button"><input name="OPEN" value="1" type="radio">
+                            <!--{/if}-->
+                            <span class="icon icon-check"></span> 开启</label>
+                            <!--if{!$info['OPEN']}-->
+                            <label class="button active"><input name="OPEN" checked="checked" value="0" type="radio">
+                            <!--{else}-->
+                            <label class="button"><input name="OPEN" value="0" type="radio">
+                            <!--{/if}-->
+                            <span class="icon icon-times"></span> 关闭</label>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="form-group">
+                <div class="label">
+                    <label for="sitename">密钥(Token)</label>
+                </div>
+                <div class="field">
+                    <input type="text" class="input" name="TOKEN" id="TOKEN" size="40" value="{$info.TOKEN}" readonly>
+                    <button class="button bg-main" type="button" onclick="change()">生成</button>
+                    <div class="input-note">api接入时，必须传入此参。不要对外泄露此token</div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-foot">
+            <div class="form-button">
+                <div id="tips"></div>
+                <button class="button bg-main" type="submit">保存</button>
+                <button class="button bg" type="reset">重置</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    function change()
+    {
+        var uid = guid()
+        document.getElementById("TOKEN").value = uid
+    }
+    function guid()
+    {
+        var guid = "";
+        for (var i = 1; i <= 32; i++){
+        var n = Math.floor(Math.random()*16.0).toString(16);
+        guid +=   n;
+        if((i==8)||(i==12)||(i==16)||(i==20))
+            guid += "-";
+        }
+        return guid
+    }
+    
+    Do.ready('base', function () {
+        $('#form').duxForm();
+    });
+</script>

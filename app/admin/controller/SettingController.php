@@ -55,6 +55,11 @@ class SettingController extends AdminController
                         'name' => '百度链接提交',
                         'url' => url('Setting/push'),
                         'icon' => 'upload',
+                    ),
+                    array(
+                        'name' => 'API设置',
+                        'url' => url('Setting/api'),
+                        'icon' => 'upload',
                     )
                 )
         );
@@ -207,6 +212,29 @@ class SettingController extends AdminController
             $this->assign('info', load_config($file));
             $this->adminDisplay();
         } else {
+            if (save_config($file, $_POST)) {
+                $this->success('上传配置成功！');
+            } else {
+                $this->error('上传配置失败');
+            }
+        }
+    }
+
+    /**
+     * API 设置
+     *
+     * @return void
+     */
+    public function api()
+    {
+        $file = CONFIG_PATH.'api.php';
+        if (!IS_POST) {
+            $this->assign('info', load_config($file));
+            $this->adminDisplay();
+        } else {
+            if ($_POST['OPEN'] && empty($_POST['TOKEN'])) {
+                $this->error('请生成token再保存！');
+            }
             if (save_config($file, $_POST)) {
                 $this->success('上传配置成功！');
             } else {
