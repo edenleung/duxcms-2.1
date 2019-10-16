@@ -1,20 +1,18 @@
 <?php
-namespace app\duxcms\model;
 
-use app\base\model\BaseModel;
+namespace app\duxcms\model;
 
 /**
  * 安全统计
  */
 class SafeModel
 {
-
     /**
-     * 获取安全测试结果
+     * 获取安全测试结果.
      */
     public function getList()
     {
-        $safeArray = array();
+        $safeArray = [];
         //数据库弱口令
         if (preg_match('/^(?=.*\d)(?=.*[a-zA-Z])(?=.*\W).+$/', config('DB.default.DB_PWD'))) {
             $safeArray['db'] = true;
@@ -44,11 +42,12 @@ class SafeModel
         if (!is_dir(APP_PATH.'install')) {
             $safeArray['install'] = true;
         }
+
         return $safeArray;
     }
 
     /**
-     * 获取安全评分
+     * 获取安全评分.
      */
     public function getCount()
     {
@@ -59,6 +58,7 @@ class SafeModel
                 $count = $count + 20;
             }
         }
+
         return $count;
     }
 }

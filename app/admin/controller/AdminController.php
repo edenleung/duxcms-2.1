@@ -1,10 +1,11 @@
 <?php
+
 namespace app\admin\controller;
 
 use app\base\controller\BaseController;
 
 /**
- * 后台公共类
+ * 后台公共类.
  */
 class AdminController extends BaseController
 {
@@ -15,7 +16,7 @@ class AdminController extends BaseController
     }
 
     /**
-     * 后台控制器初始化
+     * 后台控制器初始化.
      */
     protected function init()
     {
@@ -25,7 +26,7 @@ class AdminController extends BaseController
         }
         // 检测用户登录
         define('ADMIN_ID', $this->isLogin());
-        if (!ADMIN_ID && (APP_NAME <> 'admin' || CONTROLLER_NAME <> 'Login')) {
+        if (!ADMIN_ID && (APP_NAME != 'admin' || CONTROLLER_NAME != 'Login')) {
             $this->redirect(url('admin/Login/index'));
         }
         if (!(APP_NAME == 'admin' && CONTROLLER_NAME == 'Login')) {
@@ -41,7 +42,7 @@ class AdminController extends BaseController
     }
 
     /**
-     * 用户权限检测
+     * 用户权限检测.
      */
     protected function checkPurview()
     {
@@ -62,18 +63,20 @@ class AdminController extends BaseController
             return true;
         }
         $current = APP_NAME.'_'.CONTROLLER_NAME;
-        if (!in_array($current, (array)$basePurview)) {
+        if (!in_array($current, (array) $basePurview)) {
             $this->error('您没有权限访问此功能！');
         }
         $current = APP_NAME.'_'.CONTROLLER_NAME.'_'.ACTION_NAME;
-        if (!in_array($current, (array)$basePurview)) {
+        if (!in_array($current, (array) $basePurview)) {
             $this->error('您没有权限访问此功能！');
         }
+
         return true;
     }
 
     /**
-     * 检测用户是否登录
+     * 检测用户是否登录.
+     *
      * @return int 用户IP
      */
     protected function isLogin()
@@ -87,9 +90,10 @@ class AdminController extends BaseController
     }
 
     /**
-     * 后台模板显示 调用内置的模板引擎显示方法，
-     * @access protected
+     * 后台模板显示 调用内置的模板引擎显示方法，.
+     *
      * @param string $tpl 指定要调用的模板文件
+     *
      * @return void
      */
     protected function adminDisplay($tpl = '')
@@ -104,7 +108,7 @@ class AdminController extends BaseController
     }
 
     //分页结果显示
-    protected function getPageShow($map = array(), $mustParams = array())
+    protected function getPageShow($map = [], $mustParams = [])
     {
         $pageArray = $this->pager;
         $html = '
@@ -125,6 +129,7 @@ class AdminController extends BaseController
         $html .= '<li><a href="'.$this->createPageUrl($map, $mustParams, $pageArray['nextPage']).'">下一页</a></li>
           <li><a href="'.$this->createPageUrl($map, $mustParams, $pageArray['lastPage']).'">末页</a></li>
         </ul>';
+
         return $html;
     }
 }

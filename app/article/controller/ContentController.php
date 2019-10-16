@@ -1,17 +1,16 @@
 <?php
+
 namespace app\article\controller;
 
 use app\home\controller\SiteController;
 
 /**
- * 栏目页面
+ * 栏目页面.
  */
-
 class ContentController extends SiteController
 {
-
     /**
-     * 栏目页
+     * 栏目页.
      */
     public function index()
     {
@@ -25,7 +24,7 @@ class ContentController extends SiteController
         if (!empty($contentId)) {
             $contentInfo = $model->getInfo($contentId);
         } elseif (!empty($urlTitle)) {
-            $where = array();
+            $where = [];
             $where['urltitle'] = $urlTitle;
             $contentInfo = $model->getWhereInfo($where);
         } else {
@@ -45,15 +44,15 @@ class ContentController extends SiteController
         if (!is_array($categoryInfo)) {
             $this->error404();
         }
-        
+
         // 多语言
         if (defined('LANG_OPEN') && $categoryInfo['lang'] !== APP_LANG) {
             changeLang($categoryInfo['lang'], $_REQUEST['s']);
         }
 
-        if ($categoryInfo['app'] <> APP_NAME) {
+        if ($categoryInfo['app'] != APP_NAME) {
             $this->error404();
-        };
+        }
         //判断跳转
         if (!empty($contentInfo['url'])) {
             $link = $this->show($contentInfo['url']);
@@ -66,7 +65,7 @@ class ContentController extends SiteController
         //获取顶级栏目信息
         $topCategoryInfo = target('duxcms/Category')->getInfo($crumb[0]['class_id']);
         //更新访问计数
-        $where = array();
+        $where = [];
         $where['content_id'] = $contentId;
         target('duxcms/Content')->where($where)->setInc('views');
         //内容处理
@@ -74,10 +73,10 @@ class ContentController extends SiteController
         //扩展模型
         if ($categoryInfo['fieldset_id']) {
             $extInfo = target('duxcms/FieldsetExpand')->getDataInfo($categoryInfo['fieldset_id'], $contentId);
-            $contentInfo = array_merge($contentInfo, (array)$extInfo);
+            $contentInfo = array_merge($contentInfo, (array) $extInfo);
         }
         //上一篇
-        $prevWhere = array();
+        $prevWhere = [];
         $prevWhere['A.status'] = 1;
         $prevWhere[] = 'A.time < '.$contentInfo['time'];
         $prevWhere['C.class_id'] = $categoryInfo['class_id'];
@@ -87,7 +86,7 @@ class ContentController extends SiteController
             $prevInfo['curl'] = target('duxcms/Category')->getUrl($prevInfo, $appConfig);
         }
         //下一篇
-        $nextWhere = array();
+        $nextWhere = [];
         $nextWhere['A.status'] = 1;
         $nextWhere[] = 'A.time > '.$contentInfo['time'];
         $nextWhere['C.class_id'] = $categoryInfo['class_id'];

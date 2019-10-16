@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | TOPThink [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -15,18 +16,21 @@ class ImageImagick
 {
     /**
      * 图像资源对象
+     *
      * @var resource
      */
     private $img;
 
     /**
-     * 图像信息，包括width,height,type,mime,size
+     * 图像信息，包括width,height,type,mime,size.
+     *
      * @var array
      */
     private $info;
 
     /**
-     * 构造方法，可用于打开一张图像
+     * 构造方法，可用于打开一张图像.
+     *
      * @param string $imgname 图像路径
      */
     public function __construct($imgname = null)
@@ -35,8 +39,9 @@ class ImageImagick
     }
 
     /**
-     * 打开一张图像
-     * @param  string $imgname 图像路径
+     * 打开一张图像.
+     *
+     * @param string $imgname 图像路径
      */
     public function open($imgname)
     {
@@ -52,19 +57,20 @@ class ImageImagick
         $this->img = new Imagick(realpath($imgname));
 
         //设置图像信息
-        $this->info = array(
+        $this->info = [
             'width'  => $this->img->getImageWidth(),
             'height' => $this->img->getImageHeight(),
             'type'   => strtolower($this->img->getImageFormat()),
             'mime'   => $this->img->getImageMimeType(),
-        );
+        ];
     }
 
     /**
-     * 保存图像
-     * @param  string  $imgname   图像保存名称
-     * @param  string  $type      图像类型
-     * @param  boolean $interlace 是否对JPEG类型图像设置隔行扫描
+     * 保存图像.
+     *
+     * @param string $imgname   图像保存名称
+     * @param string $type      图像类型
+     * @param bool   $interlace 是否对JPEG类型图像设置隔行扫描
      */
     public function save($imgname, $type = null, $interlace = true)
     {
@@ -98,31 +104,36 @@ class ImageImagick
     }
 
     /**
-     * 返回图像宽度
-     * @return integer 图像宽度
+     * 返回图像宽度.
+     *
+     * @return int 图像宽度
      */
     public function width()
     {
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
+
         return $this->info['width'];
     }
 
     /**
-     * 返回图像高度
-     * @return integer 图像高度
+     * 返回图像高度.
+     *
+     * @return int 图像高度
      */
     public function height()
     {
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
+
         return $this->info['height'];
     }
 
     /**
-     * 返回图像类型
+     * 返回图像类型.
+     *
      * @return string 图像类型
      */
     public function type()
@@ -130,11 +141,13 @@ class ImageImagick
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
+
         return $this->info['type'];
     }
 
     /**
-     * 返回图像MIME类型
+     * 返回图像MIME类型.
+     *
      * @return string 图像MIME类型
      */
     public function mime()
@@ -142,11 +155,13 @@ class ImageImagick
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
+
         return $this->info['mime'];
     }
 
     /**
-     * 返回图像尺寸数组 0 - 图像宽度，1 - 图像高度
+     * 返回图像尺寸数组 0 - 图像宽度，1 - 图像高度.
+     *
      * @return array 图像尺寸
      */
     public function size()
@@ -154,17 +169,19 @@ class ImageImagick
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
-        return array($this->info['width'], $this->info['height']);
+
+        return [$this->info['width'], $this->info['height']];
     }
 
     /**
-     * 裁剪图像
-     * @param  integer $w      裁剪区域宽度
-     * @param  integer $h      裁剪区域高度
-     * @param  integer $x      裁剪区域x坐标
-     * @param  integer $y      裁剪区域y坐标
-     * @param  integer $width  图像保存宽度
-     * @param  integer $height 图像保存高度
+     * 裁剪图像.
+     *
+     * @param int $w      裁剪区域宽度
+     * @param int $h      裁剪区域高度
+     * @param int $x      裁剪区域x坐标
+     * @param int $y      裁剪区域y坐标
+     * @param int $width  图像保存宽度
+     * @param int $height 图像保存高度
      */
     public function crop($w, $h, $x = 0, $y = 0, $width = null, $height = null)
     {
@@ -185,7 +202,7 @@ class ImageImagick
             do {
                 $this->_crop($w, $h, $x, $y, $width, $height, $img);
             } while ($img->nextImage());
-            
+
             //压缩图片
             $this->img = $img->deconstructImages();
             $img->destroy(); //销毁零时图片
@@ -205,22 +222,23 @@ class ImageImagick
             $img->cropImage($w, $h, $x, $y);
             $img->setImagePage($w, $h, 0, 0); //调整画布和图片一致
         }
-        
+
         //调整大小
         if ($w != $width || $h != $height) {
             $img->scaleImage($width, $height);
         }
 
         //设置缓存尺寸
-        $this->info['width']  = $w;
+        $this->info['width'] = $w;
         $this->info['height'] = $h;
     }
 
     /**
-     * 生成缩略图
-     * @param  integer $width  缩略图最大宽度
-     * @param  integer $height 缩略图最大高度
-     * @param  integer $type   缩略图裁剪类型
+     * 生成缩略图.
+     *
+     * @param int $width  缩略图最大宽度
+     * @param int $height 缩略图最大高度
+     * @param int $type   缩略图裁剪类型
      */
     public function thumb($width, $height, $type = THINKIMAGE_THUMB_SCALE)
     {
@@ -237,16 +255,16 @@ class ImageImagick
             /* 等比例缩放 */
             case THINKIMAGE_THUMB_SCALE:
                 //原图尺寸小于缩略图尺寸则不进行缩略
-                if ($w<$width && $h<$height) {
+                if ($w < $width && $h < $height) {
                     return;
                 }
 
                 //计算缩放比例
                 $scale = min($width / $w, $height / $h);
-                
+
                 //设置缩略图的坐标及宽度和高度
                 $x = $y = 0;
-                $width  = $w * $scale;
+                $width = $w * $scale;
                 $height = $h * $scale;
                 break;
 
@@ -288,7 +306,7 @@ class ImageImagick
             /* 填充 */
             case THINKIMAGE_THUMB_FILLED:
                 //计算缩放比例
-                if ($w<$width && $h<$height) {
+                if ($w < $width && $h < $height) {
                     $scale = 1;
                 } else {
                     $scale = min($width / $w, $height / $h);
@@ -304,17 +322,16 @@ class ImageImagick
                 $newimg = new Imagick();
                 $newimg->newImage($width, $height, 'white', $this->info['type']);
 
-
                 if ('gif' == $this->info['type']) {
                     $imgs = $this->img->coalesceImages();
-                    $img  = new Imagick();
+                    $img = new Imagick();
                     $this->img->destroy(); //销毁原图
 
                     //循环填充每一帧
                     do {
                         //填充图像
                         $image = $this->_fill($newimg, $posx, $posy, $neww, $newh, $imgs);
-                        
+
                         $img->addImage($image);
                         $img->setImageDelay($imgs->getImageDelay());
                         $img->setImagePage($width, $height, 0, 0);
@@ -336,8 +353,9 @@ class ImageImagick
                 }
 
                 //设置新图像属性
-                $this->info['width']  = $width;
+                $this->info['width'] = $width;
                 $this->info['height'] = $height;
+
                 return;
 
             /* 固定 */
@@ -359,7 +377,7 @@ class ImageImagick
         is_null($img) && $img = $this->img;
 
         /* 将指定图片绘入空白图片 */
-        $draw  = new ImagickDraw();
+        $draw = new ImagickDraw();
         $draw->composite($img->getImageCompose(), $posx, $posy, $neww, $newh, $img);
         $image = $newimg->clone();
         $image->drawImage($draw);
@@ -369,10 +387,11 @@ class ImageImagick
     }
 
     /**
-     * 添加水印
-     * @param  string  $source 水印图片路径
-     * @param  integer $locate 水印位置
-     * @param  integer $alpha  水印透明度
+     * 添加水印.
+     *
+     * @param string $source 水印图片路径
+     * @param int    $locate 水印位置
+     * @param int    $alpha  水印透明度
      */
     public function water($source, $locate = THINKIMAGE_WATER_SOUTHEAST)
     {
@@ -386,7 +405,7 @@ class ImageImagick
 
         //创建水印图像资源
         $water = new Imagick(realpath($source));
-        $info  = array($water->getImageWidth(), $water->getImageHeight());
+        $info = [$water->getImageWidth(), $water->getImageHeight()];
 
         /* 设定水印位置 */
         switch ($locate) {
@@ -455,7 +474,7 @@ class ImageImagick
         //创建绘图资源
         $draw = new ImagickDraw();
         $draw->composite($water->getImageCompose(), $x, $y, $info[0], $info[1], $water);
-        
+
         if ('gif' == $this->info['type']) {
             $img = $this->img->coalesceImages();
             $this->img->destroy(); //销毁原图
@@ -479,14 +498,15 @@ class ImageImagick
     }
 
     /**
-     * 图像添加文字
-     * @param  string  $text   添加的文字
-     * @param  string  $font   字体路径
-     * @param  integer $size   字号
-     * @param  string  $color  文字颜色
-     * @param  integer $locate 文字写入位置
-     * @param  integer $offset 文字相对当前位置的偏移量
-     * @param  integer $angle  文字倾斜角度
+     * 图像添加文字.
+     *
+     * @param string $text   添加的文字
+     * @param string $font   字体路径
+     * @param int    $size   字号
+     * @param string $color  文字颜色
+     * @param int    $locate 文字写入位置
+     * @param int    $offset 文字相对当前位置的偏移量
+     * @param int    $angle  文字倾斜角度
      */
     public function text(
         $text,
@@ -517,7 +537,6 @@ class ImageImagick
         }
         $col = substr($color, 0, 7);
         $alp = strlen($color) == 9 ? substr($color, -2) : 0;
-        
 
         //获取文字信息
         $draw = new ImagickDraw();
@@ -527,7 +546,7 @@ class ImageImagick
         $draw->setFillAlpha(1 - hexdec($alp) / 127);
         $draw->setTextAntialias(true);
         $draw->setStrokeAntialias(true);
-        
+
         $metrics = $this->img->queryFontMetrics($draw, $text);
 
         /* 计算文字初始坐标和尺寸 */
@@ -625,9 +644,10 @@ class ImageImagick
     }
 
     /**
-     * 锐化图片
-     * @param  integer $radius 锐化角度
-     * @param  integer $sigma  锐化偏差
+     * 锐化图片.
+     *
+     * @param int $radius 锐化角度
+     * @param int $sigma  锐化偏差
      */
     public function sharp($radius = 0, $sigma = 1)
     {
@@ -635,7 +655,7 @@ class ImageImagick
     }
 
     /**
-     * 析构方法，用于销毁图像资源
+     * 析构方法，用于销毁图像资源.
      */
     public function __destruct()
     {

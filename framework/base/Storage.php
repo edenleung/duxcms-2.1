@@ -1,12 +1,13 @@
 <?php
+
 namespace framework\base;
 
 class Storage
 {
-    protected $config = array();
+    protected $config = [];
     protected $storage = 'default';
-    protected static $objArr = array();
-    
+    protected static $objArr = [];
+
     public function __construct($storage = 'default')
     {
         if ($storage) {
@@ -27,6 +28,7 @@ class Storage
             }
             self::$objArr[$this->storage] = new $storageDriver($this->config);
         }
-        return call_user_func_array(array(self::$objArr[$this->storage], $method), $args);
+
+        return call_user_func_array([self::$objArr[$this->storage], $method], $args);
     }
 }

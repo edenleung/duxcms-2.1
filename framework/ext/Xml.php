@@ -1,4 +1,5 @@
 <?php
+
 namespace framework\ext;
 
 //xml解析成数组
@@ -6,9 +7,9 @@ class Xml
 {
     public static function decode($xml)
     {
-        $values = array();
-        $index  = array();
-        $array  = array();
+        $values = [];
+        $index = [];
+        $array = [];
         $parser = xml_parser_create('utf-8');
         xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1);
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
@@ -18,22 +19,23 @@ class Xml
         $name = $values[$i]['tag'];
         $array[$name] = isset($values[$i]['attributes']) ? $values[$i]['attributes'] : '';
         $array[$name] = self::_struct_to_array($values, $i);
+
         return $array;
     }
-    
+
     private static function _struct_to_array($values, &$i)
     {
-        $child = array();
+        $child = [];
         if (isset($values[$i]['value'])) {
             array_push($child, $values[$i]['value']);
         }
-        
-        while ($i++<count($values)) {
+
+        while ($i++ < count($values)) {
             switch ($values[$i]['type']) {
                 case 'cdata':
                     array_push($child, $values[$i]['value']);
                     break;
-                
+
                 case 'complete':
                     $name = $values[$i]['tag'];
                     if (!empty($name)) {
@@ -43,18 +45,19 @@ class Xml
                         }
                     }
                 break;
-                
+
                 case 'open':
                     $name = $values[$i]['tag'];
-                    $size = isset($child[$name]) ? sizeof($child[$name]) : 0;
+                    $size = isset($child[$name]) ? count($child[$name]) : 0;
                     $child[$name][$size] = self::_struct_to_array($values, $i);
                     break;
-                
+
                 case 'close':
                     return $child;
                     break;
             }
         }
+
         return $child;
     }
 }

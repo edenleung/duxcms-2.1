@@ -1,18 +1,18 @@
 <?php
+
 namespace app\duxcms\model;
 
-use app\base\model\BaseModel;
-
 /**
- * 内容工具
+ * 内容工具.
  */
 class ContentToolsModel
 {
-
     /**
-     * 获取内容指定图片
+     * 获取内容指定图片.
+     *
      * @param string $content 内容
-     * @param int $num 第N张图片
+     * @param int    $num     第N张图片
+     *
      * @return string 图片URL
      */
     public function getImage($content, $num = 1)
@@ -21,14 +21,17 @@ class ContentToolsModel
         preg_match_all('/<img.+src=[\'"]([^\'"]+)[\'"]/i', $content, $matches);
         $num = $num - 1;
         $img = $matches[1][$num];
+
         return $img;
     }
 
     /**
-     * 获取关键词
+     * 获取关键词.
+     *
      * @param string $title 标题
+     *
      * @return string keywords
-     * 群众们应该感谢厂长的分词服务 weibo @梁斌penny https://weibo.com/pennyliang
+     *                群众们应该感谢厂长的分词服务 weibo @梁斌penny https://weibo.com/pennyliang
      */
     public function getKerword($title)
     {
@@ -42,12 +45,15 @@ class ContentToolsModel
         }
 
         $keywords = array_column($list, 't');
+
         return implode(',', $keywords);
     }
 
     /**
-     * 远程抓图
+     * 远程抓图.
+     *
      * @param string $content 内容
+     *
      * @return string 抓取后内容
      */
     public function getRemoteImage($content)
@@ -61,17 +67,17 @@ class ContentToolsModel
         //文件URL路径
         $fileUrl = __ROOT__.'/uploads/'.$filesName;
         $body = htmlspecialchars_decode($content);
-        $imgArray = array();
+        $imgArray = [];
         preg_match_all("/(src|SRC)=[\"|'| ]{0,}(http:\/\/(.*)\.(gif|jpg|jpeg|bmp|png))/isU", $body, $imgArray);
         $imgArray = array_unique($imgArray[2]);
         set_time_limit(0);
-        $milliSecond = date("dHis").'_';
+        $milliSecond = date('dHis').'_';
         if (!is_dir($filePath)) {
             if (@mkdir($filePath, 0777, true) === false) {
                 throw new \RuntimeException('The directory '.$filePath.' could not be created.');
             }
         }
-        $http = new \framework\ext\Http;
+        $http = new \framework\ext\Http();
         foreach ($imgArray as $key =>$value) {
             $value = trim($value);
             $ext = explode('.', $value);
@@ -86,6 +92,7 @@ class ContentToolsModel
                 }
             }
         }
+
         return $body;
     }
 }

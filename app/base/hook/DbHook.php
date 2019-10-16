@@ -1,4 +1,5 @@
 <?php
+
 namespace app\base\hook;
 
 class DbHook
@@ -6,7 +7,7 @@ class DbHook
     public function dbQueryBegin($sql, $params)
     {
     }
-    
+
     public function dbQueryEnd($sql, $data)
     {
     }
@@ -14,7 +15,7 @@ class DbHook
     public function dbExecuteBegin($sql, $params)
     {
     }
-    
+
     public function dbExecuteEnd($sql, $affectedRows)
     {
     }

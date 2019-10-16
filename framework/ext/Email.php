@@ -1,12 +1,15 @@
 <?php
+
 namespace framework\ext;
 
 //邮件发送类,基于PHPMailer类
 class Email
 {
-    public static $config; //存储配置的静态变量
+    public static $config;
+
+    //存储配置的静态变量
     //设定邮件参数
-    public static function init($config = array())
+    public static function init($config = [])
     {
         self::$config['SMTP_HOST'] = isset($config['SMTP_HOST']) ? $config['SMTP_HOST'] : 'smtp.qq.com'; //smtp服务器地址
         self::$config['SMTP_PORT'] = isset($config['SMTP_PORT']) ? $config['SMTP_PORT'] : 25; //smtp服务器端口
@@ -19,44 +22,45 @@ class Email
         self::$config['SMTP_FROM_NAME'] = isset($config['SMTP_FROM_NAME']) ? $config['SMTP_FROM_NAME'] : 'CanPHP官方'; //发件人姓名
         self::$config['SMTP_DEBUG'] = isset($config['SMTP_DEBUG']) ? $config['SMTP_DEBUG'] : false; //是否显示调试信息
     }
+
     //发送邮件
     public static function send($mail_to, $mail_subject, $mail_body, $mail_attach = null)
     {
         @error_reporting(E_ERROR | E_WARNING | E_PARSE); //屏蔽出错信息
-        require_once(dirname(__FILE__).'/phpmailer/class.phpmailer.php');
+        require_once dirname(__FILE__).'/phpmailer/class.phpmailer.php';
         $mail = new \PHPMailer();
         //没有调用配置方法，则调用一次config方法
         if (!isset(self::$config) || empty(self::$config)) {
             self::config();
         }
         $mail->IsSMTP(); //// 使用SMTP方式发送
-        $mail->Host       = self::$config['SMTP_HOST']; //smtp服务器地址
-        $mail->Port       = self::$config['SMTP_PORT']; //smtp服务器端口
-        $mail->Username   = self::$config['SMTP_USERNAME']; //smtp服务器帐号，
-        $mail->Password   = self::$config['SMTP_PASSWORD']; // smtp服务器帐号密码
-        $mail->SMTPAuth   = self::$config['SMTP_AUTH']; //启用SMTP验证功能，一般需要开启
+        $mail->Host = self::$config['SMTP_HOST']; //smtp服务器地址
+        $mail->Port = self::$config['SMTP_PORT']; //smtp服务器端口
+        $mail->Username = self::$config['SMTP_USERNAME']; //smtp服务器帐号，
+        $mail->Password = self::$config['SMTP_PASSWORD']; // smtp服务器帐号密码
+        $mail->SMTPAuth = self::$config['SMTP_AUTH']; //启用SMTP验证功能，一般需要开启
         $mail->CharSet = self::$config['SMTP_CHARSET']; //发送的邮件内容编码
         $mail->SetFrom(self::$config['SMTP_FROM_TO'], self::$config['SMTP_FROM_NAME']); // 发件人的邮箱和姓名
         $mail->AddReplyTo(self::$config['SMTP_FROM_TO'], self::$config['SMTP_FROM_NAME']); // 回复时的邮箱和姓名，一般跟发件人一样
         //是否启用SSL安全连接
         if (self::$config['SMTP_SSL']) {
-            $mail->SMTPSecure = "ssl"; //gmail需要启用sll安全连接
+            $mail->SMTPSecure = 'ssl'; //gmail需要启用sll安全连接
         }
         //开启调试信息
         if (self::$config['SMTP_DEBUG']) {
             $mail->SMTPDebug = 1;
         }
-        
+
         $mail->Subject = $mail_subject; //邮件标题
         $mail->MsgHTML($mail_body); //邮件内容，支持html代码
         //发送邮件
         if (is_array($mail_to)) {
             //同时发送给多个人
             foreach ($mail_to as $key=>$value) {
-                $mail->AddAddress($value, ""); // 收件人邮箱和姓名
+                $mail->AddAddress($value, ''); // 收件人邮箱和姓名
             }
         } else {		//只发送给一个人
-                $mail->AddAddress($mail_to, ""); // 收件人邮箱和姓名
+                $mail->AddAddress($mail_to, ''); // 收件人邮箱和姓名
         }
 
         //发送多个附件
@@ -73,11 +77,12 @@ class Email
                     $mail->AddAttachment($mail_attach); //发送附件
             }
         }
-        
+
         if (!$mail->Send()) {
             if (self::$config['SMTP_DEBUG']) {
-                echo "Mailer Error: ".$mail->ErrorInfo;
+                echo 'Mailer Error: '.$mail->ErrorInfo;
             }
+
             return false;
         } else {
             return true;

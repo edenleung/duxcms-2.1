@@ -1,14 +1,15 @@
 <?php
+
 namespace framework\base;
 
 class Cache
 {
-    protected $config = array();
+    protected $config = [];
     protected $cache = 'default';
     public $proxyObj = null;
     public $proxyExpire = 1800;
-    protected static $objArr = array();
-    
+    protected static $objArr = [];
+
     public function __construct($cache = 'default')
     {
         if ($cache) {
@@ -29,17 +30,18 @@ class Cache
             }
             self::$objArr[$this->cache] = new $cacheDriver($this->config);
         }
-        
+
         if ($this->proxyObj) { //proxy mode
             $key = md5(get_class($this->proxyObj).'_'.$method.'_'.var_export($args));
             $value = self::$objArr[$this->cache]->get($key);
             if (false === $value) {
-                $value = call_user_func_array(array($this->proxyObj, $method), $args);
+                $value = call_user_func_array([$this->proxyObj, $method], $args);
                 self::$objArr[$this->cache]->set($key, $value, $this->proxyExpire);
             }
+
             return $value;
         } else {
-            return call_user_func_array(array(self::$objArr[$this->cache], $method), $args);
+            return call_user_func_array([self::$objArr[$this->cache], $method], $args);
         }
     }
 }

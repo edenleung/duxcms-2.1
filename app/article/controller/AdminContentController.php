@@ -1,48 +1,49 @@
 <?php
+
 namespace app\article\controller;
 
 use app\admin\controller\AdminController;
 
 /**
- * 文章列表
+ * 文章列表.
  */
-
 class AdminContentController extends AdminController
 {
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '文章管理',
+        return [
+            'info'  => [
+                'name'        => '文章管理',
                 'description' => '管理网站的所有文章',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '文章列表',
-                        'url' => url('index'),
+                        'url'  => url('index'),
                         'icon' => 'list',
-                    ),
-                    
-                ),
-            'add' => array(
-                    array(
+                    ],
+
+                ],
+            'add' => [
+                    [
                         'name' => '添加文章',
-                        'url' => url('add'),
+                        'url'  => url('add'),
                         'icon' => 'plus',
-                    ),
-                )
-            );
+                    ],
+                ],
+            ];
     }
+
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
         //筛选条件
-        $where = array();
+        $where = [];
         $keyword = request('request.keyword', '');
         $classId = request('request.class_id', 0, 'intval');
         $positionId = request('request.position_id', 0, 'intval');
@@ -67,7 +68,7 @@ class AdminContentController extends AdminController
             }
         }
         //URL参数
-        $pageMaps = array();
+        $pageMaps = [];
         $pageMaps['keyword'] = $keyword;
         $pageMaps['status'] = $status;
         $pageMaps['class_id'] = $classId;
@@ -84,7 +85,7 @@ class AdminContentController extends AdminController
         $list = target('ContentArticle')->page(30)->loadList($where, $limit);
         $this->pager = target('ContentArticle')->pager;
         //位置导航
-        $breadCrumb = array('文章列表'=>url());
+        $breadCrumb = ['文章列表'=>url()];
         //模板传值
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', $list);
@@ -128,12 +129,12 @@ class AdminContentController extends AdminController
     }
 
     /**
-     * 增加
+     * 增加.
      */
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('文章列表'=>url('index'), '文章添加'=>url());
+            $breadCrumb = ['文章列表'=>url('index'), '文章添加'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             // 多语言
@@ -162,7 +163,7 @@ class AdminContentController extends AdminController
     }
 
     /**
-     * 修改
+     * 修改.
      */
     public function edit()
     {
@@ -177,7 +178,7 @@ class AdminContentController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('文章列表'=>url('index'), '文章修改'=>url('', array('content_id'=>$contentId)));
+            $breadCrumb = ['文章列表'=>url('index'), '文章修改'=>url('', ['content_id'=>$contentId])];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);
@@ -207,7 +208,7 @@ class AdminContentController extends AdminController
     }
 
     /**
-     * 删除
+     * 删除.
      */
     public function del()
     {
@@ -223,7 +224,7 @@ class AdminContentController extends AdminController
     }
 
     /**
-     * 批量操作
+     * 批量操作.
      */
     public function batchAction()
     {
@@ -242,7 +243,7 @@ class AdminContentController extends AdminController
             }
         }
         foreach ($ids as $id) {
-            $data = array();
+            $data = [];
             $data['content_id'] = $id;
             switch ($type) {
                 case 1:
@@ -268,6 +269,7 @@ class AdminContentController extends AdminController
                     $res = target('ContentArticle')->copyData($id, $classId);
                     if ($res['error']) {
                         $this->error($res['msg']);
+
                         return;
                     }
                     break;
@@ -277,14 +279,14 @@ class AdminContentController extends AdminController
     }
 
     /**
-     * 实时推送文章链接到百度
+     * 实时推送文章链接到百度.
      *
      * @return void
      */
     public function pushArticle()
     {
         $aid = request('post.data', 0, 'intval');
-        
+
         if (!$aid) {
             $this->error('参数异常');
         }

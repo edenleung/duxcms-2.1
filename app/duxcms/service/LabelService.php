@@ -1,13 +1,14 @@
 <?php
+
 namespace app\duxcms\service;
 
 /**
- * 标签接口
+ * 标签接口.
  */
 class LabelService
 {
     /**
-     * 栏目列表
+     * 栏目列表.
      */
     public function categoryList($data)
     {
@@ -43,15 +44,16 @@ class LabelService
         } else {
             $where[] = "lang = ''";
         }
+
         return $model->loadData($where, $limit);
     }
 
     /**
-     * 内容列表
+     * 内容列表.
      */
     public function contentList($data)
     {
-        $where = array();
+        $where = [];
         //指定栏目内容
         if (!empty($data['class_id'])) {
             $classWhere = 'A.class_id in ('.$data['class_id'].')';
@@ -122,11 +124,11 @@ class LabelService
     }
 
     /**
-     * 碎片调用
+     * 碎片调用.
      */
     public function fragment($data)
     {
-        $where = array();
+        $where = [];
         if (empty($data['mark'])) {
             return;
         }
@@ -135,79 +137,84 @@ class LabelService
         if (empty($info)) {
             return;
         }
+
         return htmlspecialchars_decode(html_out($info['content']));
     }
 
     /**
-     * 表单token
+     * 表单token.
      */
     public function formToken($data)
     {
-        $where = array();
+        $where = [];
         if (empty($data['table'])) {
             return;
         }
-        $where = array();
+        $where = [];
         $where['table'] = $data['table'];
         $formInfo = target('duxcms/FieldsetForm')->getWhereInfo($where);
         if (empty($formInfo)) {
             return;
         }
+
         return target('duxcms/FieldsetForm')->setToken($data['table']);
     }
 
     /**
-     * 内容链接调用
+     * 内容链接调用.
      */
     public function aurl($data)
     {
         if (empty($data['content_id'])) {
             return;
         }
-        $where = array();
+        $where = [];
         $where['content_id'] = $data['content_id'];
         $info = target('duxcms/Content')->getWhereInfo($where);
         if (empty($info)) {
             return;
         }
+
         return target('duxcms/Content')->getUrl($info);
     }
 
     /**
-     * 栏目链接调用
+     * 栏目链接调用.
      */
     public function curl($data)
     {
         if (empty($data['class_id'])) {
             return;
         }
-        $where = array();
+        $where = [];
         $where['class_id'] = $data['class_id'];
         $info = target('duxcms/Category')->getWhereInfo($where);
         if (empty($info)) {
             return;
         }
+
         return target('duxcms/Category')->getUrl($info);
     }
 
     /**
-     * TAG列表调用
+     * TAG列表调用.
      */
     public function tagsList($data)
     {
-        $where = array();
+        $where = [];
         //解析TAG文字
         if (!empty($data['name'])) {
             $str = $data['name'];
             $str = str_replace('，', ',', $str);
             $str = str_replace(' ', ',', $str);
             $name = explode(',', $str);
-            $nameArray = array();
+            $nameArray = [];
             foreach ($name as $key => $value) {
                 $nameArray[$key]['name'] = $value;
-                $nameArray[$key]['url'] = url('duxcms/TagsContent/index', array('name' =>$value));
+                $nameArray[$key]['url'] = url('duxcms/TagsContent/index', ['name' =>$value]);
                 $nameArray[$key]['i'] = $key;
             }
+
             return $nameArray;
         }
         //数量
@@ -218,29 +225,30 @@ class LabelService
         if (empty($data['order'])) {
             $data['order'] = 'tag_id DESC';
         }
+
         return target('duxcms/Tags')->loadList($where, $data['limit'], $data['order']);
     }
 
     /**
-     * 表单列表调用
+     * 表单列表调用.
      */
     public function formList($data)
     {
         if (empty($data['table'])) {
-            return array();
+            return [];
         }
         //获取表单信息
-        $where = array();
+        $where = [];
         $where['table'] = $data['table'];
         $formInfo = target('duxcms/FieldsetForm')->getWhereInfo($where);
         if (empty($formInfo)) {
-            return array();
+            return [];
         }
         //设置模型
         $model = target('duxcms/FieldData');
         $model->setTable('ext_'.$formInfo['table']);
         //获取条件
-        $where = array();
+        $where = [];
         if (!empty($formInfo['list_where'])) {
             $where[] = $formInfo['list_where'];
         }
@@ -256,11 +264,11 @@ class LabelService
         //查询内容
         $list = $model->loadList($where, $data['limit'], $data['order']);
         //字段列表
-        $where = array();
+        $where = [];
         $where['A.fieldset_id'] = $formInfo['fieldset_id'];
         $fieldList = target('duxcms/FieldForm')->loadList($where);
         //格式化表单内容为基本数据
-        $data = array();
+        $data = [];
 
         if (!empty($list)) {
             foreach ($list as $key => $value) {
@@ -268,9 +276,10 @@ class LabelService
                 foreach ($fieldList as $v) {
                     $data[$key][$v['field']] = target('duxcms/FieldData')->revertField($value[$v['field']], $v['type'], $v['config']);
                 }
-                $data[$key]['furl'] = url('DuxCms/Form/info', array('name'=>$name, 'id'=>$value['data_id']));
+                $data[$key]['furl'] = url('DuxCms/Form/info', ['name'=>$name, 'id'=>$value['data_id']]);
             }
         }
+
         return $data;
     }
 }

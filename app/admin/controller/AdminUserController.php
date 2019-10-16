@@ -1,46 +1,45 @@
 <?php
+
 namespace app\admin\controller;
 
-use app\admin\controller\AdminController;
-
 /**
- * 后台用户
+ * 后台用户.
  */
 class AdminUserController extends AdminController
 {
-
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '用户管理',
+        return [
+            'info'  => [
+                'name'        => '用户管理',
                 'description' => '管理网站后台管理员',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '用户列表',
-                        'url' => url('index'),
+                        'url'  => url('index'),
                         'icon' => 'list',
-                    ),
-                ),
-            'add' => array(
-                    array(
+                    ],
+                ],
+            'add' => [
+                    [
                         'name' => '添加用户',
-                        'url' => url('add'),
-                    ),
-                ),
-            );
+                        'url'  => url('add'),
+                    ],
+                ],
+            ];
     }
+
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
         //筛选条件
-        $where = array();
+        $where = [];
         $keyword = request('request.keyword', '');
         if (!empty($keyword)) {
             $where[] = ' (A.username like "%'.$keyword.'%")  OR ( A.nicename like "%'.$keyword.'%") ';
@@ -50,14 +49,14 @@ class AdminUserController extends AdminController
             $where['A.group_id'] = $groupId;
         }
         //URL参数
-        $pageMaps = array();
+        $pageMaps = [];
         $pageMaps['keyword'] = $keyword;
         $pageMaps['group_id'] = $groupId;
         //查询数据
         $list = target('AdminUser')->page(20)->loadList($where, $limit);
         $this->pager = target('AdminUser')->pager;
         //位置导航
-        $breadCrumb = array('用户列表'=>url());
+        $breadCrumb = ['用户列表'=>url()];
         //模板传值
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', $list);
@@ -69,12 +68,12 @@ class AdminUserController extends AdminController
     }
 
     /**
-     * 增加
+     * 增加.
      */
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('用户列表'=>url('index'), '添加'=>url());
+            $breadCrumb = ['用户列表'=>url('index'), '添加'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->assign('groupList', target('AdminGroup')->loadList());
@@ -94,7 +93,7 @@ class AdminUserController extends AdminController
     }
 
     /**
-     * 修改
+     * 修改.
      */
     public function edit()
     {
@@ -109,7 +108,7 @@ class AdminUserController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('用户列表'=>url('index'), '修改'=>url('', array('user_id'=>$userId)));
+            $breadCrumb = ['用户列表'=>url('index'), '修改'=>url('', ['user_id'=>$userId])];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('groupList', target('AdminGroup')->loadList());
@@ -130,7 +129,7 @@ class AdminUserController extends AdminController
     }
 
     /**
-     * 删除
+     * 删除.
      */
     public function del()
     {

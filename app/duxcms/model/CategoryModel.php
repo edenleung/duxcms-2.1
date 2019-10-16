@@ -1,37 +1,39 @@
 <?php
+
 namespace app\duxcms\model;
 
 use app\base\model\BaseModel;
 
 /**
- * 栏目操作
+ * 栏目操作.
  */
 class CategoryModel extends BaseModel
 {
     //完成
-    protected $_auto = array(
-        array('show', 'intval', 3, 'function'),
-        array('sequence', 'intval', 3, 'function'),
-        array('name', 'htmlspecialchars', 3, 'function'),
-        array('urlname', 'getUrlName', 3, 'callback'),
-        array('class_id', 'intval', 2, 'function'),
-        );
+    protected $_auto = [
+        ['show', 'intval', 3, 'function'],
+        ['sequence', 'intval', 3, 'function'],
+        ['name', 'htmlspecialchars', 3, 'function'],
+        ['urlname', 'getUrlName', 3, 'callback'],
+        ['class_id', 'intval', 2, 'function'],
+        ];
     //验证
-    protected $_validate = array(
-        array('name', '1,200', '栏目名称只能为1~200个字符', 1, 'length'),
-        array('class_tpl', '1,200', '栏目模板未选择', 1, 'length'),
-        array('class_id', 'require', '栏目ID获取不正确', 1, 'regex', 2),
-        array('parent_id', 'parentCheck', '上级栏目关系选择错误', 1, 'callback', 2),
-    );
+    protected $_validate = [
+        ['name', '1,200', '栏目名称只能为1~200个字符', 1, 'length'],
+        ['class_tpl', '1,200', '栏目模板未选择', 1, 'length'],
+        ['class_id', 'require', '栏目ID获取不正确', 1, 'regex', 2],
+        ['parent_id', 'parentCheck', '上级栏目关系选择错误', 1, 'callback', 2],
+    ];
 
     /**
-     * 获取列表
+     * 获取列表.
+     *
      * @return array 列表
      */
-    public function loadList($where = array(), $classId = 0)
+    public function loadList($where = [], $classId = 0)
     {
         $data = $this->loadData($where);
-        $cat = new \framework\ext\Category(array('class_id', 'parent_id', 'name', 'cname'));
+        $cat = new \framework\ext\Category(['class_id', 'parent_id', 'name', 'cname']);
         $data = $cat->getTree($data, intval($classId));
         //获取内容模型
         $modelList = get_all_service('ContentModel', '');
@@ -41,18 +43,20 @@ class CategoryModel extends BaseModel
                 $data[$key]['model_name'] = $modelInfo['name'];
             }
         }
+
         return $data;
     }
 
     /**
-     * 获取列表(前台调用)
+     * 获取列表(前台调用).
+     *
      * @return array 列表
      */
-    public function loadData($where = array(), $limit = 0)
+    public function loadData($where = [], $limit = 0)
     {
-        $pageList = $this->where($where)->limit($limit)->order("sequence ASC , class_id ASC")->select();
+        $pageList = $this->where($where)->limit($limit)->order('sequence ASC , class_id ASC')->select();
 
-        $list = array();
+        $list = [];
         if (!empty($pageList)) {
             $i = 0;
             foreach ($pageList as $key=>$value) {
@@ -62,33 +66,40 @@ class CategoryModel extends BaseModel
                 $list[$key]['i'] = $i++;
             }
         }
+
         return $list;
     }
 
     /**
-     * 获取栏目数量
+     * 获取栏目数量.
+     *
      * @return array 列表
      */
-    public function countList($where = array())
+    public function countList($where = [])
     {
         return $this->where($where)->count();
     }
 
     /**
-     * 获取信息
+     * 获取信息.
+     *
      * @param int $classId ID
+     *
      * @return array 信息
      */
     public function getInfo($classId)
     {
-        $map = array();
+        $map = [];
         $map['class_id'] = $classId;
+
         return $this->getWhereInfo($map);
     }
 
     /**
-     * 获取信息
+     * 获取信息.
+     *
      * @param array $where 条件
+     *
      * @return array 信息
      */
     public function getWhereInfo($where)
@@ -97,12 +108,15 @@ class CategoryModel extends BaseModel
         if (!empty($info)) {
             $info['app'] = strtolower($info['app']);
         }
+
         return $info;
     }
 
     /**
-     * 更新信息
+     * 更新信息.
+     *
      * @param string $type 更新类型
+     *
      * @return bool 更新状态
      */
     public function saveData($type = 'add')
@@ -116,6 +130,7 @@ class CategoryModel extends BaseModel
             if (defined('LANG_OPEN')) {
                 $data['lang'] = APP_LANG;
             }
+
             return $this->add($data);
         }
         if ($type == 'edit') {
@@ -126,25 +141,31 @@ class CategoryModel extends BaseModel
             if ($status === false) {
                 return false;
             }
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * 删除信息
+     * 删除信息.
+     *
      * @param int $classId ID
+     *
      * @return bool 删除状态
      */
     public function delData($classId)
     {
-        $map = array();
+        $map = [];
         $map['class_id'] = $classId;
+
         return $this->where($map)->delete();
     }
 
     /**
-     * 栏目拼音转换
+     * 栏目拼音转换.
+     *
      * @return string 栏目拼音
      */
     public function getUrlName()
@@ -163,7 +184,7 @@ class CategoryModel extends BaseModel
             $urlName = trim($urlName, '-');
         }
         //返回数据
-        $where = array();
+        $where = [];
         if (!empty($classId)) {
             $where[] = 'class_id <> '.$classId;
         }
@@ -175,11 +196,12 @@ class CategoryModel extends BaseModel
             return $urlName.substr(unique_number(), 8);
         }
     }
+
     /**
-     * 检查上级栏目
+     * 检查上级栏目.
+     *
      * @return string 栏目拼音
      */
-
     public function parentCheck()
     {
         //获取变量
@@ -193,31 +215,36 @@ class CategoryModel extends BaseModel
         // 分类检测
         if ($classId == $parentId) {
             $this->error = '不可以将当前栏目设置为上一级栏目';
+
             return false;
         }
 
-        $cat = $this->loadList(array(), $classId);
+        $cat = $this->loadList([], $classId);
         if (empty($cat)) {
             return true;
         }
         foreach ($cat as $vo) {
             if ($parentId == $vo['class_id']) {
                 $this->error = '不可以将上一级栏目移动到子栏目';
+
                 return false;
             }
         }
+
         return true;
     }
 
     /**
-     * 获取菜单面包屑
+     * 获取菜单面包屑.
+     *
      * @param int $classId 菜单ID
+     *
      * @return array 菜单表列表
      */
     public function loadCrumb($classId)
     {
         $data = $this->loadData();
-        $cat = new \framework\ext\Category(array('class_id', 'parent_id', 'name', 'cname'));
+        $cat = new \framework\ext\Category(['class_id', 'parent_id', 'name', 'cname']);
         $data = $cat->getPath($data, $classId);
         if (!empty($data)) {
             foreach ($data as $key => $value) {
@@ -225,32 +252,38 @@ class CategoryModel extends BaseModel
                 $data[$key]['url'] = $this->getUrl($value);
             }
         }
+
         return $data;
     }
 
     /**
-     * 获取子栏目ID
+     * 获取子栏目ID.
+     *
      * @param array $classId 当前栏目ID
+     *
      * @return string 子栏目ID
      */
     public function getSubClassId($classId)
     {
-        $data = $this->loadList(array(), $classId);
+        $data = $this->loadList([], $classId);
         if (empty($data)) {
             return;
         }
-        $list = array();
+        $list = [];
         foreach ($data as $value) {
             if ($value['show']) {
                 $list[] = $value['class_id'];
             }
         }
+
         return implode(',', $list);
     }
 
     /**
-     * 获取栏目URL
+     * 获取栏目URL.
+     *
      * @param int $info 栏目信息
+     *
      * @return bool 删除状态
      */
     public function getUrl($info)
@@ -263,7 +296,7 @@ class CategoryModel extends BaseModel
         if (defined('LANG_OPEN')) {
             $params['lang'] = $info['lang'];
         }
-        
+
         return match_url(strtolower($info['app']).'/Category/index', $params);
     }
 }

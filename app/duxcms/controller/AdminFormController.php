@@ -1,55 +1,57 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
 
 /**
- * 表单管理
+ * 表单管理.
  */
 class AdminFormController extends AdminController
 {
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     public function _infoModule()
     {
-        $data = array('info' => array('name' => '表单管理',
-                'description' => '管理网站自定义表单',
-                ),
-            'menu' => array(
-                array('name' => '表单列表',
-                    'url' => url('index'),
+        $data = ['info' => ['name' => '表单管理',
+                'description'      => '管理网站自定义表单',
+                ],
+            'menu' => [
+                ['name'    => '表单列表',
+                    'url'  => url('index'),
                     'icon' => 'list',
-                    ),
-                ),
-            'add' => array(
-                array('name' => '添加表单',
+                    ],
+                ],
+            'add' => [
+                ['name'   => '添加表单',
                     'url' => url('add'),
-                    ),
-                ),
-                
-            );
+                    ],
+                ],
+
+            ];
+
         return $data;
     }
 
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
-        $breadCrumb = array('表单列表' => url());
+        $breadCrumb = ['表单列表' => url()];
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', target('FieldsetForm')->loadList());
         $this->adminDisplay();
     }
 
     /**
-     * 增加
+     * 增加.
      */
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('表单列表' => url('index'), '表单添加' => url());
+            $breadCrumb = ['表单列表' => url('index'), '表单添加' => url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->assign('tplList', target('admin/Config')->tplList());
@@ -70,7 +72,7 @@ class AdminFormController extends AdminController
     }
 
     /**
-     * 修改
+     * 修改.
      */
     public function edit()
     {
@@ -84,7 +86,7 @@ class AdminFormController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('表单列表' => url('index'), '表单修改' => url('edit', array('fieldset_id' => $fieldsetId)));
+            $breadCrumb = ['表单列表' => url('index'), '表单修改' => url('edit', ['fieldset_id' => $fieldsetId])];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);
@@ -105,7 +107,7 @@ class AdminFormController extends AdminController
     }
 
     /**
-     * 删除
+     * 删除.
      */
     public function del()
     {

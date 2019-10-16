@@ -1,58 +1,56 @@
 <?php
+
 namespace app\admin\controller;
 
-use app\admin\controller\AdminController;
-
 /**
- * 后台用户组
+ * 后台用户组.
  */
-
 class AdminUserGroupController extends AdminController
 {
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '用户组管理',
+        return [
+            'info'  => [
+                'name'        => '用户组管理',
                 'description' => '管理网站后台用户组',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '用户组列表',
-                        'url' => url('index'),
+                        'url'  => url('index'),
                         'icon' => 'list',
-                    ),
-                ),
-            'add' => array(
-                    array(
+                    ],
+                ],
+            'add' => [
+                    [
                         'name' => '添加用户组',
-                        'url' => url('add'),
-                    ),
-                ),
-            );
+                        'url'  => url('add'),
+                    ],
+                ],
+            ];
     }
-    
+
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
-        $breadCrumb = array('用户组列表'=>url());
+        $breadCrumb = ['用户组列表'=>url()];
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', target('AdminGroup')->loadList());
         $this->adminDisplay();
     }
 
     /**
-     * 增加
+     * 增加.
      */
     public function add()
     {
         if (!IS_POST) {
-            $breadCrumb = array('用户组列表'=>url('index'), '添加'=>url());
+            $breadCrumb = ['用户组列表'=>url('index'), '添加'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->adminDisplay('info');
@@ -66,7 +64,7 @@ class AdminUserGroupController extends AdminController
     }
 
     /**
-     * 修改
+     * 修改.
      */
     public function edit()
     {
@@ -81,7 +79,7 @@ class AdminUserGroupController extends AdminController
             if (!$info) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('用户组列表'=>url('index'), '修改'=>url('', array('group_id'=>$groupId)));
+            $breadCrumb = ['用户组列表'=>url('index'), '修改'=>url('', ['group_id'=>$groupId])];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);
@@ -96,7 +94,7 @@ class AdminUserGroupController extends AdminController
     }
 
     /**
-     * 权限
+     * 权限.
      */
     public function purview()
     {
@@ -113,7 +111,7 @@ class AdminUserGroupController extends AdminController
             }
             $AdminPurvewArray = unserialize($info['base_purview']);
             $AdminMenuArray = unserialize($info['menu_purview']);
-            $breadCrumb = array('用户组列表'=>url('index'), '权限设置('.$info['name'].')'=>url('', array('group_id'=>$groupId)));
+            $breadCrumb = ['用户组列表'=>url('index'), '权限设置('.$info['name'].')'=>url('', ['group_id'=>$groupId])];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('AdminPurvew', target('Menu')->getPurview());
             $this->assign('AdminMenu', target('Menu')->getMenu());
@@ -131,7 +129,7 @@ class AdminUserGroupController extends AdminController
     }
 
     /**
-     * 删除
+     * 删除.
      */
     public function del()
     {
@@ -140,10 +138,10 @@ class AdminUserGroupController extends AdminController
             $this->error('参数不能为空！');
         }
         //获取用户数量
-        $map = array();
+        $map = [];
         $map['A.group_id'] = $groupId;
         $countUser = target('AdminUser')->countList($map);
-        if ($countUser>0) {
+        if ($countUser > 0) {
             $this->error('请先删除改组下的用户！');
         }
         if (target('AdminGroup')->delData($groupId)) {

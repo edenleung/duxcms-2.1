@@ -1,16 +1,16 @@
 <?php
+
 namespace app\page\controller;
 
 use app\home\controller\SiteController;
 
 /**
- * 单页面
+ * 单页面.
  */
 class CategoryController extends SiteController
 {
-
     /**
-     * 栏目页
+     * 栏目页.
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class CategoryController extends SiteController
         if (!empty($classId)) {
             $categoryInfo = $model->getInfo($classId);
         } elseif (!empty($urlName)) {
-            $map = array();
+            $map = [];
             $map['urlname'] = $urlName;
             $categoryInfo = $model->getWhereInfo($map);
         } else {
@@ -36,7 +36,7 @@ class CategoryController extends SiteController
         if (!is_array($categoryInfo)) {
             $this->error404();
         }
-        if ($categoryInfo['app'] <> APP_NAME) {
+        if ($categoryInfo['app'] != APP_NAME) {
             $this->error404();
         }
         //位置导航

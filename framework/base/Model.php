@@ -1,24 +1,25 @@
 <?php
+
 namespace framework\base;
 
 class Model
 {
-    protected $config = array();
-    protected $options = array(
+    protected $config = [];
+    protected $options = [
                             'table' => '',
                             'field' => '*',
-                            'where' => array(),
+                            'where' => [],
                             'order' => '',
                             'limit' => '',
-                            'data' => array(),
-                            'pager' => array(),
-                );
+                            'data'  => [],
+                            'pager' => [],
+                ];
     protected $database = 'default';
     protected $table = '';
     protected $trueTable = null;
-    protected static $objArr = array();
+    protected static $objArr = [];
     public $pager = null;
-    
+
     public function __construct($database = 'default')
     {
         if ($database) {
@@ -32,32 +33,35 @@ class Model
         $this->trueTable = $this->table;
         $this->table($this->trueTable, true);
     }
-            
-    public function query($sql, $params = array())
+
+    public function query($sql, $params = [])
     {
         $sql = trim($sql);
         if (empty($sql)) {
-            return array();
+            return [];
         }
         $sql = str_replace('{pre}', $this->config['DB_PREFIX'], $sql);
+
         return $this->getDb()->query($sql, $params);
     }
 
-    public function execute($sql, $params = array())
+    public function execute($sql, $params = [])
     {
         $sql = trim($sql);
         if (empty($sql)) {
             return 0;
         }
         $sql = str_replace('{pre}', $this->config['DB_PREFIX'], $sql);
+
         return $this->getDb()->execute($sql, $params);
     }
-    
+
     public function find()
     {
         $this->limit(1);
         $data = $this->select();
-        return isset($data[0]) ? $data[0] : array();
+
+        return isset($data[0]) ? $data[0] : [];
     }
 
     public function select()
@@ -67,16 +71,16 @@ class Model
             $field = '*';
         }
         $this->options['field'] = '*';
-        
+
         $order = $this->options['order'];
         $this->options['order'] = '';
 
         $limit = $this->options['limit'];
         $this->options['limit'] = '';
-        
+
         $table = $this->_getTable();
         $where = $this->_getWhere();
-        
+
         //Pagination
         if (!empty($this->options['pager'])) {
             $count = $this->getDb()->Count($table, $where);
@@ -86,22 +90,22 @@ class Model
                 $this->options['pager']['scope'] = 10,
                 $count
             );
-            $this->options['pager'] = array();
+            $this->options['pager'] = [];
             $limit = $this->pager['offset'].','.$this->pager['limit'];
         }
-        
+
         return $this->getDb()->select($table, $where, $field, $order, $limit);
     }
-    
+
     public function insert()
     {
         if (empty($this->options['data']) || !is_array($this->options['data'])) {
             return false;
         }
-        
+
         return $this->getDb()->insert($this->_getTable(), $this->_getData());
     }
-    
+
     public function update()
     {
         if (empty($this->options['where']) || !is_array($this->options['where'])) {
@@ -110,10 +114,10 @@ class Model
         if (empty($this->options['data']) || !is_array($this->options['data'])) {
             return false;
         }
-                
+
         return $this->getDb()->update($this->_getTable(), $this->_getWhere(), $this->_getData());
     }
-    
+
     public function delete()
     {
         if (empty($this->options['where']) || !is_array($this->options['where'])) {
@@ -127,12 +131,12 @@ class Model
     {
         return $this->getDb()->count($this->_getTable(), $this->_getWhere());
     }
-    
+
     public function getFields()
     {
         return $this->getDb()->getFields($this->_getTable());
     }
-    
+
     public function getSql()
     {
         return $this->getDb()->getSql();
@@ -142,12 +146,12 @@ class Model
     {
         return $this->getDb()->beginTransaction();
     }
-    
+
     public function commit()
     {
         return $this->getDb()->commit();
     }
-    
+
     public function rollBack()
     {
         return $this->getDb()->rollBack();
@@ -156,6 +160,7 @@ class Model
     public function table($table, $ignorePre = false)
     {
         $this->options['table'] = $ignorePre ? $table : $this->config['DB_PREFIX'].$table;
+
         return $this;
     }
 
@@ -163,66 +168,76 @@ class Model
     {
         $join = str_replace('{pre}', $this->config['DB_PREFIX'], $join);
         $this->options['table'] = " {$this->options['table']} {$way} join {$join} ";
+
         return $this;
     }
-    
+
     public function field($field)
     {
         $this->options['field'] = $field;
+
         return $this;
     }
 
-    public function data(array $data = array())
+    public function data(array $data = [])
     {
         $this->options['data'] = $data;
+
         return $this;
     }
 
-    public function where(array $where = array())
+    public function where(array $where = [])
     {
         $this->options['where'] = $where;
+
         return $this;
     }
 
     public function order($order)
     {
         $this->options['order'] = $order;
+
         return $this;
     }
 
     public function limit($limit)
     {
         $this->options['limit'] = $limit;
+
         return $this;
     }
 
     public function pager($page, $pageSize = 10, $scope = 10)
     {
         $page = max(intval($page), 1);
-        $this->options['pager'] = compact(array('page', 'pageSize', 'scope'));
+        $this->options['pager'] = compact(['page', 'pageSize', 'scope']);
+
         return $this;
     }
-    
+
     public function cache($expire = 1800)
     {
         $cache = new Cache($this->config['DB_CACHE']);
         $cache->proxyObj = $this;
         $cache->proxyExpire = $expire;
+
         return $cache;
     }
-    
+
     public function clear()
     {
         $cache = new Cache($this->config['DB_CACHE']);
+
         return $cache->clear();
     }
-    
+
     protected function getDb()
     {
         if (empty(self::$objArr[$this->database])) {
             $dbDriver = __NAMESPACE__.'\db\\'.ucfirst($this->config['DB_TYPE']).'Driver';
             self::$objArr[$this->database] = new $dbDriver($this->config);
         }
+
         return self::$objArr[$this->database];
     }
 
@@ -230,49 +245,52 @@ class Model
     {
         $table = $this->options['table'];
         $this->options['table'] = $this->table;
+
         return $table;
     }
 
     protected function _getWhere()
     {
         $where = $this->options['where'];
-        $this->options['where'] = array();
+        $this->options['where'] = [];
+
         return $where;
     }
 
     protected function _getData()
     {
         $data = $this->options['data'];
-        $this->options['data'] = array();
+        $this->options['data'] = [];
+
         return $data;
     }
 
-    protected function _pager($page, $pageSize = 10, $scope = 10, $total)
+    protected function _pager($page, $pageSize, $scope, $total)
     {
         $page = max(intval($page), 1);
         $totalPage = ceil($total / $pageSize);
-        
-        $this->pager = array(
-            'page'=> $page,
-            'pageSize'   => $pageSize,
-            'scope'   => $scope,
-            'totalPage'  => $totalPage,
-            'totalCount' => $total,
-            'firstPage'  => 1,
-            'prevPage'   => ((1 == $page) ? 1 : ($page - 1)),
-            'nextPage'   => (($page == $totalPage) ? $totalPage : ($page + 1)),
-            'lastPage'   => $totalPage,
-            'allPages'   => array(),
+
+        $this->pager = [
+            'page'        => $page,
+            'pageSize'    => $pageSize,
+            'scope'       => $scope,
+            'totalPage'   => $totalPage,
+            'totalCount'  => $total,
+            'firstPage'   => 1,
+            'prevPage'    => ((1 == $page) ? 1 : ($page - 1)),
+            'nextPage'    => (($page == $totalPage) ? $totalPage : ($page + 1)),
+            'lastPage'    => $totalPage,
+            'allPages'    => [],
             'offset'      => ($page - 1) * $pageSize,
             'limit'       => $pageSize,
-        );
-        
-        if ($totalPage<=$scope) {
+        ];
+
+        if ($totalPage <= $scope) {
             $this->pager['allPages'] = range(1, $totalPage);
-        } elseif ($page<=$scope / 2) {
+        } elseif ($page <= $scope / 2) {
             $this->pager['allPages'] = range(1, $scope);
-        } elseif ($page<=$totalPage - $scope / 2) {
-            $right = $page + (int)($scope / 2);
+        } elseif ($page <= $totalPage - $scope / 2) {
+            $right = $page + (int) ($scope / 2);
             $this->pager['allPages'] = range($right - $scope + 1, $right);
         } else {
             $this->pager['allPages'] = range($totalPage - $scope + 1, $totalPage);

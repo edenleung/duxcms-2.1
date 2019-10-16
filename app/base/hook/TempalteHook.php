@@ -1,8 +1,9 @@
 <?php
+
 namespace app\base\hook;
 
 /**
- * Dux模板标签类
+ * Dux模板标签类.
  */
 class TempalteHook
 {
@@ -10,12 +11,12 @@ class TempalteHook
     private $__rdel = '}';
     private $__ltag = '<!--';
     private $__rtag = '-->';
-    private $_template_preg = array();
-    private $_template_replace = array();
+    private $_template_preg = [];
+    private $_template_replace = [];
 
     public function templateParse($template)
     {
-        
+
         //替换判断
         $this->_template_preg[] = '/'.$this->__ltag."if\{(.*?)\}".$this->__rtag.'/i';
         $this->_template_preg[] = '/'.$this->__ltag.'\{else\}'.$this->__rtag.'/i';
@@ -98,22 +99,22 @@ class TempalteHook
         if (!defined('INSTALL_STATUS')) {
             //引入页面标签
             $this->_template_preg[] = '/<!--#include\s*file=[\"|\'](.*)\.(html|htm)[\"|\']-->/';
-                        
+
             // 多语言
             if (defined('LANG_OPEN')) {
-                $this->_template_replace[] = "<?php \$__Template->display(\"".THEME_NAME.'/'.TPL_NAME.'/'.APP_LANG."/$1\"); ?>";
+                $this->_template_replace[] = '<?php $__Template->display("'.THEME_NAME.'/'.TPL_NAME.'/'.APP_LANG.'/$1"); ?>';
             } else {
-                $this->_template_replace[] = "<?php \$__Template->display(\"".THEME_NAME.'/'.TPL_NAME."/$1\"); ?>";
+                $this->_template_replace[] = '<?php $__Template->display("'.THEME_NAME.'/'.TPL_NAME.'/$1"); ?>';
             }
         }
-        
+
         // 百度链接推送
         $this->_template_preg[] = '/<!--#pushBaidu-->/';
-        $this->_template_replace[] = "<?php pushBaidu(); ?>";
+        $this->_template_replace[] = '<?php pushBaidu(); ?>';
 
         // 网站统计
         $this->_template_preg[] = '/<!--#tongji-->/';
-        $this->_template_replace[] = "<?php echo tongji(); ?>";
+        $this->_template_replace[] = '<?php echo tongji(); ?>';
 
         // 文章进度
         $this->_template_preg[] = '/{progress\s*container=\"(.*?)\"\s*parent="(.*?)"\s*child="(.*?)"\s*class="(.*?)"}/i';
@@ -122,10 +123,10 @@ class TempalteHook
         $this->_template_replace[] = '<?php echo showArticleProgress($container, $parent, $child, $class);?>';
 
         //替换图片CSS等路径
-        $template = preg_replace_callback('/<(.*?)(src=|href=|value=|background=)[\"|\'](images\/|img\/|css\/|js\/|style\/)(.*?)[\"|\'](.*?)>/', array($this, 'parse_load'), $template);
+        $template = preg_replace_callback('/<(.*?)(src=|href=|value=|background=)[\"|\'](images\/|img\/|css\/|js\/|style\/)(.*?)[\"|\'](.*?)>/', [$this, 'parse_load'], $template);
 
         //替换变量标签(必须最后处理)
-        $template = preg_replace_callback('/\$\w+((\.\w+)*)?/', array($this, 'parse_var'), $template);
+        $template = preg_replace_callback('/\$\w+((\.\w+)*)?/', [$this, 'parse_var'], $template);
         $this->_template_preg[] = '/'.$this->__ldel.'((( *(\+\+|--) *)*?(([_a-zA-Z][\w]*\(.*?\))|\$((\w+)((\[|\()(\'|")?\$*\w*(\'|")?(\)|\]))*((->)?\$?(\w*)(\((\'|")?(.*?)(\'|")?\)|))){0,})( *\.?[^ \.]*? *)*?){1,})'.$this->__rdel.'/i';
         $this->_template_replace[] = '<?php echo \\1;?>';
 
@@ -137,7 +138,7 @@ class TempalteHook
         $template = preg_replace($this->_template_preg, $this->_template_replace, $template);
 
         //替换通用循环
-        $template = preg_replace_callback('/'.$this->__ltag.'(\w+){([^"].*)}'.$this->__rtag.'/i', array($this, 'parse_for'), $template);
+        $template = preg_replace_callback('/'.$this->__ltag.'(\w+){([^"].*)}'.$this->__rtag.'/i', [$this, 'parse_for'], $template);
 
         //替换常量
 
@@ -146,12 +147,15 @@ class TempalteHook
         }
         $template = str_replace('__PUBLIC__', __PUBLIC__, $template);
         $template = str_replace('__ROOT__', __ROOT__, $template);
+
         return $template;
     }
 
     /**
-     * 解析循环标签
+     * 解析循环标签.
+     *
      * @param array $var
+     *
      * @return string
      */
     private function parse_for($var)
@@ -162,7 +166,7 @@ class TempalteHook
         $tpl = preg_replace("/\s([_a-zA-Z]+)=/", ', "\1"=>', $tpl);
         $tpl = substr($tpl, 1);
         //匹配必要参数
-        $dataArray = array();
+        $dataArray = [];
         if (preg_match_all('/\s"([_a-zA-Z]+)"=>"(.+?)"/', $tpl, $result)) {
             foreach ($result[1] as $key => $value) {
                 $dataArray[$value] = $result[2][$key];
@@ -181,12 +185,15 @@ class TempalteHook
                 $html .= ' if(is_array($'.$item.'List)) foreach($'.$item.'List as $'.$item.'){ ?>';
                 break;
         }
+
         return $html;
     }
 
     /**
-     * 解析变量
+     * 解析变量.
+     *
      * @param array $var
+     *
      * @return string
      */
     private function parse_var($var)
@@ -200,12 +207,15 @@ class TempalteHook
         foreach ($vars as $val) {
             $name .= '["'.$val.'"]';
         }
+
         return $name;
     }
 
     /**
-     * 解析文件路径标签
+     * 解析文件路径标签.
+     *
      * @param array $var
+     *
      * @return string
      */
     private function parse_load($var)
@@ -216,13 +226,14 @@ class TempalteHook
         if (defined('LANG_OPEN') && LANG_OPEN) {
             $url = THEME_NAME.'/'.TPL_NAME.'/'.APP_LANG;
         }
-        
+
         if (substr($url, 0, 1) == '.') {
             $url = substr($url, 1);
         }
         $url = str_replace('\\', '/', $url);
         $url = ROOT_URL.$url.'/'.$file;
         $html = '<'.$var[1].$var[2].'"'.$url.'"'.$var[5].'>';
+
         return $html;
     }
 }

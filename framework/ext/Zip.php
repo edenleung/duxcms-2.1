@@ -1,34 +1,36 @@
 <?php
+
 namespace framework\ext;
 
 class Zip
 {
-    protected $datasec = array();
-    protected $ctrl_dir = array();
+    protected $datasec = [];
+    protected $ctrl_dir = [];
     protected $eof_ctrl_dir = "\x50\x4b\x05\x06\x00\x00\x00\x00";
     protected $old_offset = 0;
-    
+
     protected $total_files = 0;
     protected $total_folders = 0;
-    
+
     public function compress($zip_filename = 'cp.zip', $dir = './', $path_replace = '')
     {
         if (function_exists('gzcompress')) {
             $filelist = $this->GetFileList($dir);
 
-            if (count($filelist)>0) {
+            if (count($filelist) > 0) {
                 foreach ($filelist as $filename) {
                     if (is_file($filename)) {
-                        $fd = fopen($filename, "r");
+                        $fd = fopen($filename, 'r');
                         $content = fread($fd, filesize($filename));
                         fclose($fd);
                         $this->addFile($content, str_replace($path_replace, '', $filename));
                     }
                 }
                 $out = $this->file();
-                $fp = fopen($zip_filename, "w");
+                $fp = fopen($zip_filename, 'w');
                 fwrite($fp, $out, strlen($out));
                 fclose($fp);
+
                 return true;
             }
         }
@@ -36,55 +38,55 @@ class Zip
         return false;
     }
 
-
     public function decompress($zip_filename = 'cp.zip', $dir = './')
     {
-        $index = array(-1);
+        $index = [-1];
         $ok = 0;
         $zip_fp = @fopen($zip_filename, 'rb');
         if (!$zip_fp) {
             return false;
         }
-                
+
         $cdir = $this->ReadCentralDir($zip_fp, $zip_filename);
         $pos_entry = $cdir['offset'];
-            
+
         if (!is_array($index)) {
-            $index = array($index);
+            $index = [$index];
         }
         for ($i = 0; $index[$i]; $i++) {
-            if (intval($index[$i]) != $index[$i] || $index[$i]>$cdir['entries']) {
+            if (intval($index[$i]) != $index[$i] || $index[$i] > $cdir['entries']) {
                 return false;
             }
         }
-        for ($i = 0; $i<$cdir['entries']; $i++) {
+        for ($i = 0; $i < $cdir['entries']; $i++) {
             @fseek($zip_fp, $pos_entry);
             $header = $this->ReadCentralFileHeaders($zip_fp);
             $header['index'] = $i;
             $pos_entry = ftell($zip_fp);
             @rewind($zip_fp);
             fseek($zip_fp, $header['offset']);
-            if (in_array("-1", $index) || in_array($i, $index)) {
+            if (in_array('-1', $index) || in_array($i, $index)) {
                 $stat[$header['filename']] = $this->ExtractFile($header, $dir, $zip_fp);
             }
         }
         fclose($zip_fp);
+
         return $stat;
     }
+
     private function GetFileList($dir)
     {
-        $file = array();
+        $file = [];
         if (file_exists($dir)) {
-            if (substr($dir, -1) != "/") {
-                $dir .= "/";
+            if (substr($dir, -1) != '/') {
+                $dir .= '/';
             }
 
-            
             $dh = opendir($dir);
             while ($files = readdir($dh)) {
-                if (($files != ".") && ($files != "..")) {
+                if (($files != '.') && ($files != '..')) {
                     if (is_dir($dir.$files)) {
-                        $file = array_merge($file, $this -> GetFileList($dir.$files));
+                        $file = array_merge($file, $this->GetFileList($dir.$files));
                     } else {
                         $file[] = $dir.$files;
                     }
@@ -93,13 +95,14 @@ class Zip
             closedir($dh);
         }
         $file[] = '';
+
         return $file;
     }
 
     private function unix2DosTime($unixtime = 0)
     {
         $timearray = ($unixtime == 0) ? getdate() : getdate($unixtime);
-        if ($timearray['year']<1980) {
+        if ($timearray['year'] < 1980) {
             $timearray['year'] = 1980;
             $timearray['mon'] = 1;
             $timearray['mday'] = 1;
@@ -107,6 +110,7 @@ class Zip
             $timearray['minutes'] = 0;
             $timearray['seconds'] = 0;
         }
+
         return (($timearray['year'] - 1980) << 25) | ($timearray['mon'] << 21) | ($timearray['mday'] << 16) |
     ($timearray['hours'] << 11) | ($timearray['minutes'] << 5) | ($timearray['seconds'] >> 1);
     }
@@ -116,17 +120,17 @@ class Zip
         $name = str_replace('\\', '/', $name);
         $dtime = dechex($this->unix2DosTime($time));
         $hexdtime = '\x'.$dtime[6].$dtime[7]
-        . '\x'.$dtime[4].$dtime[5]
-        . '\x'.$dtime[2].$dtime[3]
-        . '\x'.$dtime[0].$dtime[1];
+        .'\x'.$dtime[4].$dtime[5]
+        .'\x'.$dtime[2].$dtime[3]
+        .'\x'.$dtime[0].$dtime[1];
         eval('$hexdtime = "'.$hexdtime.'";');
-        
+
         $fr = "\x50\x4b\x03\x04";
         $fr .= "\x14\x00"; // ver needed to extract
         $fr .= "\x00\x00"; // gen purpose bit flag
         $fr .= "\x08\x00"; // compression method
         $fr .= $hexdtime; // last mod time and date
-        
+
         // "local file header" segment
         $unc_len = strlen($data);
         $crc = crc32($data);
@@ -139,20 +143,20 @@ class Zip
         $fr .= pack('v', strlen($name)); // length of filename
         $fr .= pack('v', 0); // extra field length
         $fr .= $name;
-        
+
         // "file data" segment
         $fr .= $zdata;
-        
+
         // "data descriptor" segment (optional but necessary if archive is not
         // served as file)
         $fr .= pack('V', $crc); // crc32
         $fr .= pack('V', $c_len); // compressed filesize
         $fr .= pack('V', $unc_len); // uncompressed filesize
-        
+
         // add this entry to array
-        $this -> datasec[] = $fr;
+        $this->datasec[] = $fr;
         $new_offset = strlen(implode('', $this->datasec));
-        
+
         // now add to central directory record
         $cdrec = "\x50\x4b\x01\x02";
         $cdrec .= "\x00\x00"; // version made by
@@ -169,32 +173,31 @@ class Zip
         $cdrec .= pack('v', 0); // disk number start
         $cdrec .= pack('v', 0); // internal file attributes
         $cdrec .= pack('V', 32); // external file attributes - 'archive' bit set
-        
-        $cdrec .= pack('V', $this -> old_offset); // relative offset of local header
+
+        $cdrec .= pack('V', $this->old_offset); // relative offset of local header
         $this->old_offset = $new_offset;
-        
+
         $cdrec .= $name;
-    
+
         $this->ctrl_dir[] = $cdrec;
     }
 
     private function file()
     {
-        $data = implode('', $this -> datasec);
-        $ctrldir = implode('', $this -> ctrl_dir);
-        
+        $data = implode('', $this->datasec);
+        $ctrldir = implode('', $this->ctrl_dir);
+
         return
         $data.
         $ctrldir.
-        $this -> eof_ctrl_dir.
-        pack('v', sizeof($this -> ctrl_dir)).
-        pack('v', sizeof($this -> ctrl_dir)).
+        $this->eof_ctrl_dir.
+        pack('v', count($this->ctrl_dir)).
+        pack('v', count($this->ctrl_dir)).
         pack('V', strlen($ctrldir)).
         pack('V', strlen($data)).
         "\x00\x00";
     }
 
-    
     //下面是zip解压部分
     protected function ReadFileHeader($zip)
     {
@@ -229,7 +232,8 @@ class Zip
         }
 
         $header['stored_filename'] = $header['filename'];
-        $header['status'] = "ok";
+        $header['status'] = 'ok';
+
         return $header;
     }
 
@@ -272,6 +276,7 @@ class Zip
         if (substr($header['filename'], -1) == '/') {
             $header['external'] = 0x41FF0010;
         }
+
         return $header;
     }
 
@@ -279,17 +284,17 @@ class Zip
     {
         $size = filesize($zip_name);
 
-        if ($size<277) {
+        if ($size < 277) {
             $maximum_size = $size;
         } else {
             $maximum_size = 277;
         }
-    
+
         @fseek($zip, $size - $maximum_size);
         $pos = ftell($zip);
         $bytes = 0x00000000;
-    
-        while ($pos<$size) {
+
+        while ($pos < $size) {
             $byte = @fread($zip, 1);
             $bytes = ($bytes << 8) | ord($byte);
             if ($bytes == 0x504b0506 or $bytes == 0x2e706870504b0506) {
@@ -298,11 +303,11 @@ class Zip
             }
             $pos++;
         }
-    
+
         $fdata = fread($zip, 18);
-    
+
         $data = @unpack('vdisk/vdisk_start/vdisk_entries/ventries/Vsize/Voffset/vcomment_size', $fdata);
-    
+
         if ($data['comment_size'] != 0) {
             $centd['comment'] = fread($zip, $data['comment_size']);
         } else {
@@ -314,32 +319,33 @@ class Zip
         $centd['disk_start'] = $data['disk_start'];
         $centd['size'] = $data['size'];
         $centd['disk'] = $data['disk'];
+
         return $centd;
     }
 
     protected function ExtractFile($header, $to, $zip)
     {
         $header = $this->readfileheader($zip);
-    
-        if (substr($to, -1) != "/") {
-            $to .= "/";
+
+        if (substr($to, -1) != '/') {
+            $to .= '/';
         }
         if ($to == './') {
             $to = '';
         }
-        $pth = explode("/", $to.$header['filename']);
+        $pth = explode('/', $to.$header['filename']);
         $mydir = '';
-        for ($i = 0; $i<count($pth) - 1; $i++) {
+        for ($i = 0; $i < count($pth) - 1; $i++) {
             if (!$pth[$i]) {
                 continue;
             }
-            $mydir .= $pth[$i]."/";
+            $mydir .= $pth[$i].'/';
             if ((!is_dir($mydir) && @mkdir($mydir, 0777)) || (($mydir == $to.$header['filename'] || ($mydir == $to && $this->total_folders == 0)) && is_dir($mydir))) {
                 @chmod($mydir, 0777);
                 $this->total_folders++;
             }
         }
-    
+
         if (strrchr($header['filename'], '/') == '/') {
             return;
         }
@@ -348,12 +354,12 @@ class Zip
             if ($header['compression'] == 0) {
                 $fp = @fopen($to.$header['filename'], 'wb');
                 if (!$fp) {
-                    return(-1);
+                    return -1;
                 }
                 $size = $header['compressed_size'];
-        
+
                 while ($size != 0) {
-                    $read_size = ($size<2048 ? $size : 2048);
+                    $read_size = ($size < 2048 ? $size : 2048);
                     $buffer = fread($zip, $read_size);
                     $binary_data = pack('a'.$read_size, $buffer);
                     @fwrite($fp, $binary_data, $read_size);
@@ -364,45 +370,45 @@ class Zip
             } else {
                 $fp = @fopen($to.$header['filename'].'.gz', 'wb');
                 if (!$fp) {
-                    return(-1);
+                    return -1;
                 }
                 $binary_data = pack(
                     'va1a1Va1a1',
                     0x8b1f,
-                    Chr($header['compression']),
-                    Chr(0x00),
+                    chr($header['compression']),
+                    chr(0x00),
                     time(),
-                    Chr(0x00),
-                    Chr(3)
+                    chr(0x00),
+                    chr(3)
                 );
-            
+
                 fwrite($fp, $binary_data, 10);
                 $size = $header['compressed_size'];
-        
+
                 while ($size != 0) {
-                    $read_size = ($size<1024 ? $size : 1024);
+                    $read_size = ($size < 1024 ? $size : 1024);
                     $buffer = fread($zip, $read_size);
                     $binary_data = pack('a'.$read_size, $buffer);
                     @fwrite($fp, $binary_data, $read_size);
                     $size -= $read_size;
                 }
-        
+
                 $binary_data = pack('VV', $header['crc'], $header['size']);
                 fwrite($fp, $binary_data, 8);
                 fclose($fp);
-    
-                $gzp = @gzopen($to.$header['filename'].'.gz', 'rb') or die("Cette archive est compress閑");
+
+                $gzp = @gzopen($to.$header['filename'].'.gz', 'rb') or die('Cette archive est compress閑');
                 if (!$gzp) {
-                    return(-2);
+                    return -2;
                 }
                 $fp = @fopen($to.$header['filename'], 'wb');
                 if (!$fp) {
-                    return(-1);
+                    return -1;
                 }
                 $size = $header['size'];
-        
+
                 while ($size != 0) {
-                    $read_size = ($size<2048 ? $size : 2048);
+                    $read_size = ($size < 2048 ? $size : 2048);
                     $buffer = gzread($gzp, $read_size);
                     $binary_data = pack('a'.$read_size, $buffer);
                     @fwrite($fp, $binary_data, $read_size);
@@ -410,13 +416,14 @@ class Zip
                 }
                 fclose($fp);
                 gzclose($gzp);
-        
+
                 touch($to.$header['filename'], $header['mtime']);
                 @unlink($to.$header['filename'].'.gz');
             }
         }
-    
+
         $this->total_files++;
+
         return true;
     }
 }

@@ -1,13 +1,14 @@
 <?php
+
 namespace app\article\service;
 
 /**
- * 标签接口
+ * 标签接口.
  */
 class LabelService
 {
     /**
-     * 栏目列表
+     * 栏目列表.
      */
     public function categoryList($data)
     {
@@ -47,11 +48,11 @@ class LabelService
     }
 
     /**
-     * 内容列表
+     * 内容列表.
      */
     public function contentList($data)
     {
-        $where = array();
+        $where = [];
         //指定栏目内容
         if (!empty($data['class_id'])) {
             $classWhere = 'A.class_id in ('.$data['class_id'].')';
@@ -109,7 +110,7 @@ class LabelService
         } else {
             $where[] = "C.lang = ''";
         }
-        
+
         return target('article/ContentArticle')->loadList($where, $data['limit'], $data['order'], $expand_id);
     }
 }

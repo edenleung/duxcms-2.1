@@ -1,45 +1,47 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
 
 /**
- * 扩展表单字段管理
+ * 扩展表单字段管理.
  */
 class AdminFormFieldController extends AdminController
 {
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     public function _infoModule()
     {
         $info = target('duxcms/AdminForm', 'controller');
-        ;
+
         $info = $info->infoModule;
         $fieldsetId = request('get.fieldset_id', 0, 'intval');
-        $data = array('info' => $info['info'],
-            'menu' => array(
-                array('name' => '表单列表',
-                    'url' => url('AdminForm/index'),
+        $data = ['info' => $info['info'],
+            'menu'      => [
+                ['name'    => '表单列表',
+                    'url'  => url('AdminForm/index'),
                     'icon' => 'list',
-                    ),
-                array('name' => '字段列表',
-                    'url' => url('index', array('fieldset_id' => $fieldsetId)),
+                    ],
+                ['name'    => '字段列表',
+                    'url'  => url('index', ['fieldset_id' => $fieldsetId]),
                     'icon' => 'list-ul',
-                    ),
-                ),
-            'add' => array(
-                array('name' => '增加字段',
-                    'url' => url('add', array('fieldset_id' => $fieldsetId)),
+                    ],
+                ],
+            'add' => [
+                ['name'    => '增加字段',
+                    'url'  => url('add', ['fieldset_id' => $fieldsetId]),
                     'icon' => 'plus',
-                    ),
-                )
-            );
+                    ],
+                ],
+            ];
+
         return $data;
     }
 
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
@@ -52,10 +54,10 @@ class AdminFormFieldController extends AdminController
         if (!$fieldsetInfo) {
             $this->error($model->getError());
         }
-        $where = array();
+        $where = [];
         $where['A.fieldset_id'] = $fieldsetId;
         $list = target('FieldForm')->loadList($where);
-        $breadCrumb = array('表单列表' => url('AdminForm/index'), '字段列表' => url('index', array('fieldset_id' => $fieldsetId)));
+        $breadCrumb = ['表单列表' => url('AdminForm/index'), '字段列表' => url('index', ['fieldset_id' => $fieldsetId])];
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', $list);
         $this->assign('fieldsetInfo', $fieldsetInfo);
@@ -64,7 +66,7 @@ class AdminFormFieldController extends AdminController
     }
 
     /**
-     * 增加
+     * 增加.
      */
     public function add()
     {
@@ -78,7 +80,7 @@ class AdminFormFieldController extends AdminController
             if (!$fieldsetInfo) {
                 $this->error($model->getError());
             }
-            $breadCrumb = array('表单列表' => url('AdminForm/index'), '字段列表' => url('index', array('fieldset_id' => $fieldsetId)), '字段添加' => url());
+            $breadCrumb = ['表单列表' => url('AdminForm/index'), '字段列表' => url('index', ['fieldset_id' => $fieldsetId]), '字段添加' => url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '添加');
             $this->assign('fieldsetInfo', $fieldsetInfo);
@@ -91,7 +93,7 @@ class AdminFormFieldController extends AdminController
         } else {
             $model = target('FieldForm');
             if ($model->saveData('add')) {
-                $this->success('字段添加成功！', url('index', array('fieldset_id' => request('post.fieldset_id'))));
+                $this->success('字段添加成功！', url('index', ['fieldset_id' => request('post.fieldset_id')]));
             } else {
                 $msg = $model->getError();
                 if (empty($msg)) {
@@ -104,7 +106,7 @@ class AdminFormFieldController extends AdminController
     }
 
     /**
-     * 修改
+     * 修改.
      */
     public function edit()
     {
@@ -119,7 +121,7 @@ class AdminFormFieldController extends AdminController
                 $this->error($model->getError());
             }
             $fieldsetInfo = target('FieldsetForm')->getInfo($info['fieldset_id']);
-            $breadCrumb = array('表单列表' => url('AdminForm/index'), '字段列表' => url('index', array('fieldset_id' => $fieldsetInfo['fieldset_id'])), '字段修改' => url('edit', array('field_id'=>$fieldId, 'fieldset_id'=>$fieldsetInfo['fieldset_id'])));
+            $breadCrumb = ['表单列表' => url('AdminForm/index'), '字段列表' => url('index', ['fieldset_id' => $fieldsetInfo['fieldset_id']]), '字段修改' => url('edit', ['field_id'=>$fieldId, 'fieldset_id'=>$fieldsetInfo['fieldset_id']])];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('name', '修改');
             $this->assign('info', $info);
@@ -132,7 +134,7 @@ class AdminFormFieldController extends AdminController
             $this->adminDisplay('info');
         } else {
             if ($model->saveData('edit')) {
-                $this->success('字段修改成功！', url('index', array('fieldset_id' => request('post.fieldset_id'))));
+                $this->success('字段修改成功！', url('index', ['fieldset_id' => request('post.fieldset_id')]));
             } else {
                 $msg = $model->getError();
                 if (empty($msg)) {
@@ -145,7 +147,7 @@ class AdminFormFieldController extends AdminController
     }
 
     /**
-     * 删除
+     * 删除.
      */
     public function del()
     {
