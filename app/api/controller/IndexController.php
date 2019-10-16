@@ -64,11 +64,6 @@ class IndexController extends Response
     /**
      * 效验签名
      *
-     * @param [type] $token 对应后台生成的token
-     * @param [type] $timestamp 时间戳
-     * @param [type] $nonce 随机字符串
-     * @param [type] $signature 签名
-     * @return void
      */
     protected function checkSign()
     {
@@ -77,12 +72,16 @@ class IndexController extends Response
             return $this->error('效验参数必须');
         }
 
-        $tmpArr = array($this->config['TOKEN'], $data['timestamp'], $data['nonce']);
+        $signature = $data['signature'];
+
+        unset($data['signature']);
+        $data['token'] = $this->config['TOKEN'];
+        $tmpArr = array_values($data);
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode( $tmpArr );
         $tmpStr = sha1( $tmpStr );
        
-        if( $tmpStr == $data['signature'] ){
+        if( $tmpStr == $signature ){
             return true;
         }else{
             return false;
