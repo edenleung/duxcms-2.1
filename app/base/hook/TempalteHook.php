@@ -85,6 +85,12 @@ class TempalteHook
         $this->_template_replace[] = '<?php if (false === in_array(\\1, [\\2])) { ?>';
         $this->_template_replace[] = '<?php }; ?>';
 
+        // page 获取单页信息
+        $this->_template_preg[] = '/{page\s+class=\"(.*?)\"\s+callback=\"(.*?)\"}/i';
+        $this->_template_preg[] = '/{\/page}/i';
+        $this->_template_replace[] = '<?php $\\2 = target(\'Page/CategoryPage\')->getInfo(\\1); ?>';
+        $this->_template_replace[] = '<?php  ?>';
+
         //替换循环
         $this->_template_preg[] = '/'.$this->__ltag.'(loop|foreach)\{(.*?)\}'.$this->__rtag.'/i';
         $this->_template_replace[] = '<?php foreach (\\2) { ?>';
