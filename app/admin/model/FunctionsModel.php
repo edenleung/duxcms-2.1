@@ -1,20 +1,21 @@
 <?php
+
 namespace app\admin\model;
 
 /**
- * 应用操作
+ * 应用操作.
  */
 class FunctionsModel
 {
-
     /**
-     * 获取列表
+     * 获取列表.
+     *
      * @return array 列表
      */
     public function loadList()
     {
         $list = glob(APP_PATH.'*/conf/config.php');
-        $configArray = array();
+        $configArray = [];
         foreach ($list as $file) {
             //解析模块名
             $file = str_replace('\\', '/', $file);
@@ -24,11 +25,13 @@ class FunctionsModel
             $configArray[$fileName] = $this->getInfo($fileName);
         }
         $configArray = array_order($configArray, 'APP_SYSTEM');
+
         return $configArray;
     }
 
     /**
-     * 添加APP信息
+     * 添加APP信息.
+     *
      * @param string $app 应用名
      */
     public function getInfo($app)
@@ -43,6 +46,7 @@ class FunctionsModel
             $info['APP_STATE'] = 1;
             $info['APP_INSTALL'] = 1;
         }
+
         return $info;
     }
 }

@@ -1,15 +1,16 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
 
 /**
- * 内容AJAX处理工具
+ * 内容AJAX处理工具.
  */
 class ContentToolsController extends AdminController
 {
     /**
-     * 获取内容图片
+     * 获取内容图片.
      */
     public function getImage()
     {
@@ -26,7 +27,7 @@ class ContentToolsController extends AdminController
     }
 
     /**
-     * 内容分词
+     * 内容分词.
      */
     public function getKerword()
     {
@@ -43,7 +44,7 @@ class ContentToolsController extends AdminController
     }
 
     /**
-     * 远程存图
+     * 远程存图.
      */
     public function getRemoteImage()
     {

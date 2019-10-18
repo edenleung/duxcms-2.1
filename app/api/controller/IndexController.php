@@ -6,8 +6,7 @@ use app\article\service\LabelService as ArticleService;
 use app\duxcms\service\LabelService as DuxService;
 
 /**
- * Api调用
- * 
+ * Api调用.
  */
 class IndexController extends Response
 {
@@ -33,7 +32,7 @@ class IndexController extends Response
         }
 
         $this->request = request('get.');
-        
+
         if (!$this->checkSign()) {
             return $this->error('签名错误');
         }
@@ -41,7 +40,7 @@ class IndexController extends Response
         if ((time() - $this->request['timestamp']) > 5) {
             return $this->error('签名已过期');
         }
-        
+
         $this->checkParams();
     }
 
@@ -62,8 +61,7 @@ class IndexController extends Response
     }
 
     /**
-     * 效验签名
-     *
+     * 效验签名.
      */
     protected function checkSign()
     {
@@ -78,12 +76,12 @@ class IndexController extends Response
         $data['token'] = $this->config['TOKEN'];
         $tmpArr = array_values($data);
         sort($tmpArr, SORT_STRING);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
-       
-        if( $tmpStr == $signature ){
+        $tmpStr = implode($tmpArr);
+        $tmpStr = sha1($tmpStr);
+
+        if ($tmpStr == $signature) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -92,16 +90,16 @@ class IndexController extends Response
     {
         try {
             if ($this->app == 'DuxCms') {
-                $service = new DuxService;
+                $service = new DuxService();
             } else {
-                $service = new ArticleService;
+                $service = new ArticleService();
             }
 
-            $result = call_user_func(array($service, $this->label), $this->data);
+            $result = call_user_func([$service, $this->label], $this->data);
+
             return $this->success($result);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
         }
-        
     }
 }

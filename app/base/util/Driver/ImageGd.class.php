@@ -1,4 +1,5 @@
 <?php
+
 // +----------------------------------------------------------------------
 // | TOPThink [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
@@ -15,18 +16,21 @@ class ImageGd
 {
     /**
      * 图像资源对象
+     *
      * @var resource
      */
     private $img;
 
     /**
-     * 图像信息，包括width,height,type,mime,size
+     * 图像信息，包括width,height,type,mime,size.
+     *
      * @var array
      */
     private $info;
 
     /**
-     * 构造方法，可用于打开一张图像
+     * 构造方法，可用于打开一张图像.
+     *
      * @param string $imgname 图像路径
      */
     public function __construct($imgname = null)
@@ -35,8 +39,9 @@ class ImageGd
     }
 
     /**
-     * 打开一张图像
-     * @param  string $imgname 图像路径
+     * 打开一张图像.
+     *
+     * @param string $imgname 图像路径
      */
     public function open($imgname)
     {
@@ -54,12 +59,12 @@ class ImageGd
         }
 
         //设置图像信息
-        $this->info = array(
+        $this->info = [
             'width'  => $info[0],
             'height' => $info[1],
             'type'   => image_type_to_extension($info[2], false),
             'mime'   => $info['mime'],
-        );
+        ];
 
         //销毁已存在的图像
         empty($this->img) || imagedestroy($this->img);
@@ -76,10 +81,11 @@ class ImageGd
     }
 
     /**
-     * 保存图像
-     * @param  string  $imgname   图像保存名称
-     * @param  string  $type      图像类型
-     * @param  boolean $interlace 是否对JPEG类型图像设置隔行扫描
+     * 保存图像.
+     *
+     * @param string $imgname   图像保存名称
+     * @param string $type      图像类型
+     * @param bool   $interlace 是否对JPEG类型图像设置隔行扫描
      */
     public function save($imgname, $type = null, $interlace = true)
     {
@@ -110,31 +116,36 @@ class ImageGd
     }
 
     /**
-     * 返回图像宽度
-     * @return integer 图像宽度
+     * 返回图像宽度.
+     *
+     * @return int 图像宽度
      */
     public function width()
     {
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
+
         return $this->info['width'];
     }
 
     /**
-     * 返回图像高度
-     * @return integer 图像高度
+     * 返回图像高度.
+     *
+     * @return int 图像高度
      */
     public function height()
     {
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
+
         return $this->info['height'];
     }
 
     /**
-     * 返回图像类型
+     * 返回图像类型.
+     *
      * @return string 图像类型
      */
     public function type()
@@ -142,11 +153,13 @@ class ImageGd
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
+
         return $this->info['type'];
     }
 
     /**
-     * 返回图像MIME类型
+     * 返回图像MIME类型.
+     *
      * @return string 图像MIME类型
      */
     public function mime()
@@ -154,11 +167,13 @@ class ImageGd
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
+
         return $this->info['mime'];
     }
 
     /**
-     * 返回图像尺寸数组 0 - 图像宽度，1 - 图像高度
+     * 返回图像尺寸数组 0 - 图像宽度，1 - 图像高度.
+     *
      * @return array 图像尺寸
      */
     public function size()
@@ -166,17 +181,19 @@ class ImageGd
         if (empty($this->img)) {
             throw new Exception('没有指定图像资源');
         }
-        return array($this->info['width'], $this->info['height']);
+
+        return [$this->info['width'], $this->info['height']];
     }
 
     /**
-     * 裁剪图像
-     * @param  integer $w      裁剪区域宽度
-     * @param  integer $h      裁剪区域高度
-     * @param  integer $x      裁剪区域x坐标
-     * @param  integer $y      裁剪区域y坐标
-     * @param  integer $width  图像保存宽度
-     * @param  integer $height 图像保存高度
+     * 裁剪图像.
+     *
+     * @param int $w      裁剪区域宽度
+     * @param int $h      裁剪区域高度
+     * @param int $x      裁剪区域x坐标
+     * @param int $y      裁剪区域y坐标
+     * @param int $width  图像保存宽度
+     * @param int $height 图像保存高度
      */
     public function crop($w, $h, $x = 0, $y = 0, $width = null, $height = null)
     {
@@ -203,15 +220,16 @@ class ImageGd
             $this->img = $img;
         } while (!empty($this->gif) && $this->gifNext());
 
-        $this->info['width']  = $width;
+        $this->info['width'] = $width;
         $this->info['height'] = $height;
     }
 
     /**
-     * 生成缩略图
-     * @param  integer $width  缩略图最大宽度
-     * @param  integer $height 缩略图最大高度
-     * @param  integer $type   缩略图裁剪类型
+     * 生成缩略图.
+     *
+     * @param int $width  缩略图最大宽度
+     * @param int $height 缩略图最大高度
+     * @param int $type   缩略图裁剪类型
      */
     public function thumb($width, $height, $type = THINKIMAGE_THUMB_SCALE)
     {
@@ -228,16 +246,16 @@ class ImageGd
             /* 等比例缩放 */
             case THINKIMAGE_THUMB_SCALE:
                 //原图尺寸小于缩略图尺寸则不进行缩略
-                if ($w<$width && $h<$height) {
+                if ($w < $width && $h < $height) {
                     return;
                 }
 
                 //计算缩放比例
                 $scale = min($width / $w, $height / $h);
-                
+
                 //设置缩略图的坐标及宽度和高度
                 $x = $y = 0;
-                $width  = $w * $scale;
+                $width = $w * $scale;
                 $height = $h * $scale;
                 break;
 
@@ -279,7 +297,7 @@ class ImageGd
             /* 填充 */
             case THINKIMAGE_THUMB_FILLED:
                 //计算缩放比例
-                if ($w<$width && $h<$height) {
+                if ($w < $width && $h < $height) {
                     $scale = 1;
                 } else {
                     $scale = min($width / $w, $height / $h);
@@ -303,9 +321,10 @@ class ImageGd
                     imagedestroy($this->img); //销毁原图
                     $this->img = $img;
                 } while (!empty($this->gif) && $this->gifNext());
-                
-                $this->info['width']  = $width;
+
+                $this->info['width'] = $width;
                 $this->info['height'] = $height;
+
                 return;
 
             /* 固定 */
@@ -322,10 +341,11 @@ class ImageGd
     }
 
     /**
-     * 添加水印
-     * @param  string  $source 水印图片路径
-     * @param  integer $locate 水印位置
-     * @param  integer $alpha  水印透明度
+     * 添加水印.
+     *
+     * @param string $source 水印图片路径
+     * @param int    $locate 水印位置
+     * @param int    $alpha  水印透明度
      */
     public function water($source, $locate = THINKIMAGE_WATER_SOUTHEAST)
     {
@@ -344,7 +364,7 @@ class ImageGd
         }
 
         //创建水印图像资源
-        $fun   = 'imagecreatefrom'.image_type_to_extension($info[2], false);
+        $fun = 'imagecreatefrom'.image_type_to_extension($info[2], false);
         $water = $fun($source);
 
         //设定水印图像的混色模式
@@ -434,14 +454,15 @@ class ImageGd
     }
 
     /**
-     * 图像添加文字
-     * @param  string  $text   添加的文字
-     * @param  string  $font   字体路径
-     * @param  integer $size   字号
-     * @param  string  $color  文字颜色
-     * @param  integer $locate 文字写入位置
-     * @param  integer $offset 文字相对当前位置的偏移量
-     * @param  integer $angle  文字倾斜角度
+     * 图像添加文字.
+     *
+     * @param string $text   添加的文字
+     * @param string $font   字体路径
+     * @param int    $size   字号
+     * @param string $color  文字颜色
+     * @param int    $locate 文字写入位置
+     * @param int    $offset 文字相对当前位置的偏移量
+     * @param int    $angle  文字倾斜角度
      */
     public function text(
         $text,
@@ -548,7 +569,7 @@ class ImageGd
         if (is_string($color) && 0 === strpos($color, '#')) {
             $color = str_split(substr($color, 1), 2);
             $color = array_map('hexdec', $color);
-            if (empty($color[3]) || $color[3]>127) {
+            if (empty($color[3]) || $color[3] > 127) {
                 $color[3] = 0;
             }
         } elseif (!is_array($color)) {
@@ -575,17 +596,20 @@ class ImageGd
 
         if ($next) {
             $this->img = imagecreatefromstring($next);
+
             return $next;
         } else {
             $this->img = imagecreatefromstring($this->gif->image());
+
             return false;
         }
     }
 
     /**
-     * 锐化图片
-     * @param  integer $radius 锐化角度
-     * @param  integer $sigma  锐化偏差
+     * 锐化图片.
+     *
+     * @param int $radius 锐化角度
+     * @param int $sigma  锐化偏差
      */
     public function sharp($radius = 0, $sigma = 1)
     {
@@ -594,7 +618,7 @@ class ImageGd
     }
 
     /**
-     * 析构方法，用于销毁图像资源
+     * 析构方法，用于销毁图像资源.
      */
     public function __destruct()
     {

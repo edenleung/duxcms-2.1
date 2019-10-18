@@ -1,54 +1,52 @@
 <?php
+
 namespace app\admin\controller;
 
-use app\admin\controller\AdminController;
-
 /**
- * 应用管理
+ * 应用管理.
  */
-
 class FunctionsController extends AdminController
 {
-
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '应用管理',
+        return [
+            'info'  => [
+                'name'        => '应用管理',
                 'description' => '管理网站基本功能',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '应用列表',
-                        'url' => url('admin/Functions/index'),
+                        'url'  => url('admin/Functions/index'),
                         'icon' => 'exclamation-circle',
-                    ),
-                )
-            );
+                    ],
+                ],
+            ];
     }
+
     /**
-     * 应用列表
+     * 应用列表.
      */
     public function index()
     {
-        $breadCrumb = array('应用管理'=>url());
+        $breadCrumb = ['应用管理'=>url()];
         $this->assign('breadCrumb', $breadCrumb);
         $this->assign('list', target('Functions')->loadList());
         $this->adminDisplay();
     }
 
     /**
-     * 状态更改
+     * 状态更改.
      */
     public function state()
     {
         $data = request('post.data');
         $app = request('get.app');
         //更新配置
-        $config = array();
+        $config = [];
         $config['APP_STATE'] = $data;
         $file = $app.'/config';
         $info = load_config($file);
@@ -63,7 +61,7 @@ class FunctionsController extends AdminController
     }
 
     /**
-     * 安装
+     * 安装.
      */
     public function install()
     {
@@ -74,7 +72,7 @@ class FunctionsController extends AdminController
             $this->error('该模块无法进行安装操作！');
         }
         //更改模块状态
-        $config = array();
+        $config = [];
         $config['APP_INSTALL'] = 1;
         $config['APP_STATE'] = 1;
         $file = $app.'/config';
@@ -101,7 +99,7 @@ class FunctionsController extends AdminController
     }
 
     /**
-     * 卸载
+     * 卸载.
      */
     public function uninstall()
     {
@@ -126,7 +124,7 @@ class FunctionsController extends AdminController
             target('Functions')->execute($sql);
         }
         //更改模块状态
-        $config = array();
+        $config = [];
         $config['APP_INSTALL'] = 0;
         $config['APP_STATE'] = 0;
         $file = APP_PATH.$app.'/Conf/config.php';

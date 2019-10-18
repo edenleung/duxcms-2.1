@@ -1,17 +1,16 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\home\controller\SiteController;
 
 /**
- * 表单列表
+ * 表单列表.
  */
-
 class FormController extends SiteController
 {
-
     /**
-     * 列表
+     * 列表.
      */
     public function index()
     {
@@ -21,7 +20,7 @@ class FormController extends SiteController
             $this->error404();
         }
         //获取表单信息
-        $where = array();
+        $where = [];
         $where['table'] = $table;
         $formInfo = target('duxcms/FieldsetForm')->getWhereInfo($where);
         if (empty($formInfo)) {
@@ -41,7 +40,7 @@ class FormController extends SiteController
         $model = target('duxcms/FieldData');
         $model->setTable('ext_'.$formInfo['table']);
         //查询数据
-        $where = array();
+        $where = [];
         if (!empty($formInfo['list_where'])) {
             $where[] = $formInfo['list_where'];
         }
@@ -49,27 +48,27 @@ class FormController extends SiteController
         $list = $model->page($listRows)->loadList($where, $listRows, $formInfo['list_order']);
         $this->pager = $model->pager;
         //字段列表
-        $where = array();
+        $where = [];
         $where['A.fieldset_id'] = $formInfo['fieldset_id'];
         $fieldList = target('FieldForm')->loadList($where);
         //格式化表单内容为基本数据
-        $data = array();
+        $data = [];
         if (!empty($list)) {
             foreach ($list as $key => $value) {
                 $data[$key] = $value;
                 foreach ($fieldList as $v) {
                     $data[$key][$v['field']] = target('duxcms/FieldData')->revertField($value[$v['field']], $v['type'], $v['config']);
                 }
-                $data[$key]['furl'] = url('DuxCms/Form/info', array('name'=>$name, 'id'=>$value['data_id']));
+                $data[$key]['furl'] = url('DuxCms/Form/info', ['name'=>$name, 'id'=>$value['data_id']]);
             }
         }
         //URL参数
-        $pageMaps = array();
+        $pageMaps = [];
         $pageMaps['name'] = $name;
         //获取分页
         $page = $this->getPageShow($pageMaps);
         //位置导航
-        $crumb = array(array('name'=>$formInfo['name'], 'url'=>url('duxcms/Form/index', $pageMaps)));
+        $crumb = [['name'=>$formInfo['name'], 'url'=>url('duxcms/Form/index', $pageMaps)]];
         //MEDIA信息
         $media = $this->getMedia($formInfo['name']);
         $this->assign('crumb', $crumb);
@@ -81,7 +80,7 @@ class FormController extends SiteController
     }
 
     /**
-     * 表单内容
+     * 表单内容.
      */
     public function info()
     {
@@ -92,7 +91,7 @@ class FormController extends SiteController
             $this->error404();
         }
         //获取表单信息
-        $where = array();
+        $where = [];
         $where['table'] = $table;
         $formInfo = target('duxcms/FieldsetForm')->getWhereInfo($where);
         if (empty($formInfo)) {
@@ -109,7 +108,7 @@ class FormController extends SiteController
             $this->error404();
         }
         //字段列表
-        $where = array();
+        $where = [];
         $where['A.fieldset_id'] = $formInfo['fieldset_id'];
         $fieldList = target('FieldForm')->loadList($where);
         //格式化表单内容为基本数据
@@ -117,10 +116,10 @@ class FormController extends SiteController
             $info[$v['field']] = target('duxcms/FieldData')->revertField($info[$v['field']], $v['type'], $v['config']);
         }
         //位置导航
-        $crumb = array(
-            array('name'=>$formInfo['name'], 'url'=>url('duxcms/Form/index', array('name'=>$name))),
-            array('name'=>'详情', 'url'=>url('duxcms/Form/info', array('name'=>$name, 'id'=>$id))),
-            );
+        $crumb = [
+            ['name'=>$formInfo['name'], 'url'=>url('duxcms/Form/index', ['name'=>$name])],
+            ['name'=> '详情', 'url'=>url('duxcms/Form/info', ['name'=>$name, 'id'=>$id])],
+            ];
         //MEDIA信息
         $media = $this->getMedia($formInfo['name'].'- 详情 ');
         $this->assign('crumb', $crumb);
@@ -131,7 +130,7 @@ class FormController extends SiteController
     }
 
     /**
-     * 发布
+     * 发布.
      */
     public function push()
     {
@@ -149,7 +148,7 @@ class FormController extends SiteController
             $this->error('安全验证失败，请刷新页面后重新提交！');
         }
         //获取表单信息
-        $where = array();
+        $where = [];
         $where['table'] = $table;
         $formInfo = target('duxcms/FieldsetForm')->getWhereInfo($where);
         if (empty($formInfo)) {
@@ -158,7 +157,7 @@ class FormController extends SiteController
         if (!$formInfo['post_status']) {
             $this->errorBlock();
         }
-        $data = array();
+        $data = [];
         foreach (request('post.') as $key => $value) {
             $data['Fieldset_'.$key] = $value;
         }
@@ -169,7 +168,7 @@ class FormController extends SiteController
         //增加信息
         if ($model->saveData('add', $formInfo)) {
             if (empty($formInfo['post_return_url'])) {
-                $url = $_SERVER["HTTP_REFERER"];
+                $url = $_SERVER['HTTP_REFERER'];
             } else {
                 $url = $formInfo['post_return_url'];
             }

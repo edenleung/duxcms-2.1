@@ -1,16 +1,14 @@
 <?php
+
 namespace app\admin\controller;
 
-use app\admin\controller\AdminController;
-
 /**
- * 登录页面
+ * 登录页面.
  */
 class LoginController extends AdminController
 {
-
     /**
-     * 登录页面
+     * 登录页面.
      */
     public function index()
     {
@@ -45,7 +43,7 @@ class LoginController extends AdminController
                 $this->error('用户名或密码未填写！');
             }
             //查询用户
-            $map = array();
+            $map = [];
             $map['username'] = $userName;
             $userInfo = target('AdminUser')->getWhereInfo($map);
             if (empty($userInfo)) {
@@ -54,7 +52,7 @@ class LoginController extends AdminController
             if (!$userInfo['status'] || !$userInfo['group_status']) {
                 $this->error('该用户已被禁止登录！');
             }
-            if ($userInfo['password'] <> md5($passWord)) {
+            if ($userInfo['password'] != md5($passWord)) {
                 $this->error('您输入的密码不正确！');
             }
             $model = target('AdminUser');
@@ -65,8 +63,9 @@ class LoginController extends AdminController
             }
         }
     }
+
     /**
-     * 退出登录
+     * 退出登录.
      */
     public function logout()
     {

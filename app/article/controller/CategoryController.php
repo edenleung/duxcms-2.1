@@ -1,17 +1,16 @@
 <?php
+
 namespace app\article\controller;
 
 use app\home\controller\SiteController;
 
 /**
- * 栏目页面
+ * 栏目页面.
  */
-
 class CategoryController extends SiteController
 {
-
     /**
-     * 栏目页
+     * 栏目页.
      */
     public function index()
     {
@@ -44,7 +43,7 @@ class CategoryController extends SiteController
             $this->error404();
         }
 
-        if (strtolower($categoryInfo['app']) <> APP_NAME) {
+        if (strtolower($categoryInfo['app']) != APP_NAME) {
             $this->error404();
         }
         //位置导航
@@ -65,7 +64,7 @@ class CategoryController extends SiteController
         // 多条件筛选
         if ($categoryInfo['fieldset_id']) {
             $fieldsetInfo = target('duxcms/Fieldset')->getInfoClassId($categoryInfo['class_id']);
-            $map = array();
+            $map = [];
             $map['A.fieldset_id'] = $fieldsetInfo['fieldset_id'];
             $fieldList = target('duxcms/FieldExpand')->loadList($map);
             if (empty($fieldList) || !is_array($fieldList)) {
@@ -88,15 +87,15 @@ class CategoryController extends SiteController
                 $field = $item['field'];
                 $data = ['name' => $item['name'], 'field' => $field];
                 $child = explode(',', $item['config']);
-                foreach ($child as $k=>$name) {
+                foreach ($child as $k=> $name) {
                     $id = $k + 1;
                     $data['child'][] = [
-                        'name' => $name,
-                        'value' => $id,
-                        'field' => $field,
+                        'name'     => $name,
+                        'value'    => $id,
+                        'field'    => $field,
                         'selected' => $params == $id ? true : false,
-                        'url' => \buildScreenUri(true, $fields, $item['field'], $classId, $id),
-                        'durl' => \buildScreenUri(false, $fields, $item['field'], $classId),
+                        'url'      => \buildScreenUri(true, $fields, $item['field'], $classId, $id),
+                        'durl'     => \buildScreenUri(false, $fields, $item['field'], $classId),
                     ];
                 }
 
@@ -120,15 +119,15 @@ class CategoryController extends SiteController
         }
         $pageList = $modelContent->page($listRows)->loadList($where, $listRows, $categoryInfo['content_order'].'A.time desc,A.content_id desc', $categoryInfo['fieldset_id']);
         $this->pager = $modelContent->pager;
-        
+
         //URL参数
-        $pageMaps = array();
+        $pageMaps = [];
         $pageMaps['class_id'] = $classId;
         $pageMaps['urlname'] = $urlName;
 
         //获取分页
         $page = $this->getPageShow($pageMaps, $mustParams);
-        
+
         //查询上级栏目信息
         $parentCategoryInfo = target('duxcms/Category')->getInfo($categoryInfo['parent_id']);
         //获取顶级栏目信息

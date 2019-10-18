@@ -1,19 +1,20 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
 
 /**
- * 文件上传
+ * 文件上传.
  */
 class AdminUploadController extends AdminController
 {
     /**
-     * 文件上传
+     * 文件上传.
      */
     public function upload()
     {
-        $return = array('status' => 1, 'info' => '上传成功', 'data' => '');
+        $return = ['status' => 1, 'info' => '上传成功', 'data' => ''];
         $file = target('admin/File');
         $info = $file->uploadData();
         if ($info) {
@@ -26,7 +27,7 @@ class AdminUploadController extends AdminController
     }
 
     /**
-     * 编辑器上传
+     * 编辑器上传.
      */
     public function editor()
     {
@@ -34,16 +35,16 @@ class AdminUploadController extends AdminController
         $file = target('admin/File');
         $info = $file->uploadData();
         if ($info) {
-            $return = array(
+            $return = [
                 'error' => 0,
-                'url' => $info['url'],
-                'info' => $info,
-                );
+                'url'   => $info['url'],
+                'info'  => $info,
+                ];
         } else {
-            $return = array(
-                'error' => 1,
+            $return = [
+                'error'   => 1,
                 'message' => $file->getError(),
-                );
+                ];
         }
         $this->ajaxReturn($return);
     }

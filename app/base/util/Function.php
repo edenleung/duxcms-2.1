@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 判断是否有子栏目
+ * 判断是否有子栏目.
  */
 function hasSub($cid)
 {
@@ -14,7 +14,7 @@ function hasSub($cid)
 }
 
 /**
- * 推送当前链接到百度收录
+ * 推送当前链接到百度收录.
  *
  * @return void
  */
@@ -25,11 +25,12 @@ function pushBaidu()
 }
 
 /**
- * 统计分类下的所有文章数
+ * 统计分类下的所有文章数.
  *
- * @param integer $cid 分类id
+ * @param int    $cid        分类id
  * @param [type] $positionId 推荐位id
  * @param [type] $positionId 统计已发布的文章
+ *
  * @return void
  */
 function articleSumByCid($cid, $positionId = '', $isShow = true)
@@ -68,10 +69,11 @@ function articleSumByCid($cid, $positionId = '', $isShow = true)
 }
 
 /**
- * 判断是否奇数
+ * 判断是否奇数.
  *
  * @param number $index $list['i']
- * @return boolean
+ *
+ * @return bool
  */
 function isOdd($index)
 {
@@ -84,9 +86,9 @@ function isOdd($index)
 }
 
 /**
- * 判断当前协议是否为HTTPS
+ * 判断当前协议是否为HTTPS.
  *
- * @return boolean
+ * @return bool
  */
 function is_https()
 {
@@ -101,11 +103,11 @@ function is_https()
     return false;
 }
 
-
 /**
- * (实时)推送链接到百度
+ * (实时)推送链接到百度.
  *
  * @param [type] $urls
+ *
  * @return void
  */
 function push($urls)
@@ -122,13 +124,13 @@ function push($urls)
     }
 
     $ch = curl_init();
-    $options = array(
-        CURLOPT_URL => $url,
-        CURLOPT_POST => true,
+    $options = [
+        CURLOPT_URL            => $url,
+        CURLOPT_POST           => true,
         CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POSTFIELDS => $urls,
-        CURLOPT_HTTPHEADER => array('Content-Type: text/plain'),
-    );
+        CURLOPT_POSTFIELDS     => $urls,
+        CURLOPT_HTTPHEADER     => ['Content-Type: text/plain'],
+    ];
 
     curl_setopt_array($ch, $options);
     $result = curl_exec($ch);
@@ -137,7 +139,7 @@ function push($urls)
 }
 
 /**
- * 获取request请求方法
+ * 获取request请求方法.
  */
 function request($str, $default = null, $function = null)
 {
@@ -165,8 +167,7 @@ function request($str, $default = null, $function = null)
     if (empty($name)) {
         $request = filter_string($type);
     } else {
-        if (!isset($type[$name]))
-        {
+        if (!isset($type[$name])) {
             return;
         }
         if ($method == 'GET') {
@@ -187,11 +188,13 @@ function request($str, $default = null, $function = null)
             $request = call_user_func($function, $request);
         }
     }
+
     return $request;
 }
 /**
- * 过滤数据
- * @param  array  $data 过滤数据
+ * 过滤数据.
+ *
+ * @param array $data 过滤数据
  */
 function filter_string($data)
 {
@@ -202,6 +205,7 @@ function filter_string($data)
         foreach ($data as $k=>$v) {
             $data[$k] = filter_string($v);
         }
+
         return $data;
     } else {
         return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
@@ -209,11 +213,12 @@ function filter_string($data)
 }
 
 /**
- * 显示文章阅读进度
+ * 显示文章阅读进度.
  *
  * @param [type] $container 文章容器
- * @param [type] $parent 包着百分百的
- * @param string $child 进度div显示百分比的标签
+ * @param [type] $parent    包着百分百的
+ * @param string $child     进度div显示百分比的标签
+ *
  * @return void
  */
 function showArticleProgress($container, $parent, $child, $class)
@@ -239,7 +244,7 @@ function tongji()
     if (!$file['tongji_open']) {
         return;
     }
-    
+
     $type = $file['default'];
     $config = $file['store'][$type];
 
@@ -249,21 +254,23 @@ function tongji()
 
     $scripts = [
         'baidu' => '<script type="text/javascript">var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?{TOKEN}";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();</script>',
-        'cznn' => '<script type="text/javascript" src="https://v1.cnzz.com/z_stat.php?id={TOKEN}&web_id={TOKEN}"></script>'
+        'cznn'  => '<script type="text/javascript" src="https://v1.cnzz.com/z_stat.php?id={TOKEN}&web_id={TOKEN}"></script>',
     ];
 
     $script = $scripts[$type];
+
     return str_replace('{TOKEN}', $config['token'], $script);
 }
 
 /**
- * 生成筛选url
+ * 生成筛选url.
  *
  * @param [type] $flag
  * @param [type] $fields
  * @param [type] $field
  * @param [type] $classId
  * @param [type] $id
+ *
  * @return void
  */
 function buildScreenUri($flag, $fields, $field, $classId, $id = '')
@@ -289,19 +296,22 @@ function buildScreenUri($flag, $fields, $field, $classId, $id = '')
 
     $paramer['class_id'] = $classId;
     $dir = APP_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME;
+
     return match_url($dir, $paramer, $params);
 }
 
 /**
  * 数据签名认证
- * @param  array  $data 被认证的数据
- * @return string       签名
+ *
+ * @param array $data 被认证的数据
+ *
+ * @return string 签名
  */
 function data_auth_sign($data)
 {
     //数据类型检测
     if (!is_array($data)) {
-        $data = (array)$data;
+        $data = (array) $data;
     }
     ksort($data); //排序
     $code = http_build_query($data); //url编码并生成query字符串
@@ -309,69 +319,77 @@ function data_auth_sign($data)
     return $sign;
 }
 /**
- * 读取模块配置
+ * 读取模块配置.
+ *
  * @param string $file 调用文件
+ *
  * @return array
  */
 function load_config($file)
 {
     $file = get_config_file($file);
+
     return require $file;
 }
 
 /**
- * 读取当前模块配置
+ * 读取当前模块配置.
+ *
  * @return array
  */
-
 function current_config()
 {
     return load_config('config');
 }
 
 /**
- * 保存模块配置
+ * 保存模块配置.
+ *
  * @param string $file 调用文件
+ *
  * @return array
  */
 function save_config($file, $config)
 {
     if (empty($config) || !is_array($config)) {
-        return array();
+        return [];
     }
     $file = get_config_file($file);
     //读取配置内容
     $conf = file_get_contents($file);
     //替换配置项
     foreach ($config as $key => $value) {
-        if (is_string($value) && !in_array($value, array('true', 'false'))) {
+        if (is_string($value) && !in_array($value, ['true', 'false'])) {
             if (!is_numeric($value)) {
                 $value = "'".$value."'"; //如果是字符串，加上单引号
             }
         }
-        $conf = preg_replace("/'".$key."'\s*=\>\s*(.*?),/iU", "'".$key."'=>".$value.",", $conf);
+        $conf = preg_replace("/'".$key."'\s*=\>\s*(.*?),/iU", "'".$key."'=>".$value.',', $conf);
     }
     //写入应用配置文件
     // if (!IS_WRITE) {
     //     return false;
     // } else {
-        if (file_put_contents($file, $conf)) {
-            return true;
-        } else {
-            return false;
-        }
-        return '';
+    if (file_put_contents($file, $conf)) {
+        return true;
+    } else {
+        return false;
+    }
+
+    return '';
     // }
 }
 
 /**
- * 字符串转方法数组
+ * 字符串转方法数组.
+ *
  * @param string $str
+ *
  * @return array
  */
 function get_method_array($str = '')
 {
-    $strArray = array();
+    $strArray = [];
     if (!empty($str)) {
         $strArray = explode('/', $str, 3);
     }
@@ -398,16 +416,19 @@ function get_method_array($str = '')
                 $action = ACTION_NAME;
                 break;
         }
-    return array(
-            'app' => strtolower($app),
+
+    return [
+            'app'        => strtolower($app),
             'controller' => $controller,
-            'action' => $action,
-            );
+            'action'     => $action,
+            ];
 }
 
 /**
- * 解析配置文件路径
+ * 解析配置文件路径.
+ *
  * @param string $file 文件路径或简写路径
+ *
  * @return dir
  */
 function get_config_file($file)
@@ -435,18 +456,21 @@ function get_config_file($file)
             throw new \Exception("Config '{$file}' not found", 500);
         }
     }
+
     return $file;
 }
 /**
- * 自适应URL规则
- * @param string $str URL路径
- * @param string $params 自动解析参数
+ * 自适应URL规则.
+ *
+ * @param string $str        URL路径
+ * @param string $params     自动解析参数
  * @param string $mustParams 必要参数
+ *
  * @return url
  */
-function match_url($str, $params = array(), $mustParams = array())
+function match_url($str, $params = [], $mustParams = [])
 {
-    $newParams = array();
+    $newParams = [];
     $keyArray = array_keys($params);
     if (config('REWRITE_ON')) {
         //获取规则文件
@@ -470,20 +494,23 @@ function match_url($str, $params = array(), $mustParams = array())
             $newParams[$keyArray[0]] = current($params);
         }
     }
-    $newParams = array_merge((array)$newParams, (array)$mustParams);
+    $newParams = array_merge((array) $newParams, (array) $mustParams);
     $newParams = array_filter($newParams);
+
     return url($str, $newParams);
 }
 
 /**
- * 通用模块调用函数
- * @param string $str 调用路径
+ * 通用模块调用函数.
+ *
+ * @param string $str   调用路径
  * @param string $layer 调用层 默认model
+ *
  * @return obj
  */
 function target($str, $layer = 'model')
 {
-    static $_target = array();
+    static $_target = [];
     $str = explode('/', $str);
     $strCount = count($str);
     switch ($strCount) {
@@ -507,18 +534,21 @@ function target($str, $layer = 'model')
     }
     $target = new $class();
     $_target[$name] = $target;
+
     return $target;
 }
 
 /**
- * 获取所有模块Service
+ * 获取所有模块Service.
+ *
  * @param string $name 指定service名
+ *
  * @return array
  */
-function get_all_service($name, $method, $vars = array())
+function get_all_service($name, $method, $vars = [])
 {
     if (empty($name)) {
-        return null;
+        return;
     }
     $apiPath = APP_PATH.'*/service/'.$name.'Service.php';
     $apiList = glob($apiPath);
@@ -527,7 +557,7 @@ function get_all_service($name, $method, $vars = array())
     }
     $appPathStr = strlen(APP_PATH);
     $method = 'get'.$method.$name;
-    $data = array();
+    $data = [];
     foreach ($apiList as $value) {
         $path = substr($value, $appPathStr, -4);
         $path = str_replace('\\', '/', $path);
@@ -542,15 +572,18 @@ function get_all_service($name, $method, $vars = array())
             $data[$appName] = $class->$method($vars);
         }
     }
+
     return $data;
 }
 
 /**
- * 获取指定模块Service
+ * 获取指定模块Service.
+ *
  * @param string $name 指定service名
+ *
  * @return Service
  */
-function service($appName, $name, $method, $vars = array())
+function service($appName, $name, $method, $vars = [])
 {
     $config = load_config($appName.'/config');
     if (!$config['APP_SYSTEM'] && (!$config['APP_STATE'] || !$config['APP_INSTALL'])) {
@@ -562,14 +595,14 @@ function service($appName, $name, $method, $vars = array())
     }
 }
 
-
-
 /**
- * 调用指定模块的API
- * @param string $name  指定api名
+ * 调用指定模块的API.
+ *
+ * @param string $name 指定api名
+ *
  * @return Api
  */
-function api($appName, $name, $method, $vars = array())
+function api($appName, $name, $method, $vars = [])
 {
     $config = load_config($appName.'/config');
     if (!$config['APP_SYSTEM'] && (!$config['APP_STATE'] || !$config['APP_INSTALL'])) {
@@ -582,11 +615,13 @@ function api($appName, $name, $method, $vars = array())
 }
 
 /**
- * 二维数组排序
- * @param array $array 排序的数组
- * @param string $key 排序主键
- * @param string $type 排序类型 asc|desc
- * @param bool $reset 是否返回原始主键
+ * 二维数组排序.
+ *
+ * @param array  $array 排序的数组
+ * @param string $key   排序主键
+ * @param string $type  排序类型 asc|desc
+ * @param bool   $reset 是否返回原始主键
+ *
  * @return array
  */
 function array_order($array, $key, $type = 'asc', $reset = false)
@@ -611,14 +646,17 @@ function array_order($array, $key, $type = 'asc', $reset = false)
             $new_array[$i] = $array[$k];
         }
     }
+
     return $new_array;
 }
 
 /**
- * session获取
+ * session获取.
+ *
  * @param string $name
  * @param string $value
- * @return  string
+ *
+ * @return string
  */
 function session($name = '', $value = '')
 {
@@ -635,20 +673,23 @@ function session($name = '', $value = '')
     $pre = config('COOKIE_PREFIX');
     if ($value === '') {
         $session = $_SESSION[$pre.$name];
-    } else if (is_null($value)) {
+    } elseif (is_null($value)) {
         unset($_SESSION[$pre.$name]);
     } else {
         $session = $_SESSION[$pre.$name] = $value;
     }
+
     return $session;
 }
 
 /**
- * cookie获取
+ * cookie获取.
+ *
  * @param string $name
  * @param string $value
- * @param int $time 小时时间
- * @return  string
+ * @param int    $time  小时时间
+ *
+ * @return string
  */
 function cookie($name = '', $value = '', $time = 1)
 {
@@ -661,14 +702,17 @@ function cookie($name = '', $value = '', $time = 1)
     } else {
         $cookie = setcookie($pre.$name, $value, time() + 3600 * $time, '/');
     }
+
     return $cookie;
 }
 
 /**
- * 默认数据
+ * 默认数据.
+ *
  * @param string $data
  * @param string $var
- * @return  string
+ *
+ * @return string
  */
 function default_data($data, $var)
 {
@@ -690,19 +734,22 @@ function cut_image($img, $width, $height, $type = 3)
         return $img;
     }
     $imgInfo = pathinfo($img);
-    $newImg = $imgInfo['dirname'].'/cut_'.$width.'_'.$height.'_'.$imgInfo["basename"];
+    $newImg = $imgInfo['dirname'].'/cut_'.$width.'_'.$height.'_'.$imgInfo['basename'];
     $newImgDir = ROOT_PATH.$newImg;
     if (!is_file($newImgDir)) {
         $image = new \app\base\util\ThinkImage();
         $image->open($imgDir);
         $image->thumb($width, $height, $type)->save($newImgDir);
     }
+
     return $newImg;
 }
 
 /**
- * 获取文件或文件大小
+ * 获取文件或文件大小.
+ *
  * @param string $directoty 路径
+ *
  * @return int
  */
 function dir_size($directoty)
@@ -721,15 +768,17 @@ function dir_size($directoty)
         }
         closedir($dir_handle);
     }
-    return ($dir_size);
+
+    return $dir_size;
 }
 
 /**
- * 复制目录
+ * 复制目录.
  *
  * @param [type] $sourceDir
  * @param [type] $aimDir
- * @param array $diss 忽略覆盖
+ * @param array  $diss      忽略覆盖
+ *
  * @return void
  */
 function copy_dir($sourceDir, $aimDir, $diss = [])
@@ -742,7 +791,7 @@ function copy_dir($sourceDir, $aimDir, $diss = [])
     }
     $objDir = opendir($sourceDir);
     while (false !== ($fileName = readdir($objDir))) {
-        if (($fileName != ".") && ($fileName != "..")) {
+        if (($fileName != '.') && ($fileName != '..')) {
             if (!in_array("$sourceDir/$fileName", $diss)) {
                 if (!is_dir("$sourceDir/$fileName")) {
                     if (!copy("$sourceDir/$fileName", "$aimDir/$fileName")) {
@@ -756,12 +805,15 @@ function copy_dir($sourceDir, $aimDir, $diss = [])
         }
     }
     closedir($objDir);
+
     return $succeed;
 }
 
 /**
- * 遍历删除目录和目录下所有文件
+ * 遍历删除目录和目录下所有文件.
+ *
  * @param string $dir 路径
+ *
  * @return bool
  */
 function del_dir($dir)
@@ -770,7 +822,7 @@ function del_dir($dir)
 }
 
 /**
- * html代码输入
+ * html代码输入.
  */
 function html_in($str)
 {
@@ -778,11 +830,12 @@ function html_in($str)
     if (!get_magic_quotes_gpc()) {
         $str = addslashes($str);
     }
+
     return $str;
 }
 
 /**
- * html代码输出
+ * html代码输出.
  */
 function html_out($str)
 {
@@ -792,11 +845,12 @@ function html_out($str)
         $str = html_entity_decode($str);
     }
     $str = stripslashes($str);
+
     return $str;
 }
 
 /**
- * 字符串截取
+ * 字符串截取.
  */
 function len($str, $len = 0)
 {
@@ -808,7 +862,7 @@ function len($str, $len = 0)
 }
 
 /**
- * 兼容老版U方法
+ * 兼容老版U方法.
  */
 function U($str = null, $var = null)
 {
@@ -816,7 +870,7 @@ function U($str = null, $var = null)
 }
 
 /**
- * 生成唯一数字
+ * 生成唯一数字.
  */
 function unique_number()
 {
@@ -824,19 +878,20 @@ function unique_number()
 }
 
 /**
- * 生成随机字符串
+ * 生成随机字符串.
  */
 function random_str()
 {
-    $year_code = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
+    $year_code = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
     $order_sn = $year_code[intval(date('Y')) - 2010].
     strtoupper(dechex(date('m'))).date('d').
     substr(time(), -5).substr(microtime(), 2, 5).sprintf('d', rand(0, 99));
+
     return $order_sn;
 }
 
 /**
- * 获取客户端IP
+ * 获取客户端IP.
  */
 function get_client_ip()
 {
@@ -854,7 +909,7 @@ function get_admin_id()
 }
 
 /**
- * 判断不为空
+ * 判断不为空.
  */
 function is_empty($str)
 {
@@ -868,16 +923,17 @@ function is_empty($str)
 /**
  * 截取摘要
  */
-function get_text_make($data, $cut = 0, $str = "...")
+function get_text_make($data, $cut = 0, $str = '...')
 {
     $data = strip_tags($data);
-    $pattern = "/&[a-zA-Z]+;/";
+    $pattern = '/&[a-zA-Z]+;/';
     $data = preg_replace($pattern, '', $data);
     if (!is_numeric($cut)) {
         return $data;
     }
-    if ($cut>0) {
+    if ($cut > 0) {
         $data = mb_strimwidth($data, 0, $cut, $str);
     }
+
     return $data;
 }

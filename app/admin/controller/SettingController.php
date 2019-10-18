@@ -1,76 +1,74 @@
 <?php
+
 namespace app\admin\controller;
 
-use app\admin\controller\AdminController;
-
 /**
- * 网站设置
+ * 网站设置.
  */
-
 class SettingController extends AdminController
 {
-
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => '网站设置',
+        return [
+            'info'  => [
+                'name'        => '网站设置',
                 'description' => '设置网站整体功能',
-                ),
-            'menu' => array(
-                    array(
+                ],
+            'menu' => [
+                    [
                         'name' => '站点信息',
-                        'url' => url('Setting/site'),
+                        'url'  => url('Setting/site'),
                         'icon' => 'exclamation-circle',
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => '手机设置',
-                        'url' => url('Setting/mobile'),
+                        'url'  => url('Setting/mobile'),
                         'icon' => 'mobile',
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => '多语言设置',
-                        'url' => url('Setting/lang'),
+                        'url'  => url('Setting/lang'),
                         'icon' => 'dashboard',
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => '模板设置',
-                        'url' => url('Setting/tpl'),
+                        'url'  => url('Setting/tpl'),
                         'icon' => 'eye',
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => '性能设置',
-                        'url' => url('Setting/performance'),
+                        'url'  => url('Setting/performance'),
                         'icon' => 'dashboard',
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => '上传设置',
-                        'url' => url('Setting/upload'),
+                        'url'  => url('Setting/upload'),
                         'icon' => 'upload',
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => '百度链接提交',
-                        'url' => url('Setting/push'),
+                        'url'  => url('Setting/push'),
                         'icon' => 'upload',
-                    ),
-                    array(
+                    ],
+                    [
                         'name' => 'API设置',
-                        'url' => url('Setting/api'),
+                        'url'  => url('Setting/api'),
                         'icon' => 'upload',
-                    )
-                )
-        );
+                    ],
+                ],
+        ];
     }
+
     /**
-     * 站点设置
+     * 站点设置.
      */
     public function site()
     {
         if (!IS_POST) {
-            $breadCrumb = array('站点信息'=>url());
+            $breadCrumb = ['站点信息'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             if (defined('LANG_OPEN')) {
                 $file = CONFIG_PATH.'/lang/'.APP_LANG.'.php';
@@ -98,13 +96,14 @@ class SettingController extends AdminController
             }
         }
     }
+
     /**
-     * 手机设置
+     * 手机设置.
      */
     public function mobile()
     {
         if (!IS_POST) {
-            $breadCrumb = array('模板设置'=>url());
+            $breadCrumb = ['模板设置'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('themesList', target('Config')->themesList());
             $this->assign('tplList', target('Config')->tplList());
@@ -118,13 +117,14 @@ class SettingController extends AdminController
             }
         }
     }
+
     /**
-     * 模板设置
+     * 模板设置.
      */
     public function tpl()
     {
         if (!IS_POST) {
-            $breadCrumb = array('模板设置'=>url());
+            $breadCrumb = ['模板设置'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('themesList', target('Config')->themesList());
             $this->assign('tplList', target('Config')->tplList());
@@ -138,14 +138,15 @@ class SettingController extends AdminController
             }
         }
     }
+
     /**
-     * 性能设置
+     * 性能设置.
      */
     public function performance()
     {
         $file = CONFIG_PATH.'performance.php';
         if (!IS_POST) {
-            $breadCrumb = array('性能设置'=>url());
+            $breadCrumb = ['性能设置'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('info', load_config($file));
             $this->adminDisplay();
@@ -157,14 +158,15 @@ class SettingController extends AdminController
             }
         }
     }
+
     /**
-     * 上传设置
+     * 上传设置.
      */
     public function upload()
     {
         $file = CONFIG_PATH.'upload.php';
         if (!IS_POST) {
-            $breadCrumb = array('上传设置'=>url());
+            $breadCrumb = ['上传设置'=>url()];
             $this->assign('breadCrumb', $breadCrumb);
             $this->assign('info', load_config($file));
             $this->adminDisplay();
@@ -178,7 +180,7 @@ class SettingController extends AdminController
     }
 
     /**
-     * 多语言配置
+     * 多语言配置.
      *
      * @return void
      */
@@ -221,7 +223,7 @@ class SettingController extends AdminController
     }
 
     /**
-     * API 设置
+     * API 设置.
      *
      * @return void
      */

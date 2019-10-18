@@ -1,10 +1,12 @@
 <?php
+
 namespace app\duxcms\controller;
 
 use app\admin\controller\AdminController;
 use framework\base\Config;
+
 /**
- * 网站地图生成
+ * 网站地图生成.
  */
 class SitemapController extends AdminController
 {
@@ -15,8 +17,8 @@ class SitemapController extends AdminController
     {
         $file = CONFIG_PATH.'performance.php';
         $data = load_config($file);
-        $rewrite = $data['REWRITE_ON'] ?true:false;
-        $_SERVER["SCRIPT_NAME"] = 'index.php';
+        $rewrite = $data['REWRITE_ON'] ? true : false;
+        $_SERVER['SCRIPT_NAME'] = 'index.php';
         if (!$rewrite) {
             $this->error('请先开启伪静态');
         } else {
@@ -24,20 +26,22 @@ class SitemapController extends AdminController
             \framework\base\Route::parseUrl(config('REWRITE_RULE'), $rewrite);
         }
     }
+
     /**
-     * 当前模块参数
+     * 当前模块参数.
      */
     protected function _infoModule()
     {
-        return array(
-            'info'  => array(
-                'name' => 'sitemap/站点地图',
+        return [
+            'info'  => [
+                'name'        => 'sitemap/站点地图',
                 'description' => '生成sitemap站点地图文件',
-                ),
-            );
+                ],
+            ];
     }
+
     /**
-     * 生成sitemap文件
+     * 生成sitemap文件.
      */
     public function sitemap()
     {
@@ -69,8 +73,8 @@ class SitemapController extends AdminController
                         $sitemap[] = self::getPage($value['class_id'], $value);
                     }
                 } elseif ($value == 'tag') {
-                    $tags = target('duxcms/Tags')->loadList(array(), 5000);
-                    $tag = array();
+                    $tags = target('duxcms/Tags')->loadList([], 5000);
+                    $tag = [];
                     $i = 0;
                     foreach ($tags as $key => $vo) {
                         $tag[$i]['app'] = 'tag标签';
@@ -82,13 +86,13 @@ class SitemapController extends AdminController
                     $sitemap[] = $tag;
                 } elseif ($value == 'robots') {
                     $robots = "User-agent: * \r\nAllow: /\r\nAllow: /list/\r\nAllow: /page/\r\nAllow: /article/\r\nAllow: /tags/\r\nAllow: /tags-list/\r\n\r\nDisallow: /vendors/\r\nDisallow: /public/\r\n\r\nSitemap: {$site}/sitemap.xml";
-                    $file = fopen($this->robots, "w");
+                    $file = fopen($this->robots, 'w');
                     fwrite($file, $robots);
                     fclose($file);
-                    $data[] = array('app'=>'robots', 'title' => 'robots.txt', 'curl'=> "{$site}/robots.txt");
+                    $data[] = ['app'=>'robots', 'title' => 'robots.txt', 'curl'=> "{$site}/robots.txt"];
                 } else {
-                    $content = target('duxcms/Content')->loadList(array(), 5000);
-                    $list = array();
+                    $content = target('duxcms/Content')->loadList([], 5000);
+                    $list = [];
                     $i = 0;
                     foreach ($content as $key => $vo) {
                         $list[$i]['app'] = '新闻';
@@ -106,14 +110,14 @@ class SitemapController extends AdminController
             $config = target('admin/Config')->getInfo();
 
             $sitemap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
-            $sitemap .= "<url>\r\n"."<loc>".$site."</loc>\r\n"."<lastmod>".date('Y-m-d H:i:s')."</lastmod>\r\n</url>\r\n";
+            $sitemap .= "<url>\r\n".'<loc>'.$site."</loc>\r\n".'<lastmod>'.date('Y-m-d H:i:s')."</lastmod>\r\n</url>\r\n";
             foreach ($urls as $k=>$v) {
-                $time = empty($v['time']) ?date('Y-m-d H:i:s') : date('Y-m-d H:i:s', $v['time']);
-                $sitemap .= "<url>\r\n"."<loc>".$v['curl']."</loc>\r\n"."<lastmod>".$time."</lastmod>\r\n</url>\r\n";
-                $data[] = array('app'=>$v['app'], 'title' => $v['title'], 'curl'=>$v['curl']);
+                $time = empty($v['time']) ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s', $v['time']);
+                $sitemap .= "<url>\r\n".'<loc>'.$v['curl']."</loc>\r\n".'<lastmod>'.$time."</lastmod>\r\n</url>\r\n";
+                $data[] = ['app'=>$v['app'], 'title' => $v['title'], 'curl'=>$v['curl']];
             }
             $sitemap .= '</urlset>';
-            $file = fopen($this->sitemap, "w");
+            $file = fopen($this->sitemap, 'w');
             fwrite($file, $sitemap);
             fclose($file);
             $this->success($data);
@@ -123,35 +127,40 @@ class SitemapController extends AdminController
         $this->assign('text', $text);
         $this->adminDisplay();
     }
+
     /**
-     * 多维数值转换成二维数组
+     * 多维数值转换成二维数组.
      */
     public function array2single($array)
     {
-        $arr2 = array();
+        $arr2 = [];
         foreach ($array as $value) {
             foreach ($value as $v) {
                 $arr2[] = $v;
             }
         }
         unset($arr3, $value, $v);
+
         return $arr2;
     }
+
     public function getPage($class_id, $info)
     {
         $i = $info['i'];
-        $html = array();
+        $html = [];
         if ($info['app'] == 'page') {
             $html[$i]['app'] = '单页面';
             $html[$i]['title'] = $info['name'];
             $html[$i]['curl'] = $info['curl'];
             $html[$i]['time'] = $info['time'];
+
             return $html;
         } else {
             $html[$i]['app'] = '新闻列表';
             $html[$i]['title'] = $info['name'];
             $html[$i]['curl'] = $info['curl'];
             $html[$i]['time'] = $info['time'];
+
             return $html;
         }
     }

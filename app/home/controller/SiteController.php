@@ -1,10 +1,11 @@
 <?php
+
 namespace app\home\controller;
 
 use app\base\controller\BaseController;
 
 /**
- * 前台公共类
+ * 前台公共类.
  */
 class SiteController extends BaseController
 {
@@ -15,7 +16,7 @@ class SiteController extends BaseController
         if (isset($_GET['mobile']) || MOBILE) {
             config('tpl_name', config('mobile_tpl'));
         }
-        
+
         //设置常量
         define('TPL_NAME', config('tpl_name'));
 
@@ -25,10 +26,11 @@ class SiteController extends BaseController
     }
 
     /**
-     * 前台模板显示 调用内置的模板引擎
-     * @access protected
+     * 前台模板显示 调用内置的模板引擎.
+     *
      * @param string $name 模板名
-     * @param bool $type 模板输出
+     * @param bool   $type 模板输出
+     *
      * @return void
      */
     protected function siteDisplay($name = '', $type = true)
@@ -39,7 +41,7 @@ class SiteController extends BaseController
         } else {
             $tpl = THEME_NAME.'/'.TPL_NAME.'/'.$name;
         }
-          
+
         if ($type) {
             $this->display($tpl);
         } else {
@@ -48,7 +50,8 @@ class SiteController extends BaseController
     }
 
     /**
-     * 页面Meda信息组合
+     * 页面Meda信息组合.
+     *
      * @return array 页面信息
      */
     protected function getMedia($title = '', $keywords = '', $description = '')
@@ -64,15 +67,16 @@ class SiteController extends BaseController
         if (empty($description)) {
             $description = config('site_description');
         }
-        return array(
-            'title'=>$title,
-            'keywords'=>$keywords,
-            'description'=>$description,
-        );
+
+        return [
+            'title'      => $title,
+            'keywords'   => $keywords,
+            'description'=> $description,
+        ];
     }
 
     //分页结果显示
-    protected function getPageShow($map = array(), $mustParams = array())
+    protected function getPageShow($map = [], $mustParams = [])
     {
         $pageArray = $this->pager;
         $html = '
@@ -93,6 +97,7 @@ class SiteController extends BaseController
         $html .= '<a class="next-page" href="'.$this->createPageUrl($map, $mustParams, $pageArray['nextPage']).'">下一页</a>
           <a class="last-page" href="'.$this->createPageUrl($map, $mustParams, $pageArray['lastPage']).'">末页</a>
         </div>';
+
         return $html;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace framework\ext;
 
 //生成图像缩略图和生成验证码
@@ -10,72 +11,73 @@ class Image
         if (!isset($_SESSION)) {
             session_start(); //如果没有开启，session，则开启session
         }
-        $randval = empty($randval) ? ("".rand(1000, 9999)) : $randval;
+        $randval = empty($randval) ? (''.rand(1000, 9999)) : $randval;
         $_SESSION[$verifyName] = $randval;
         $length = 4;
-        $width = ($length * 10 + 10)>$width ? $length * 10 + 10 : $width;
+        $width = ($length * 10 + 10) > $width ? $length * 10 + 10 : $width;
         $im = imagecreate($width, $height);
-        $r = array(225, 255, 255, 223);
-        $g = array(225, 236, 237, 255);
-        $b = array(225, 236, 166, 125);
+        $r = [225, 255, 255, 223];
+        $g = [225, 236, 237, 255];
+        $b = [225, 236, 166, 125];
         $key = mt_rand(0, 3);
-        
+
         $backColor = imagecolorallocate($im, $r[$key], $g[$key], $b[$key]); //背景色（随机）
         $borderColor = imagecolorallocate($im, 100, 100, 100); //边框色
         $pointColor = imagecolorallocate($im, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255)); //点颜色
-        
+
         @imagefilledrectangle($im, 0, 0, $width - 1, $height - 1, $backColor);
         @imagerectangle($im, 0, 0, $width - 1, $height - 1, $borderColor);
         $stringColor = imagecolorallocate($im, mt_rand(0, 200), mt_rand(0, 120), mt_rand(0, 120));
         // 干扰
-        for ($i = 0; $i<10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $fontcolor = imagecolorallocate($im, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255));
             imagearc($im, mt_rand(-10, $width), mt_rand(-10, $height), mt_rand(30, 300), mt_rand(20, 200), 55, 44, $fontcolor);
         }
-        for ($i = 0; $i<25; $i++) {
+        for ($i = 0; $i < 25; $i++) {
             $fontcolor = imagecolorallocate($im, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255));
             imagesetpixel($im, mt_rand(0, $width), mt_rand(0, $height), $pointColor);
         }
-        for ($i = 0; $i<$length; $i++) {
-            imagestring($im, 5, $i * 10 + 5, mt_rand(1, 8), $randval{$i}, $stringColor);
+        for ($i = 0; $i < $length; $i++) {
+            imagestring($im, 5, $i * 10 + 5, mt_rand(1, 8), $randval[$i], $stringColor);
         }
         self::output($im, 'png');
     }
-    
+
     //生成缩略图
     public static function thumb($image, $thumbname, $domain = 'public', $maxWidth = 200, $maxHeight = 50, $interlace = true)
     {
         // 获取原图信息
         $info = self::getImageInfo($image);
         if ($info !== false) {
-            $srcWidth  = $info['width'];
+            $srcWidth = $info['width'];
             $srcHeight = $info['height'];
             $type = strtolower($info['type']);
             $interlace = $interlace ? 1 : 0;
             unset($info);
             $scale = min($maxWidth / $srcWidth, $maxHeight / $srcHeight); // 计算缩放比例
-            if ($scale>=1) {  // 超过原图大小不再缩略
-                $width   = $srcWidth;
-                $height  = $srcHeight;
+            if ($scale >= 1) {  // 超过原图大小不再缩略
+                $width = $srcWidth;
+                $height = $srcHeight;
             } else {  // 缩略图尺寸
-                $width  = (int)($srcWidth * $scale);
-                $height = (int)($srcHeight * $scale);
+                $width = (int) ($srcWidth * $scale);
+                $height = (int) ($srcHeight * $scale);
             }
-            
+
             //sae平台上图片处理
             if (class_exists('SaeStorage')) {
                 $saeStorage = new SaeStorage();
                 $saeImage = new SaeImage();
                 $saeImage->setData(file_get_contents($image));
                 $saeImage->resize($width, $height);
-                $thumbname = str_replace(array('../', './'), '', $thumbname);
+                $thumbname = str_replace(['../', './'], '', $thumbname);
+
                 return $saeStorage->write($domain, $thumbname, $saeImage->exec());
             }
-                
+
             // 载入原图
             $createFun = 'ImageCreateFrom'.($type == 'jpg' ? 'jpeg' : $type);
             $srcImg = $createFun($image);
-            
+
             //创建缩略图
             if ($type != 'gif' && function_exists('imagecreatetruecolor')) {
                 $thumbImg = imagecreatetruecolor($width, $height);
@@ -83,7 +85,7 @@ class Image
                 $thumbImg = imagecreate($width, $height);
             }
             // 复制图片
-            if (function_exists("ImageCopyResampled")) {
+            if (function_exists('ImageCopyResampled')) {
                 imagecopyresampled($thumbImg, $srcImg, 0, 0, 0, 0, $width, $height, $srcWidth, $srcHeight);
             } else {
                 imagecopyresized($thumbImg, $srcImg, 0, 0, 0, 0, $width, $height, $srcWidth, $srcHeight);
@@ -105,18 +107,21 @@ class Image
             $imageFun($thumbImg, $thumbname);
             imagedestroy($thumbImg);
             imagedestroy($srcImg);
+
             return $thumbname;
         }
+
         return false;
     }
-    
+
     /**
-     * 图片水印
+     * 图片水印.
+     *
      * @$image  原图
      * @$water 水印图片
      * @$$waterPos 水印位置(0-9) 0为随机，其他代表上中下9个部分位置
      */
-    public static function water($image, $water, $waterPos =9)
+    public static function water($image, $water, $waterPos = 9)
     {
         //检查图片是否存在
         if (!file_exists($image) || !file_exists($water)) {
@@ -126,14 +131,14 @@ class Image
         $imageInfo = self::getImageInfo($image);
         $image_w = $imageInfo['width']; //取得水印图片的宽
         $image_h = $imageInfo['height']; //取得水印图片的高
-        $imageFun = "imagecreatefrom".$imageInfo['type'];
+        $imageFun = 'imagecreatefrom'.$imageInfo['type'];
         $image_im = $imageFun($image);
-        
+
         //读取水印文件
         $waterInfo = self::getImageInfo($water);
         $w = $water_w = $waterInfo['width']; //取得水印图片的宽
         $h = $water_h = $waterInfo['height']; //取得水印图片的高
-        $waterFun = "imagecreatefrom".$waterInfo['type'];
+        $waterFun = 'imagecreatefrom'.$waterInfo['type'];
         $water_im = $waterFun($water);
 
         switch ($waterPos) {
@@ -186,7 +191,7 @@ class Image
         imagealphablending($image_im, true);
         imagecopy($image_im, $water_im, $posX, $posY, 0, 0, $water_w, $water_h); //拷贝水印到目标文件
         //生成水印后的图片
-        $bulitImg = "image".$imageInfo['type'];
+        $bulitImg = 'image'.$imageInfo['type'];
         $bulitImg($image_im, $image);
         //释放内存
         $waterInfo = $imageInfo = null;
@@ -199,22 +204,23 @@ class Image
         if ($imageInfo !== false) {
             $imageType = strtolower(substr(image_type_to_extension($imageInfo[2]), 1));
             $imageSize = filesize($img);
-            $info = array(
-                "width"=>$imageInfo[0],
-                "height"=>$imageInfo[1],
-                "type"=>$imageType,
-                "size"=>$imageSize,
-                "mime"=>$imageInfo['mime']
-            );
+            $info = [
+                'width' => $imageInfo[0],
+                'height'=> $imageInfo[1],
+                'type'  => $imageType,
+                'size'  => $imageSize,
+                'mime'  => $imageInfo['mime'],
+            ];
+
             return $info;
         } else {
             return false;
         }
     }
-    
+
     protected static function output($im, $type = 'png', $filename = '')
     {
-        header("Content-type: image/".$type);
+        header('Content-type: image/'.$type);
         $ImageFun = 'image'.$type;
         if (empty($filename)) {
             $ImageFun($im);

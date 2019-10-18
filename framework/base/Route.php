@@ -1,11 +1,12 @@
 <?php
+
 namespace framework\base;
 
 class Route
 {
-    protected static $rewriteRule = array();
+    protected static $rewriteRule = [];
     protected static $rewriteOn = false;
-    
+
     public static function parseUrl($rewriteRule, $rewriteOn = false)
     {
         self::$rewriteRule = $rewriteRule;
@@ -14,14 +15,12 @@ class Route
             if (($pos = strpos($_SERVER['REQUEST_URI'], '?')) !== false) {
                 parse_str(substr($_SERVER['REQUEST_URI'], $pos + 1), $_GET);
             }
-            foreach (self::$rewriteRule as $rule =>
-
-    $mapper) {
-                $rule = ltrim($rule, "./\\");
+            foreach (self::$rewriteRule as $rule => $mapper) {
+                $rule = ltrim($rule, './\\');
                 if (false === stripos($rule, 'http://')) {
-                    $rule = $_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/\\').'/'.$rule;
+                    $rule = $_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\').'/'.$rule;
                 }
-                $rule = '/'.str_ireplace(array('\\\\', 'http://', '-', '/', '<', '>', '.'), array('', '', '\-', '\/', '(?<', ">[a-z0-9_\-%]+)", '\.'), $rule).'/i';
+                $rule = '/'.str_ireplace(['\\\\', 'http://', '-', '/', '<', '>', '.'], ['', '', '\-', '\/', '(?<', ">[a-z0-9_\-%]+)", '\.'], $rule).'/i';
                 if (preg_match($rule, $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'], $matches)) {
                     foreach ($matches as $matchkey => $matchval) {
                         if (('app' === $matchkey)) {
@@ -41,8 +40,8 @@ class Route
                 }
             }
         }
-        
-        $routeArr = isset($_REQUEST['r']) ? explode("/", $_REQUEST['r']) : array();
+
+        $routeArr = isset($_REQUEST['r']) ? explode('/', $_REQUEST['r']) : [];
         if (!defined('ADMIN_STATUS') && $_SERVER['REQUEST_URI'] !== '/' && false === stripos($_SERVER['REQUEST_URI'], '?')) {
             $app_name = empty($routeArr[0]) ? Config::get('DEFAULT_APP') : $routeArr[0];
             $controller_name = empty($routeArr[1]) ? Config::get('DEFAULT_CONTROLLER') : $routeArr[1];
@@ -66,7 +65,7 @@ class Route
         }
     }
 
-    public static function url($route = null, $params = array())
+    public static function url($route = null, $params = [])
     {
         $app = APP_NAME;
         $controller = CONTROLLER_NAME;
@@ -97,18 +96,18 @@ class Route
             }
         }
         $paramStr = empty($params) ? '' : '&'.http_build_query($params);
-        $url = $_SERVER["SCRIPT_NAME"].'?r='.$route.$paramStr;
-            
+        $url = $_SERVER['SCRIPT_NAME'].'?r='.$route.$paramStr;
+
         if (self::$rewriteOn && !empty(self::$rewriteRule)) {
-            static $urlArray = array();
+            static $urlArray = [];
             if (!isset($urlArray[$url])) {
                 foreach (self::$rewriteRule as $rule => $mapper) {
-                    $mapper = '/'.str_ireplace(array('/', '<app>', '<c>', '<a>'), array('\/', '(?<app>\w+)', '(?<c>\w+)', '(?<a>\w+)'), $mapper).'/i';
+                    $mapper = '/'.str_ireplace(['/', '<app>', '<c>', '<a>'], ['\/', '(?<app>\w+)', '(?<c>\w+)', '(?<a>\w+)'], $mapper).'/i';
                     if (preg_match($mapper, $route, $matches)) {
                         list($app, $controller, $action) = explode('/', $route);
-                        $urlArray[$url] = str_ireplace(array('<app>', '<c>', '<a>'), array($app, $controller, $action), $rule);
+                        $urlArray[$url] = str_ireplace(['<app>', '<c>', '<a>'], [$app, $controller, $action], $rule);
                         if (!empty($params)) {
-                            $_args = array();
+                            $_args = [];
                             foreach ($params as $argkey => $arg) {
                                 $count = 0;
                                 $urlArray[$url] = str_ireplace('<'.$argkey.'>', $arg, $urlArray[$url], $count);
@@ -124,19 +123,22 @@ class Route
 
                         $protocol = is_https() ? 'https' : 'http';
                         if (false === stripos($urlArray[$url], $protocol)) {
-                            $urlArray[$url] = $protocol.'://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER["SCRIPT_NAME"]), "./\\").'/'.ltrim($urlArray[$url], "./\\");
+                            $urlArray[$url] = $protocol.'://'.$_SERVER['HTTP_HOST'].rtrim(dirname($_SERVER['SCRIPT_NAME']), './\\').'/'.ltrim($urlArray[$url], './\\');
                         }
-                     
-                        $rule = str_ireplace(array('<app>', '<c>', '<a>'), '', $rule);
+
+                        $rule = str_ireplace(['<app>', '<c>', '<a>'], '', $rule);
                         if (count($params) == preg_match_all('/<\w+>/is', $rule, $_match)) {
                             return $urlArray[$url];
                         }
                     }
                 }
+
                 return isset($urlArray[$url]) ? $urlArray[$url] : $url;
             }
+
             return $urlArray[$url];
         }
+
         return $url;
     }
 }

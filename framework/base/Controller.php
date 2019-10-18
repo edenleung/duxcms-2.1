@@ -1,15 +1,16 @@
 <?php
+
 namespace framework\base;
 
 class Controller
 {
     public $layout = null; //layout view
-    
+
     public function assign($name, $value = null)
     {
         return $this->_getView()->assign($name, $value);
     }
-    
+
     public function display($tpl = '', $return = false, $isTpl = true)
     {
         if ($isTpl) {
@@ -22,20 +23,21 @@ class Controller
             }
         }
         $this->_getView()->assign(get_object_vars($this));
+
         return $this->_getView()->display($tpl, $return, $isTpl);
     }
-    
+
     public function isPost()
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
     }
-    
+
     public function redirect($url, $code = 302)
     {
         header('location:'.$url, true, $code);
         exit;
     }
-    
+
     public function alert($msg, $url = null, $charset = 'utf-8')
     {
         header("Content-type: text/html; charset={$charset}");
@@ -48,12 +50,12 @@ class Controller
         echo "<script>$alert_msg $go_url</script>";
         exit;
     }
-    
+
     public function arg($name = null, $default = null)
     {
         static $args;
         if (!$args) {
-            $args = array_merge((array)$_GET, (array)$_POST);
+            $args = array_merge((array) $_GET, (array) $_POST);
         }
         if (null == $name) {
             return $args;
@@ -63,21 +65,23 @@ class Controller
         }
         $arg = $args[$name];
         if (is_array($arg)) {
-            array_walk($arg, function(&$v, $k) {
+            array_walk($arg, function (&$v, $k) {
                 $v = trim(htmlspecialchars($v, ENT_QUOTES, 'UTF-8'));
             });
         } else {
             $arg = trim(htmlspecialchars($arg, ENT_QUOTES, 'UTF-8'));
         }
+
         return $arg;
     }
-    
+
     protected function _getView()
     {
         static $view;
         if (!isset($view)) {
             $view = new Template(Config::get('TPL'));
         }
+
         return $view;
     }
 }
