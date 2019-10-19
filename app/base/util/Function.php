@@ -263,9 +263,10 @@ function tongji()
 }
 
 /**
- * String to Intval
+ * String to Intval.
  *
  * @param [type] $string
+ *
  * @return void
  */
 function string2Intval($string)
@@ -317,17 +318,16 @@ function buildScreenUri($flag, $fields, $field, $classId, $id = '')
         $value = request('get.'.$field);
         if ($value) {
             $array = explode(',', $value);
-            foreach($array as $key=>$item) {
+            foreach ($array as $key=> $item) {
                 if ($item == $id) {
                     unset($array[$key]);
                 }
             }
-    
+
             if (!empty($array)) {
                 $params[$field] = implode(',', $array);
             }
         }
-        
     }
 
     $paramer['class_id'] = $classId;
