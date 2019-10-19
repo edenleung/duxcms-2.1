@@ -172,7 +172,8 @@ class FieldsetFormModel extends BaseModel
      */
     public function validToken($table, $token)
     {
-        $session_token = session('form_'.$table);
+        session_start();
+        $session_token = $_SESSION['form_'.$table];
         if (empty($token)) {
             return false;
         }
@@ -180,8 +181,8 @@ class FieldsetFormModel extends BaseModel
         if ($formToken != $session_token) {
             return false;
         }
-        session('form_'.$table, null);
 
+        unset($_SESSION['form_'.$table]);
         return true;
     }
 
@@ -194,8 +195,9 @@ class FieldsetFormModel extends BaseModel
      */
     public function setToken($table)
     {
+        session_start();
         $token = md5(microtime(true));
-        session('form_'.$table, $token);
+        $_SESSION['form_'.$table] = $token;
 
         return $token;
     }
