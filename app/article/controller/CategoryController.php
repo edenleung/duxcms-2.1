@@ -57,7 +57,7 @@ class CategoryController extends SiteController
             $classIds = $categoryInfo['class_id'];
         }
         $where['A.status'] = 1;
-        $where[] = 'C.class_id in (' . $classIds . ')';
+        $where[] = 'C.class_id in ('.$classIds.')';
 
         $mustParams = [];
 
@@ -75,7 +75,7 @@ class CategoryController extends SiteController
             $fields = array_column($fieldList, 'field');
 
             foreach ($fields as $field) {
-                $param = request('get.' . $field);
+                $param = request('get.'.$field);
                 if (is_null($param)) {
                     continue;
                 }
@@ -94,7 +94,7 @@ class CategoryController extends SiteController
             }
 
             foreach ($fieldList as $key => $item) {
-                $params = explode(',', request('get.' . $item['field']));
+                $params = explode(',', request('get.'.$item['field']));
                 $params = array_unique($params);
                 $field = $item['field'];
                 $data = ['name' => $item['name'], 'field' => $field];
@@ -127,9 +127,9 @@ class CategoryController extends SiteController
         //查询内容数据
         $modelContent = target('ContentArticle');
         if (!empty($categoryInfo['content_order'])) {
-            $categoryInfo['content_order'] = $categoryInfo['content_order'] . ',';
+            $categoryInfo['content_order'] = $categoryInfo['content_order'].',';
         }
-        $pageList = $modelContent->page($listRows)->loadList($where, $listRows, $categoryInfo['content_order'] . 'A.time desc,A.content_id desc', $categoryInfo['fieldset_id']);
+        $pageList = $modelContent->page($listRows)->loadList($where, $listRows, $categoryInfo['content_order'].'A.time desc,A.content_id desc', $categoryInfo['fieldset_id']);
         $this->pager = $modelContent->pager;
 
         //URL参数
