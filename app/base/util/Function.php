@@ -263,6 +263,17 @@ function tongji()
 }
 
 /**
+ * String to Intval
+ *
+ * @param [type] $string
+ * @return void
+ */
+function string2Intval($string)
+{
+    return intval($string);
+}
+
+/**
  * 生成筛选url.
  *
  * @param [type] $flag
@@ -278,8 +289,10 @@ function buildScreenUri($flag, $fields, $field, $classId, $id = '')
     $params = [];
     foreach ($fields as $item) {
         if ($field != $item) {
-            $value = request('get.'.$item, 0, 'intval');
-            if ($value) {
+            $value = request('get.'.$item);
+            $array = explode(',', $value);
+            $array = array_map(string2Intval, $array);
+            if (!in_array(0, $array)) {
                 $params[$item] = $value;
             }
         }
@@ -291,7 +304,30 @@ function buildScreenUri($flag, $fields, $field, $classId, $id = '')
     }
 
     if ($flag) {
-        $params[$field] = $id;
+        $value = request('get.'.$field);
+        if (!$value) {
+            $params[$field] = $id;
+        } else {
+            $array = explode(',', $value);
+            $array = array_map(string2Intval, $array);
+            array_push($array, $id);
+            $params[$field] = implode(',', $array);
+        }
+    } else {
+        $value = request('get.'.$field);
+        if ($value) {
+            $array = explode(',', $value);
+            foreach($array as $key=>$item) {
+                if ($item == $id) {
+                    unset($array[$key]);
+                }
+            }
+    
+            if (!empty($array)) {
+                $params[$field] = implode(',', $array);
+            }
+        }
+        
     }
 
     $paramer['class_id'] = $classId;
