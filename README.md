@@ -176,9 +176,9 @@ http://www.domain.com/zh-cn
 
 |名称 | 规则 | 对应类| 例子|
 |----|----|----|----|
-|列表页|`<urlname>`|`article/Category/index`|`<urlname>/index.html`
-|列表详情页|`<class_urlname>` `<urltitle>`|`article/Content/index`|`<class_urlname>/<urltitle>.html`
-|单页面|`<urlname>`|`page/Category/index`|`page/<urlname>.html`
+|列表页|`<urlname>`|`article/Category/index`|`'<urlname>/index.html' => 'article/Category/index'`
+|列表详情页|`<class_urlname>` `<urltitle>`|`article/Content/index`|`'<class_urlname>/<urltitle>.html' => 'article/Content/index'`
+|单页面|`<urlname>`|`page/Category/index`|`'page/<urlname>.html' => 'page/Category/index'`
 
 ## api 调用
 
