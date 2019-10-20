@@ -333,6 +333,7 @@ function buildScreenUri($flag, $fields, $field, $categoryInfo, $id = '')
     $paramer['class_id'] = $categoryInfo['class_id'];
     $dir = APP_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME;
     $paramer['urlname'] = $categoryInfo['urlname'];
+
     return match_url($dir, $paramer, $params);
 }
 

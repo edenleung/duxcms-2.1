@@ -183,6 +183,7 @@ class FieldsetFormModel extends BaseModel
         }
 
         unset($_SESSION['form_'.$table]);
+
         return true;
     }
 
