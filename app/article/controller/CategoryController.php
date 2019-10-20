@@ -106,8 +106,8 @@ class CategoryController extends SiteController
                         'value'    => $id,
                         'field'    => $field,
                         'selected' => in_array($id, $params) ? true : false,
-                        'url'      => \buildScreenUri(true, $fields, $item['field'], $classId, $id, $params),
-                        'durl'     => \buildScreenUri(false, $fields, $item['field'], $classId, $id, $params),
+                        'url'      => \buildScreenUri(true, $fields, $item['field'], $categoryInfo, $id, $params),
+                        'durl'     => \buildScreenUri(false, $fields, $item['field'], $categoryInfo, $id, $params),
                     ];
                 }
 

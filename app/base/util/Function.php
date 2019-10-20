@@ -285,7 +285,7 @@ function string2Intval($string)
  *
  * @return void
  */
-function buildScreenUri($flag, $fields, $field, $classId, $id = '')
+function buildScreenUri($flag, $fields, $field, $categoryInfo, $id = '')
 {
     $params = [];
     foreach ($fields as $item) {
@@ -330,9 +330,9 @@ function buildScreenUri($flag, $fields, $field, $classId, $id = '')
         }
     }
 
-    $paramer['class_id'] = $classId;
+    $paramer['class_id'] = $categoryInfo['class_id'];
     $dir = APP_NAME.'/'.CONTROLLER_NAME.'/'.ACTION_NAME;
-
+    $paramer['urlname'] = $categoryInfo['urlname'];
     return match_url($dir, $paramer, $params);
 }
 
