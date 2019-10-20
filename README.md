@@ -37,7 +37,7 @@ $ composer install
 
 ## 预览
 [线上预览](http://duxcms.xiaodim.com)  
-感谢👉[foxhost](http://foxhost.cn/user/Register.html?id=SI2bk6)👈提供免费服务器支持
+感谢 👉[foxhost](http://foxhost.cn/user/Register.html?id=SI2bk6)👈提供免费服务器支持
 
 ## 数据库驱动
 * mysqli
