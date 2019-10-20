@@ -169,6 +169,17 @@ http://www.domain.com/zh-cn
   <!--{/foreach}--> 
 ```
 
+## 伪静态 规则
+* 列表页 `urlname` 栏目URL
+* 列表详情页 `class_urlname` 上级分类栏目URL `urltitle` 当前页URL
+* 单页面 `urlname` 当前页URL  
+
+|名称 | 规则 | 对应类| 例子|
+|----|----|----|----|
+|列表页|`<urlname>`|`article/Category/index`|`<urlname>/index.html`
+|列表详情页|`<class_urlname>` `<urltitle>`|`article/Content/index`|`<class_urlname>/<urltitle>.html`
+|单页面|`<urlname>`|`page/Category/index`|`page/<urlname>.html`
+
 ## api 调用
 
 GET `/api.php`
