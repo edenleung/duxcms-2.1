@@ -108,7 +108,7 @@ http://www.domain.com/zh-cn
 | nobetween | 变量不存在某个区间时 | name, value | `{nobetween name="$test" value="1,2"}{/nobetween}`
 | in | 变量存在数组时 | name, value | `{in name="$test" value="1,2"}{/in}`
 | noin | 变量不存在数组时 | name, value | `{noin name="$test" value="1,2"}{/noin}`
-| page | 单页信息| class 分类id, callback 调用的变量名 | `{page class="$class_id" callback="page"}{$page.content}{/page}`
+| page | 单页信息| class 分类id, id 调用的变量名 | `{page class="$class_id" id="page"}{$page.content}{/page}`
 | progress | 获取文章阅读进度 | container, parent, child, class | [详细说明](#文章阅读进度)
 
 ### 文章阅读进度
