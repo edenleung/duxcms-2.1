@@ -87,7 +87,7 @@ class TempalteHook
         $this->_template_replace[] = '<?php }; ?>';
 
         // page 获取单页信息
-        $this->_template_preg[] = '/{page\s+class=\"(.*?)\"\s+callback=\"(.*?)\"}/i';
+        $this->_template_preg[] = '/{page\s+class=\"(.*?)\"\s+id=\"(.*?)\"}/i';
         $this->_template_preg[] = '/{\/page}/i';
         $this->_template_replace[] = '<?php $\\2 = target(\'Page/CategoryPage\')->getInfo(\\1); ?>';
         $this->_template_replace[] = '<?php  ?>';
