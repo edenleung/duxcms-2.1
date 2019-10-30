@@ -158,6 +158,7 @@ class AdminUpdateController extends AdminController
             $dir.'/data/config/push.php',
             $dir.'/data/config/tongji.php',
             $dir.'/data/config/upload.php',
+            $dir.'/data/config/rewrite.php',
         ];
 
         if (!copy_dir($dir, ROOT_PATH, $diss)) {
