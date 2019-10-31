@@ -208,7 +208,7 @@ function filter_string($data)
 
         return $data;
     } else {
-        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+        return SafeFilter($data);
     }
 }
 
@@ -972,4 +972,19 @@ function get_text_make($data, $cut = 0, $str = '...')
     }
 
     return $data;
+}
+
+/**
+ * xss过滤
+ *
+ * @param [type] $value
+ * @return void
+ */
+function SafeFilter($value)
+{
+    include ROOT_PATH . 'vendor/ezyang/htmlpurifier/extras/HTMLPurifierExtras.auto.php';
+    $config = HTMLPurifier_Config::createDefault();
+    $purifier = new HTMLPurifier($config);
+    
+    return $purifier->purify($value);
 }
