@@ -103,8 +103,7 @@ class LangHook
             // 自动侦测语言
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
                 preg_match('/^([a-z\d\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $matches);
-                if (in_array(strtolower($matches[1]), $this->config['LANG_LIST'])) 
-                {
+                if (in_array(strtolower($matches[1]), $this->config['LANG_LIST'])) {
                     return strtolower($matches[1]);
                 }
             }

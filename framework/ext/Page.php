@@ -25,7 +25,8 @@ class Page
     public $requestUri = '';
 
     /**
-     * constructor构造函数
+     * constructor构造函数.
+     *
      * @param
      * $array['pageName'],
      * $array['ajax']
@@ -193,7 +194,7 @@ class Page
      * $total，信息总条数
      * $perpage，每页显示行数
      * $pagebarnum，分页栏每页显示的页数
-     * $mode，显示风格，参数可为整数1，2，3，4任意一个
+     * $mode，显示风格，参数可为整数1，2，3，4任意一个.
      */
     public function show($url = '', $total = 0, $perPage = 10, $pageBarNum = 10, $mode = 1)
     {
@@ -223,7 +224,8 @@ class Page
     }
 
     /**
-     * 获取当前页
+     * 获取当前页.
+     *
      * @param: String $url
      *
      * @return int
