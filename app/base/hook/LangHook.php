@@ -60,9 +60,8 @@ class LangHook
             $defaultLang = $this->getDefaultLang();
             $s = config('REWRITE_ON') ? request('get.s') : request('get.lang', $defaultLang);
             if (empty($s)) {
-                define('APP_LANG', $defaultLang);
                 $url = config('REWRITE_ON') ? '/'.$defaultLang : url('home/index/index');
-                header('location:'.$url, true, $code);
+                header('location:'.$url, true);
                 exit();
             } else {
                 if (config('REWRITE_ON')) {
@@ -74,9 +73,6 @@ class LangHook
 
             $langs = array_keys($this->config['LANG_LIST']);
             if ($lang && !in_array($lang, $langs)) {
-                define('APP_NAME', 'home');
-                define('APP_LANG', $defaultLang);
-
                 throw new \Exception('404页面不存在！', 404);
             }
             define('APP_LANG', $lang);
