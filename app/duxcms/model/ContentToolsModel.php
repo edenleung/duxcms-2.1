@@ -36,7 +36,7 @@ class ContentToolsModel
     public function getKerword($title)
     {
         $word = urlencode($title);
-        $url = "http://api.pullword.com/get.php?source={$word}&param1=0&param2=0&json=1";
+        $url = "http://api.pullword.com/get.php?source={$word}&param1=0.4&param2=0&json=1";
 
         $data = \framework\ext\Http::doGet($url, 5);
         $list = json_decode($data, true);
