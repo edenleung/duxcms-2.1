@@ -76,6 +76,7 @@ class LangHook
             if ($lang && !in_array($lang, $langs)) {
                 define('APP_NAME', 'home');
                 define('APP_LANG', $defaultLang);
+
                 throw new \Exception('404页面不存在！', 404);
             }
             define('APP_LANG', $lang);
