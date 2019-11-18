@@ -198,15 +198,38 @@ GET `/api.php`
 
 签名生成参考
 ```
+$timestamp = time();
+$nonce = rand(1, 9999);
+
 $params = [
-  time(),   // timestamp 参数值
-  rand(1, 99999),   // nonce 参数值
+  $timestamp,   // timestamp 参数值
+  $nonce,   // nonce 参数值
   'DuxCms', // app 参数值
   'categoryList' // label 参数值
 ];
+
 sort($params, SORT_STRING);
 $tmpStr = implode( $params );
-$sign = sha1( $tmpStr );
+$signature = sha1( $tmpStr );
+```
+
+组装 query 参数
+```php
+$host = 'http://www.domain.com';
+$params = [
+    // 上面生成的签名
+    'signature' => $signature,
+    // 时间戳
+    'timestamp' => $timestamp,
+    // 随机字符串
+    'nonce' => $nonce,
+    // app
+    'app' => 'Duxcms',
+    // label
+    'label' => 'contentList'
+];
+
+$url = $host ."?" .http_build_query($params);
 ```
 
 ## 在线更新
