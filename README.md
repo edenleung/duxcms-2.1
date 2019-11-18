@@ -200,8 +200,10 @@ GET `/api.php`
 ```
 $timestamp = time();
 $nonce = rand(1, 9999);
+$token = '';
 
 $params = [
+  $token,
   $timestamp,   // timestamp 参数值
   $nonce,   // nonce 参数值
   'DuxCms', // app 参数值
