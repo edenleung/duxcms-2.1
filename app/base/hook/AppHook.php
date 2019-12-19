@@ -30,7 +30,7 @@ class AppHook
                 foreach (config('LANG.LANG_LIST') as $key => $item) {
                     $rewrite[$key] = 'home/index/index';
                 }
-                
+
                 config('REWRITE_RULE', $rewrite);
             }
 

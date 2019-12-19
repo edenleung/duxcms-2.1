@@ -62,7 +62,7 @@ class LangHook
             $requestLang = $this->getRequestLang();
             if ($requestLang) {
                 $lang = $requestLang;
-            } else if (cookie($this->cookie_name)) {
+            } elseif (cookie($this->cookie_name)) {
                 $lang = cookie($this->cookie_name);
             } else {
                 if (config('REWRITE_ON')) {
@@ -108,12 +108,13 @@ class LangHook
     }
 
     /**
-     * 默认语言重定向
+     * 默认语言重定向.
      *
      * @param string $url
+     *
      * @return void
      */
-    protected function redirect($url) 
+    protected function redirect($url)
     {
         header('location:'.$url, true);
         exit();
