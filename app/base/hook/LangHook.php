@@ -58,18 +58,21 @@ class LangHook
             define('LANG_OPEN', true);
             define('LANG_CONFIG', serialize($this->config));
             $defaultLang = $this->getDefaultLang();
-            $s = config('REWRITE_ON') ? request('get.s') : request('get.lang', $defaultLang);
-            if (empty($s)) {
-                define('APP_LANG', $defaultLang);
-                $url = config('REWRITE_ON') ? '/'.$defaultLang : url('home/index/index');
-                header('location:'.$url, true);
-                exit();
+
+            $requestLang = $this->getRequestLang();
+            if ($requestLang) {
+                $lang = $requestLang;
+            } else if (cookie($this->cookie_name)) {
+                $lang = cookie($this->cookie_name);
             } else {
                 if (config('REWRITE_ON')) {
-                    list($temp, $lang) = explode('/', $s);
+                    $url = '/'.$defaultLang;
                 } else {
-                    $lang = $s;
+                    define('APP_LANG', $defaultLang);
+                    $url = url('home/index/index');
                 }
+
+                $this->redirect($url);
             }
 
             $langs = array_keys($this->config['LANG_LIST']);
@@ -82,6 +85,38 @@ class LangHook
             define('APP_LANG', $lang);
             $this->setCookie($lang);
         }
+    }
+
+    protected function getRequestLang()
+    {
+        $requestLang = '';
+        if (config('REWRITE_ON')) {
+            $r = $_SERVER['REQUEST_URI'];
+            list($temp, $lang) = explode('/', $r);
+
+            if (!empty($lang)) {
+                $requestLang = $lang;
+            }
+        } else {
+            $lang = $_GET['lang'];
+            if (!empty($lang)) {
+                $requestLang = $lang;
+            }
+        }
+
+        return $requestLang;
+    }
+
+    /**
+     * 默认语言重定向
+     *
+     * @param string $url
+     * @return void
+     */
+    protected function redirect($url) 
+    {
+        header('location:'.$url, true);
+        exit();
     }
 
     /**
