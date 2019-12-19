@@ -500,7 +500,7 @@ function get_config_file($file)
  * 自适应URL规则.
  *
  * @param string $str        URL路径
- * @param array $params     自动解析参数
+ * @param array  $params     自动解析参数
  * @param string $mustParams 必要参数
  *
  * @return url
@@ -996,36 +996,38 @@ function tagList($data = [])
     return target('duxcms/Tags')->loadList([], 0);
 }
 
-function keyword_replace($str){
+function keyword_replace($str)
+{
     $tags = tagList();
     $key_array = [];
 
-    foreach($tags as $tag){
+    foreach ($tags as $tag) {
         $key_array[] = [$tag['name'], $tag['url']];
     }
-   
-	$array_first = $key_array; 
-	$array_last = array();  
-	foreach($array_first as $key=>$value){  
-		$array_last[$key] = array('TFXS00' . $key, $value[0], '<a target="_blank" href="' . $value[1] . '" title="' . $value[0] . '">' . $value[0] . '</a>');  
-		}  
-	$count = count($array_last);  
-	for($i=0;$i<$count;$i++){  
-		for($j=$count-1;$j>$i;$j--){  
-			//如果后一个元素长度大于前一个则调换位置  
-			if(strlen($array_last[$j][1]) > strlen($array_last[$j-1][1])){  
-				$tmp = $array_last[$j];
-				$array_last[$j] = $array_last[$j-1];  
-				$array_last[$j-1] = $tmp;  
-			}
-			}  
-		}  
-	$keys = $array_last;  
-	foreach($keys as $nkeys){  
-		$str = str_ireplace($nkeys[1], $nkeys[0], $str);
-		}  
-	foreach($keys as $nkeys){  
-		$str = str_ireplace($nkeys[0], $nkeys[2], $str);
-		}  
-	return $str;  
+
+    $array_first = $key_array;
+    $array_last = [];
+    foreach ($array_first as $key=>$value) {
+        $array_last[$key] = ['TFXS00'.$key, $value[0], '<a target="_blank" href="'.$value[1].'" title="'.$value[0].'">'.$value[0].'</a>'];
+    }
+    $count = count($array_last);
+    for ($i = 0; $i < $count; $i++) {
+        for ($j = $count - 1; $j > $i; $j--) {
+            //如果后一个元素长度大于前一个则调换位置
+            if (strlen($array_last[$j][1]) > strlen($array_last[$j - 1][1])) {
+                $tmp = $array_last[$j];
+                $array_last[$j] = $array_last[$j - 1];
+                $array_last[$j - 1] = $tmp;
+            }
+        }
+    }
+    $keys = $array_last;
+    foreach ($keys as $nkeys) {
+        $str = str_ireplace($nkeys[1], $nkeys[0], $str);
+    }
+    foreach ($keys as $nkeys) {
+        $str = str_ireplace($nkeys[0], $nkeys[2], $str);
+    }
+
+    return $str;
 }
