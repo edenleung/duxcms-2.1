@@ -26,7 +26,7 @@ class AppHook
                 foreach (config('LANG.LANG_LIST') as $key => $item) {
                     $rewrite[$key] = 'home/index/index';
                 }
-                
+
                 foreach ($rewrite_rule as $key=>$item) {
                     $rewrite['<lang>/'.$key] = $item;
                 }
