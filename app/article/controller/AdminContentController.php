@@ -114,7 +114,8 @@ class AdminContentController extends AdminController
 
             $parentHtml = "<select class='input' id='lang_id'><option value='0'>选择语言</option>";
 
-            foreach ($this->lang_list as $key=>$vo) {
+            $lang_list = unserialize(LANG_CONFIG)['LANG_LIST'];
+            foreach ($lang_list as $key=>$item) {
                 if ($key !== APP_LANG) {
                     $parentHtml .= "<option value='{$key}'>{$vo['label']}</option>";
                 }
