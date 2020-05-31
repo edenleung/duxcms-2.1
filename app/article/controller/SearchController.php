@@ -56,6 +56,14 @@ class SearchController extends SiteController
                     break;
             }
         }
+
+        // 多语言
+        if (defined('LANG_OPEN')) {
+            $where['C.lang'] = APP_LANG;
+        } else {
+            $where['C.lang'] = '';
+        }
+
         $pageList = target('ContentArticle')->page($listRows)->loadList($where, $limit);
         $this->pager = target('ContentArticle')->pager;
         $list = [];
