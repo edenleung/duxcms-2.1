@@ -60,19 +60,13 @@ class LangHook
             $defaultLang = $this->getDefaultLang();
 
             $requestLang = $this->getRequestLang();
+
             if ($requestLang) {
                 $lang = $requestLang;
             } elseif (cookie($this->cookie_name)) {
                 $lang = cookie($this->cookie_name);
             } else {
-                if (config('REWRITE_ON')) {
-                    $url = '/'.$defaultLang;
-                } else {
-                    define('APP_LANG', $defaultLang);
-                    $url = url('home/index/index');
-                }
-
-                $this->redirect($url);
+                $lang = $defaultLang;
             }
 
             $langs = array_keys($this->config['LANG_LIST']);
@@ -90,17 +84,17 @@ class LangHook
     protected function getRequestLang()
     {
         $requestLang = '';
-        if (config('REWRITE_ON')) {
-            $r = $_SERVER['REQUEST_URI'];
-            list($temp, $lang) = explode('/', $r);
-
-            if (!empty($lang)) {
-                $requestLang = $lang;
-            }
+        if ($lang = $_GET['lang']) {
+            $requestLang = $lang;
         } else {
-            $lang = $_GET['lang'];
-            if (!empty($lang)) {
-                $requestLang = $lang;
+            if (config('REWRITE_ON')) {
+                $lang = $_GET['lang'];
+                $r = $_SERVER['REQUEST_URI'];
+                list($temp, $lang) = explode('/', $r);
+    
+                if (!empty($lang)) {
+                    $requestLang = $lang;
+                }
             }
         }
 
